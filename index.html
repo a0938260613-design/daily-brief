@@ -855,6 +855,39 @@ svg.hov .dseg:not(.on) { opacity: .35; } .dseg.on { stroke-width: 28px; }
   .mixtop .donut + .donut { border-left: 0; border-top: 1px solid var(--line); padding-top: 18px; }
   .mixtop .mixkpis { flex-direction: column; }
 }
+
+.ffold { display: none; }
+.gmorebtn { display: none; }
+@media (max-width: 760px) {
+
+  .topbar { padding: 0 8px 0 10px; gap: 6px; }
+  .topbar .tabs { flex-wrap: nowrap; padding: 8px 0; gap: 6px; mask-image: linear-gradient(90deg, #000 88%, transparent); }
+  #tabs { display: flex; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; }
+  #tabs .tab { flex: none; white-space: nowrap; overflow: visible; padding: 6px 13px; font-size: 14px; border-radius: 999px; min-height: 34px; }
+  #tabs .tab small { display: inline; }
+  .topacts { gap: 0; padding-left: 4px; }
+  .topbtn { height: 36px; min-width: 34px; padding: 0 7px; justify-content: center; }
+  .topbtn span:not(.ti) { display: none; } #langbtn { font-size: 13px; font-weight: 700; }
+
+  .ffold { display: flex; align-items: center; justify-content: space-between; width: 100%; margin: 10px 0 4px; padding: 10px 14px;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--text); font: inherit; font-size: 14.5px; font-weight: 700; }
+  .ffold::after { content: "▾"; color: var(--muted); } .ffold.on::after { content: "▴"; }
+  .ffold.active { border-color: var(--accent); color: var(--accent); }
+  aside.facets:not(.open) { display: none; }
+  aside.facets.open { display: block; padding: 6px 0 4px; }
+  .fgroup { display: block; margin-bottom: 10px; }
+  .facets .flabel { width: auto; margin: 0 0 6px; color: var(--muted); font-size: 12.5px; }
+  .fitems { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 6px; padding-bottom: 2px; }
+  .facet { flex: none; width: auto; min-height: 36px; border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; }
+
+  .glance { padding: 14px 16px; }
+  .glance:not(.full) .gtext { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .gmorebtn { display: inline-block; margin-top: 6px; padding: 4px 0; border: 0; background: none; color: var(--accent); font: inherit; font-size: 14px; font-weight: 700; }
+  .glance.full .gmorebtn { display: none; }
+
+  .calnav .chip { white-space: nowrap; }
+  .clearbar { position: sticky; top: 56px; z-index: 5; }
+}
 </style>
 </head>
 <body>
@@ -1638,6 +1671,11 @@ function glanceBox(kind) {
   box.append(hd);
   const summary = (kind === "market" ? dayText(d, "summary") : dayText(d, "comp_summary")) || "";
   box.append(summary ? el("p", "gtext", summary) : el("p", "muted", S.ui.noGlance));
+  if (summary) {
+    const more = el("button", "gmorebtn", S.ui.fpRead + " ▾");
+    more.onclick = () => box.classList.add("full");
+    box.append(more);
+  }
   return box;
 }
 
@@ -2615,6 +2653,22 @@ function render() {
   else viewGroup();
   localize(document.body);
 }
+function foldFacets() {
+  const active = !!main.querySelector(".clearbar:not([hidden])");
+  for (const side of main.querySelectorAll("aside.facets")) {
+    let b = side.previousElementSibling;
+    if (!b || !b.classList.contains("ffold")) {
+      b = el("button", "ffold", S.ui.fFilters);
+      b.onclick = () => { S.facetOpen = !S.facetOpen; foldFacets(); };
+      side.before(b);
+    }
+    if (side.classList.contains("open") !== !!S.facetOpen) side.classList.toggle("open", !!S.facetOpen);
+    if (b.classList.contains("on") !== !!S.facetOpen) b.classList.toggle("on", !!S.facetOpen);
+    if (b.classList.contains("active") !== active) b.classList.toggle("active", active);
+  }
+}
+new MutationObserver(() => { if (S.ui) foldFacets(); })
+  .observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
 
 (function () {
   const btn = document.getElementById("themebtn");
