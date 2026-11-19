@@ -858,14 +858,54 @@ svg.hov .dseg:not(.on) { opacity: .35; } .dseg.on { stroke-width: 28px; }
 
 .ffold { display: none; }
 .gmorebtn { display: none; }
+.tico, #mbrand { display: none; }
 @media (max-width: 760px) {
 
   .topbar { padding: 0 8px 0 10px; gap: 6px; }
   .topbar .tabs { flex-wrap: nowrap; padding: 8px 0; gap: 6px; mask-image: linear-gradient(90deg, #000 88%, transparent); }
-  #tabs { display: flex; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; }
-  #tabs .tab { flex: none; white-space: nowrap; overflow: visible; padding: 6px 13px; font-size: 14px; border-radius: 999px; min-height: 34px; }
-  #tabs .tab small { display: inline; }
-  .topacts { gap: 0; padding-left: 4px; }
+
+  #tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0;
+    margin: 0; padding: 4px 0 calc(4px + env(safe-area-inset-bottom)); background: var(--card); border-top: 1px solid var(--line); overflow: visible; mask-image: none; }
+  #tabs .tab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 50px; padding: 4px 2px;
+    border: 0; border-radius: 0; background: transparent; color: var(--muted); font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #tabs .tab[aria-selected="true"] { background: transparent; color: var(--accent); font-weight: 800; }
+  #tabs .tab small { display: none; }
+  #tabs .tab .dot { position: absolute; top: 6px; left: calc(50% + 9px); margin: 0; }
+  #tabs .tab .tico { display: block; width: 23px; height: 23px; }
+  body { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+  #totop { bottom: calc(76px + env(safe-area-inset-bottom)); }
+  .topbar { justify-content: space-between; min-height: 50px; }
+  #mbrand { display: block; font-size: 15.5px; font-weight: 800; letter-spacing: .02em; color: var(--text); }
+
+  .fphead { margin-top: 10px; }
+  .fpdate h1 { font-size: 21px; font-weight: 800; font-family: inherit; }
+  .fpstats { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 12px 0 2px; padding-bottom: 2px; }
+  .fpstat { flex: none; flex-direction: row; align-items: baseline; gap: 6px; padding: 7px 14px; border-radius: 999px; }
+  .fpstat .fl { font-size: 12.5px; } .fpstat b { font-size: 16px; font-weight: 800; font-family: inherit; } .fpstat .fn { display: none; }
+  .fpstat.hot { border-left-width: 1px; border-color: var(--must-fg); }
+  .fpsum { border: 0 !important; border-radius: 12px !important; background: var(--ref-bg) !important; padding: 12px 14px; }
+  .glance { border: 0; border-radius: 12px; background: var(--ref-bg); }
+
+  main .card { background: transparent !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 0 !important;
+    box-shadow: none !important; margin: 0 !important; padding: 13px 2px !important; }
+  main .card h3, main .card.lead h3 { font-size: 16.5px !important; line-height: 1.45 !important; font-weight: 800 !important; font-family: inherit !important; }
+  main .card .kick { margin: 6px 0 0; font-size: 12px; }
+  main .card .sum { font-size: 14.5px; line-height: 1.65; }
+  main .kicker, .sheet .kicker { margin: 22px 0 2px !important; font-size: 15px !important; }
+
+  .tiles { grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; margin: 10px 0 6px !important; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--card); }
+  .tile { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 11px 14px !important;
+    border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 0 !important; box-shadow: none !important; }
+  .tile:last-child { border-bottom: 0 !important; }
+  .tile .tl { grid-column: 1; font-size: 14px; } .tile b { grid-column: 2; grid-row: 1 / span 2; font-size: 22px !important; font-family: inherit; }
+  .tile > span:not(.tl) { grid-column: 1; font-size: 12px; }
+  .tile[aria-pressed="true"] { background: var(--ref-bg); }
+
+  main .mast { border: 0 !important; margin: 8px 0 0 !important; padding: 0 !important; }
+  main .mast h1 { font-size: 22px !important; font-weight: 800 !important; font-family: inherit !important; margin: 0 0 6px !important; }
+  main .mast .sub { border: 0 !important; padding: 0 !important; margin: 0 !important; font-size: 13px; color: var(--muted); }
+  main .mast .sub span { background: transparent !important; padding: 0 8px 0 0 !important; }
+  .topacts { gap: 0; padding-left: 4px; border-left: 0; }
   .topbtn { height: 36px; min-width: 34px; padding: 0 7px; justify-content: center; }
   .topbtn span:not(.ti) { display: none; } #langbtn { font-size: 13px; font-weight: 700; }
 
@@ -1014,6 +1054,21 @@ async function openDate(date) {
   render();
 }
 
+const TAB_ICONS = {
+  overview: "M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10",
+  ALLM: "M4 5h12v14H6a2 2 0 0 1-2-2zM16 9h3a1 1 0 0 1 1 1v7a2 2 0 0 1-4 0M7 9h6M7 13h6M7 16h4",
+  competitors: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M12 7.5a4.5 4.5 0 1 0 0 9a4.5 4.5 0 1 0 0-9M12 11.2a.8.8 0 1 0 0 1.6a.8.8 0 1 0 0-1.6",
+  calendar: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2",
+  official: "M9 6h11M9 12h11M9 18h11M3.5 6l1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17",
+};
+function tabIcon(d) {
+  const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("class", "tico"); s.setAttribute("aria-hidden", "true");
+  s.setAttribute("fill", "none"); s.setAttribute("stroke", "currentColor"); s.setAttribute("stroke-width", "1.8");
+  s.setAttribute("stroke-linecap", "round"); s.setAttribute("stroke-linejoin", "round");
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", d); s.append(p);
+  return s;
+}
 function tabs() {
   const bar = document.getElementById("tabs");
   clear(bar);
@@ -1027,6 +1082,7 @@ function tabs() {
   const go = id => { S.tab = id; S.topic = null; S.company = null; S.coView = null; S.offType = null; S.nf = {}; render(); window.scrollTo(0, 0); };
   const add = (target, id, label, count, dot, selected) => {
     const b = el("button", "tab", label);
+    if (target === bar && TAB_ICONS[id]) b.prepend(tabIcon(TAB_ICONS[id]));
     b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(selected === undefined ? S.tab === id : selected));
     if (count !== undefined) b.append(el("small", null, String(count)));
     if (dot) b.append(el("span", "dot"));
@@ -1169,6 +1225,9 @@ function applyLang() {
   document.documentElement.lang = S.lang === "en" ? "en" : "zh-Hant";
   document.title = S.ui.title;
   const t = document.getElementById("title"); if (t) t.textContent = S.ui.title;
+  let mb = document.getElementById("mbrand");
+  if (!mb) { mb = el("span"); mb.id = "mbrand"; const tb = document.querySelector(".topbar"); if (tb) tb.prepend(mb); }
+  mb.textContent = S.ui.title;
   const b = document.getElementById("langbtn");
   if (b) {
     b.hidden = !S.uiEn;
