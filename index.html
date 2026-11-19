@@ -928,6 +928,56 @@ svg.hov .dseg:not(.on) { opacity: .35; } .dseg.on { stroke-width: 28px; }
   .calnav .chip { white-space: nowrap; }
   .clearbar { position: sticky; top: 56px; z-index: 5; }
 }
+
+.fp2 { display: grid; grid-template-columns: minmax(0, 1fr) 340px; grid-template-areas: "focus rail" "rest rail"; column-gap: 32px; align-items: start; }
+.fpfocus { grid-area: focus; } .fprail { grid-area: rail; position: sticky; top: 76px; } .fprest { grid-area: rest; }
+.fpfocus .kicker { margin-top: 18px; }
+main .fpfocus .card { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--must-fg); border-radius: 10px; padding: 14px 18px; margin: 8px 0; }
+main .fpfocus .card.lead h3 { font-size: 26px; line-height: 1.35; }
+.fpglance { margin: 14px 0 6px; }
+.fprest .kicker { margin-top: 30px; }
+.fprest h2.fpgrp { font-size: 15px; font-weight: 800; margin: 18px 0 2px; color: var(--muted); }
+.fphist { display: flex; align-items: center; gap: 12px; width: 100%; margin: 26px 0 8px; padding: 14px 18px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; cursor: pointer; text-align: left; font: inherit; color: var(--text); }
+.fphist b { font-size: 16px; } .fphist .muted { flex: 1; font-size: 13.5px; } .fphist .go { color: var(--accent); font-weight: 800; }
+.fphist:hover { border-color: var(--accent); }
+.railbox { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 18px 0 12px; }
+.railbox + .railbox { margin-top: 0; }
+.railhd { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.railhd b { display: inline-flex; align-items: baseline; white-space: nowrap; font-size: 15px; font-weight: 800; } .railhd .rn { margin-left: 6px; color: var(--muted); font-weight: 700; font-size: 13px; }
+.railgo { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.railrow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; width: 100%; padding: 7px 0; border: 0; border-top: 1px solid var(--line); background: none; font: inherit; font-size: 14px; color: var(--text); text-align: left; line-height: 1.5; }
+.railhd + .railrow { border-top: 0; }
+button.railrow { cursor: pointer; } button.railrow:hover .rtx { color: var(--accent); }
+.railrow .rtx { flex: 1 1 60%; min-width: 0; } .railrow .rsub { font-size: 12.5px; color: var(--muted); }
+.rtag { font-size: 12px; font-weight: 700; padding: 1px 7px; border-radius: 5px; background: var(--ref-bg); color: var(--ref-fg); white-space: nowrap; }
+.rtag.pg { background: var(--risk-bg); color: var(--risk-fg); } .rtag.date, .rtag.star { background: var(--chip); color: var(--muted); }
+.railbox > .muted { margin: 4px 0; font-size: 13.5px; }
+@media (max-width: 1100px) { .fp2 { grid-template-columns: minmax(0, 1fr) 300px; column-gap: 22px; } }
+@media (max-width: 900px) {
+  .fp2 { grid-template-columns: minmax(0, 1fr); grid-template-areas: "focus" "rail" "rest"; }
+  .fprail { position: static; }
+}
+
+.backbtn { background: none; border: 0; padding: 10px 0 0; color: var(--accent); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+
+.regchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 6px; }
+.regchips .facet { width: auto; }
+.regpage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 34px; align-items: start; }
+.regsec .kicker { margin-top: 22px; }
+.regsec h2.reghd { font-size: 15px; font-weight: 800; margin: 18px 0 4px; color: var(--muted); }
+.regrow { display: block; padding: 9px 0; border-top: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.regrow:hover .rgt { color: var(--accent); }
+.regrow .rgt { display: block; font-size: 15px; line-height: 1.5; } .regrow .rgt .rtag { margin-right: 6px; }
+.regrow .rgm { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+.regsec details > summary { cursor: pointer; padding: 8px 0; font-size: 14px; }
+.regsrc { font-size: 12.5px; margin-top: 14px; } .regquiet { font-size: 13.5px; margin-top: 12px; }
+@media (max-width: 900px) { .regpage { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  main .fpfocus .card { border: 0; border-left: 0; border-radius: 0; background: transparent; padding: 12px 0 !important; border-bottom: 1px solid var(--line) !important; margin: 0; }
+  main .fpfocus .card.lead h3 { font-size: 21px; }
+  .railbox { border: 0; border-radius: 12px; background: var(--card); margin: 10px 0; }
+  .fphist { border-radius: 12px; }
+}
 </style>
 </head>
 <body>
@@ -1016,7 +1066,7 @@ async function start(keyText) {
     S.cache = {};
     const index = await load("index");
     store(keyText);
-    S.uiZh = index.ui; S.uiEn = index.ui_en || null; applyLang(); S.vocab = index.vocab || {}; S.dates = index.dates; S.registry = index.registry || {}; S.roster = index.roster || null; S.hasLaunches = !!index.launches; S.hasApproved = !!index.approved;
+    S.uiZh = index.ui; S.uiEn = index.ui_en || null; applyLang(); S.vocab = index.vocab || {}; S.dates = index.dates; S.registry = index.registry || {}; S.roster = index.roster || null; S.hasLaunches = !!index.launches; S.hasApproved = !!index.approved; S.hasReg = !!index.pgreg;
     document.title = S.ui.title;
     document.getElementById("title").textContent = S.ui.title;
     document.getElementById("head").hidden = false;
@@ -1048,7 +1098,7 @@ async function openDate(date) {
   document.getElementById("prev").disabled = i >= S.dates.length - 1;
   document.getElementById("next").disabled = i <= 0;
   S.day = await load("day:" + date);
-  if (S.tab !== "overview" && S.tab !== "ALLM" && S.tab !== "competitors" && S.tab !== "calendar" && S.tab !== "official" && S.tab !== "search" &&
+  if (S.tab !== "overview" && S.tab !== "ALLM" && S.tab !== "reg" && S.tab !== "competitors" && S.tab !== "calendar" && S.tab !== "official" && S.tab !== "search" &&
       !S.day.groups.some(g => g.code === S.tab)) S.tab = "overview";
   S.topic = null;
   render();
@@ -1056,6 +1106,7 @@ async function openDate(date) {
 
 const TAB_ICONS = {
   overview: "M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10",
+  reg: "M12 3v18M7 21h10M5 7h14M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z",
   ALLM: "M4 5h12v14H6a2 2 0 0 1-2-2zM16 9h3a1 1 0 0 1 1 1v7a2 2 0 0 1-4 0M7 9h6M7 13h6M7 16h4",
   competitors: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M12 7.5a4.5 4.5 0 1 0 0 9a4.5 4.5 0 1 0 0-9M12 11.2a.8.8 0 1 0 0 1.6a.8.8 0 1 0 0-1.6",
   calendar: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2",
@@ -1075,7 +1126,7 @@ function tabs() {
   let sub = document.getElementById("subtabs");
   if (!sub) { sub = el("div", "tabs sub"); sub.id = "subtabs"; sub.setAttribute("role", "tablist"); bar.after(sub); }
   clear(sub);
-  const isNews = !["competitors", "calendar", "official", "search"].includes(S.tab);
+  const isNews = !["competitors", "calendar", "official", "search", "reg"].includes(S.tab);
   const isMarket = isNews && S.tab !== "overview";
   if (isNews) S.lastNews = S.tab;
   if (isMarket) S.lastMarket = S.tab;
@@ -1091,8 +1142,8 @@ function tabs() {
     if (target === sub && S.tab === id) setTimeout(() => b.scrollIntoView({ inline: "center", block: "nearest" }), 0);
   };
   const c = S.day.competitors;
-  add(bar, "overview", S.ui.overview, undefined, S.day.tiers["必讀"] > 0);
-  add(bar, "ALLM", S.ui.marketNews, undefined, false, isMarket);
+  add(bar, "overview", S.ui.overview, undefined, S.day.tiers["必讀"] > 0, isNews);
+  add(bar, "reg", S.ui.regTab);
   add(bar, "competitors", S.ui.competitors, c.tracked.length + (c.watch || []).length + (c.unlisted || []).length);
   add(bar, "calendar", S.ui.calTab);
   add(bar, "official", S.ui.pgTab);
@@ -1502,7 +1553,7 @@ function facetGroup(parent, label) {
   g.append(head, box); parent.append(g);
   return box;
 }
-function tierClass(t) { return t === S.ui.must ? "t-must" : t === S.ui.ref ? "t-ref" : "t-bg"; }
+function tierClass(t) { return t === "必讀" ? "t-must" : t === "參考" ? "t-ref" : "t-bg"; }
 function safeUrl(u) { return /^https?:\/\//i.test(u || "") ? u : null; }
 
 function card(a, showRegion) {
@@ -1605,116 +1656,227 @@ async function viewOverview() {
   if (S.dates.length && S.dates[0].d === d.date) dateBox.append(el("span", "fplatest", S.ui.fpLatestTag));
   mast.append(dateBox);
   main.append(mast);
-  let sumBanner = null;
-  const dayTextAll = dayText(d, "overview") || dayText(d, "summary") || "";
-  if (dayTextAll) {
-    const sum = el("button", "fpsum");
-    const sep = S.lang === "en" ? ". " : "。";
-    const first = dayTextAll.split(sep)[0];
-    const limit = S.lang === "en" ? 200 : 90;
-    const teaser = first.length && first.length <= limit ? first + sep.trim() : dayTextAll.slice(0, limit) + "…";
-    sum.append(el("span", "fsl", S.ui.summary), el("span", "fst", teaser), el("span", "fsg", S.ui.fpRead + " →"));
-    sum.onclick = () => openSheet(dayLabel(d.date) + "　" + S.ui.summary, body => body.append(el("p", "sumtext", dayTextAll)));
-    sumBanner = sum;
-  }
 
   const everything = allArticles(d);
   const rank = a => (a.tier === "必讀" ? 0 : a.tier === "參考" ? 1 : 2) * 100 - (a.score || 0);
   const isComp = a => (a.competitors || []).length || (a.watch || []).length || (a.peers || []).length;
   const market = everything.filter(a => !a.low && a.tier !== "背景" && (a.tier === "必讀" || !isComp(a))).sort((x, y) => rank(x) - rank(y));
   const mustEv = mergeEvents(d.must_read);
-  const lead = mustEv.length ? mustEv : market.slice(0, 3);
-  const leadUrls = new Set(lead.flatMap(a => (a.sources || [a]).map(x => x.url)));
-  const focus = d.competitors.tracked.reduce((n, item) => n + item.articles.length, 0);
-  const watch = (d.competitors.watch || []).reduce((n, item) => n + item.articles.length, 0);
+  const lead = mustEv.length ? mustEv : mergeEvents(market).slice(0, 1);
+  const used = new Set(lead.flatMap(a => (a.sources || [a]).map(x => x.url)));
 
-  const coreAll = d.groups.filter(g => (S.ui.core || []).includes(g.code));
-  const coreHot = coreAll.filter(g => g.topics.flatMap(t => t.articles).some(a => !a.low && a.tier !== "背景"));
-  const stats = el("div", "fpstats");
-  const stat = (cls, label, value, note, go) => {
-    const t = el(go ? "button" : "div", "fpstat" + (cls ? " " + cls : ""));
-    t.append(el("span", "fl", label), el("b", "serif", value), el("span", "fn", note || ""));
-    if (go) t.onclick = go;
-    stats.append(t);
-  };
-  const goTab = id => () => { S.tab = id; S.company = null; render(); window.scrollTo(0, 0); };
-  const goSection = sel => () => {
-    const t = main.querySelector(sel); if (!t) return;
-    window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 84, behavior: "smooth" });
-    t.classList.remove("flash"); void t.offsetWidth; t.classList.add("flash");
-  };
-  stat(mustEv.length ? "hot" : "", S.ui.must, mustEv.length + " " + S.ui.unit, mustEv.length ? artText(mustEv[0], "title") : S.ui.quiet,
-       mustEv.length ? goSection(".fptop") : null);
-  stat("", S.ui.coreMarkets, coreHot.length + " / " + coreAll.length, coreHot.length ? coreHot.map(g => g.name).join("・") : S.ui.noToday, goSection(".fpsec"));
-  const unrelated = d.noise || 0;
-  stat("", S.ui.fpTotal, (d.total - unrelated) + " " + S.ui.unit,
-       S.ui.must + " " + d.tiers["必讀"] + "・" + S.ui.ref + " " + d.tiers["參考"] + "・" + S.ui.bg + " " + (d.tiers["背景"] - unrelated), goTab("ALLM"));
-  stat("", S.ui.competitors, (focus + watch) + " " + S.ui.unit, S.ui.tracked + " " + focus + "・" + S.ui.watchShort + " " + watch, goTab("competitors"));
-  main.append(stats);
-  if (sumBanner) main.append(sumBanner);
-  const wrap = el("div", "withside"), page = el("div", "sidebody");
-  main.append(wrap);
+  const grid = el("div", "fp2");
+  const left = el("section", "fpfocus"), rail = el("aside", "fprail"), rest = el("section", "fprest");
+  grid.append(left, rail, rest);
+  main.append(grid);
 
-  if (mustEv.length) {
-    const top = el("section", "left fptop");
-    section(top, S.ui.must, mustEv.length, S.ui.nMust);
-    mustEv.forEach((a, i) => {
-      const c = card(a, true); c.classList.add("open"); if (i === 0) c.classList.add("lead");
-      c.querySelector("h3").classList.add("serif");
-      top.append(c);
-    });
-    page.append(top);
+  section(left, S.ui.must, mustEv.length || undefined, S.ui.nMust);
+  if (!mustEv.length) left.append(el("p", "muted", S.ui.quiet));
+  lead.forEach((a, i) => {
+    const c = card(a, true); c.classList.add("open"); if (i === 0) c.classList.add("lead");
+    c.querySelector("h3").classList.add("serif");
+    left.append(c);
+  });
+  const sumText = dayText(d, "overview") || dayText(d, "summary") || "";
+  if (sumText) {
+    const g = el("section", "glance fpglance"), hd = el("div", "ghd");
+    hd.append(el("b", null, S.ui.glance));
+    g.append(hd, el("p", "gtext", sumText));
+    const more = el("button", "gmorebtn", S.ui.fpRead + " ▾");
+    more.onclick = () => g.classList.add("full");
+    g.append(more);
+    left.append(g);
   }
 
-  const notableOf = grp => grp ? mergeEvents(grp.topics.flatMap(t => t.articles).filter(a => !a.low && a.tier !== "背景").sort((x, y) => rank(x) - rank(y))) : [];
-  const CORE = S.ui.core || [];
-  const coreGroups = CORE.map(code => d.groups.find(g => g.code === code)).filter(Boolean);
-  const coreBox = el("section", "fpsec");
-  const active = coreGroups.map(g => [g, notableOf(g)]).filter(x => x[1].length);
-  section(coreBox, S.ui.coreMarkets, active.length + " / " + coreGroups.length, S.ui.nCore);
-  const openGroup = g => { S.tab = g.code; render(); window.scrollTo(0, 0); };
-  const grid = el("div", "core3");
-  for (const [g, list] of active) {
-    const col = el("div", "corecol");
-    const hd = el("button", "corehd");
-    hd.append(el("b", null, g.flag + " " + g.name), el("span", "muted", list.length + " " + S.ui.unit), el("span", "go", "→"));
-    hd.onclick = () => openGroup(g);
-    col.append(hd);
-    const rest = list.filter(a => !(a.sources || [a]).some(x => leadUrls.has(x.url)));
-    if (rest.length) for (const a of rest) col.append(card(a, false));
-    else col.append(el("p", "corelast", S.ui.inMustAbove));
-    grid.append(col);
-  }
-  if (active.length) coreBox.append(grid);
-  if (!active.length) coreBox.append(el("p", "muted", S.ui.noToday));
-  page.append(coreBox);
-
-  const cols = el("div", "cols fpcols"), left = el("section", "left flat"), right = el("section", "right");
-  section(left, S.ui.fpOtherAsia, undefined, S.ui.nOthers);
-  let any = false;
-  for (const g of d.groups) {
-    if (CORE.includes(g.code) || g.code === "GLOBAL") continue;
-    const list = market.filter(a => !leadUrls.has(a.url) && group_of(d, a) === g.code);
-    if (!list.length) continue;
-    any = true;
-    left.append(el("h2", null, g.flag + " " + g.name + "　" + list.length));
-    for (const a of mergeEvents(list)) left.append(card(a, g.code === "ASIA"));
-  }
-  if (!any) { left.append(el("p", "muted", S.ui.noToday)); cols.classList.add("fpone"); }
-  const glob = d.groups.find(g => g.code === "GLOBAL");
-  if (glob) {
-    const list = mergeEvents(market.filter(a => !leadUrls.has(a.url) && group_of(d, a) === "GLOBAL"));
-    section(right, glob.name, list.length, "", null, [S.ui.fpAll + " →", "GLOBAL"]);
-    if (!list.length) right.append(el("p", "muted", S.ui.noToday));
-    for (const a of list) right.append(card(a, true));
+  const groups = d.groups.map(g => [g, mergeEvents(market.filter(a => !(a.sources || [a]).some(x => used.has(x.url)) && group_of(d, a) === g.code))]).filter(x => x[1].length);
+  section(rest, S.ui.fpNotable, groups.reduce((n, x) => n + x[1].length, 0), S.ui.nOthers);
+  if (!groups.length) rest.append(el("p", "muted", S.ui.noToday));
+  for (const [g, list] of groups) {
+    rest.append(el("h2", "fpgrp", g.flag + " " + g.name + "　" + list.length));
+    for (const a of list) rest.append(card(a, g.code === "ASIA" || g.code === "GLOBAL"));
   }
   const background = everything.filter(a => !a.low && a.tier === "背景");
-  if (background.length) right.append(fold(S.ui.fBackground, background, true, "bg"));
-  const flat = el("section", "left flat fplist");
-  for (const a of mergeEvents(market)) flat.append(card(a, true));
-  cols.append(left, right); page.append(cols, flat);
-  wrap.append(newsFacets(page, everything.filter(a => !a.low && a.tier !== "背景"), true), page);
+  if (background.length) rest.append(fold(S.ui.fBackground, background, true, "bg"));
+  const hist = el("button", "fphist");
+  hist.append(el("b", null, S.ui.fpHistory), el("span", "muted", S.ui.nHistory), el("span", "go", "→"));
+  hist.onclick = () => { S.tab = "ALLM"; S.topic = null; S.nf = {}; render(); window.scrollTo(0, 0); };
+  rest.append(hist);
 
+  const box = (title, goLabel, go) => {
+    const b = el("section", "railbox"), hd = el("div", "railhd");
+    hd.append(el("b", null, title));
+    if (go) { const a = el("button", "railgo", goLabel); a.onclick = go; hd.append(a); }
+    b.append(hd); rail.append(b); return b;
+  };
+  const goTab = id => () => { S.tab = id; S.company = null; S.coView = null; render(); window.scrollTo(0, 0); };
+  const line = (container, tag, text, sub, onclick, tagCls) => {
+    const r = el(onclick ? "button" : "div", "railrow");
+    if (tag) r.append(el("span", "rtag" + (tagCls ? " " + tagCls : ""), tag));
+    r.append(el("span", "rtx", text));
+    if (sub) r.append(el("span", "rsub", sub));
+    if (onclick) r.onclick = onclick;
+    container.append(r); return r;
+  };
+  const regBox = box(S.ui.regTab, S.ui.railAll, goTab("reg"));
+  const compBox = box(S.ui.competitors, S.ui.railAll, goTab("competitors"));
+  const launchBox = box(S.ui.railLaunch, S.ui.railCal, goTab("calendar"));
+  const pgBox = box(S.ui.railPg, S.ui.railAll, goTab("official"));
+
+  const c = d.competitors, nameN = list => list.map(x => x.name + " " + x.articles.length).join("・");
+  const nComp = [...c.tracked, ...(c.watch || [])].reduce((n, x) => n + x.articles.length, 0);
+  compBox.querySelector(".railhd b").append(el("span", "rn", String(nComp)));
+  if (c.tracked.length) line(compBox, "★", nameN(c.tracked), "", goTab("competitors"), "star");
+  if ((c.watch || []).length) line(compBox, "☆", nameN(c.watch), "", goTab("competitors"), "star");
+  if (!nComp) compBox.append(el("p", "muted", S.ui.noToday));
+
+  const regNews = regArticles(d);
+  const coreNews = regNews.filter(x => (S.ui.core || []).includes(x[1]));
+  const otherNews = regNews.filter(x => !(S.ui.core || []).includes(x[1]));
+  const R = await regData();
+  if (renderId !== S.renderId) return;
+  if (R) {
+    const wk = weekBefore(d.date), fresh = R.items.filter(r => r.s === "news" ? r.d > wk && r.d <= d.date : r.new && r.seen > wk && r.seen <= d.date);
+    const pick = fresh.length ? fresh.slice(0, 2) : R.items.filter(r => r.s !== "news").slice(0, 1);
+    for (const r of pick) line(regBox, fresh.includes(r) ? S.ui.regNew : S.ui.regPgShort, regTitle(r), R.sources[r.s], () => window.open(r.u, "_blank", "noopener"), "pg");
+  }
+  for (const [a, code] of coreNews.slice(0, 3)) {
+    const g = d.groups.find(x => x.code === code);
+    line(regBox, S.ui.regCore, artText(a, "title"), g ? g.flag + " " + g.name : "", goTab("reg"));
+  }
+  if (!coreNews.length) line(regBox, S.ui.regCore, S.ui.regNoneCore, "", null);
+  if (otherNews.length) line(regBox, S.ui.regOther, [...new Set(otherNews.map(x => x[0].region))].slice(0, 4).join("・"), otherNews.length + " " + S.ui.unit, goTab("reg"));
+
+  const L = await schedule();
+  if (renderId !== S.renderId) return;
+  if (L) {
+    const end = dayAfter(d.date, 6);
+    const todayG = L.games.filter(g => g.d === d.date), weekG = L.games.filter(g => g.d > d.date && g.d <= end);
+    const key = g => g.own || g.tr;
+    line(launchBox, S.ui.railLaunchToday, todayG.length + " " + S.ui.pgUnit + (todayG.some(key) ? "（★ " + todayG.filter(key).length + "）" : ""), "", goTab("calendar"));
+    line(launchBox, S.ui.railLaunchWeek, weekG.length + " " + S.ui.pgUnit + (weekG.some(key) ? "（★ " + weekG.filter(key).length + "）" : ""), "", goTab("calendar"));
+    const star = [...todayG, ...weekG].filter(key).sort((x, y) => x.d.localeCompare(y.d)).slice(0, 3);
+    for (const g of star) line(launchBox, mmdd(g.d), g.n, g.c || g.p || "", goTab("calendar"), "date");
+  } else launchBox.append(el("p", "muted", S.ui.noLaunch));
+
+  const P = await approvedData();
+  if (renderId !== S.renderId) return;
+  const ev = P ? P.events.filter(e => e.d > weekBefore(d.date) && e.d <= d.date) : [];
+  if (ev.length) {
+    pgBox.querySelector(".railhd b").append(el("span", "rn", String(ev.length)));
+    for (const e of ev.slice(0, 4)) line(pgBox, mmdd(e.d), [e.k, e.c].filter(Boolean).join(" "), [e.n, e.t].filter(Boolean).join("・"), goTab("official"), "date");
+  } else pgBox.append(el("p", "muted", S.ui.railPgNone));
+}
+const REG_TOPICS = () => (S.vocab && S.vocab.regTopics) || [];
+function regArticles(day) {
+  const out = [];
+  const rank = a => (a.tier === "必讀" ? 0 : a.tier === "參考" ? 1 : 2) * 100 - (a.score || 0);
+  for (const g of day.groups) {
+    const core = (S.ui.core || []).includes(g.code);
+    const list = g.topics.flatMap(t => t.articles).filter(a => !a.low && REG_TOPICS().includes(a.topic) && (core || a.tier !== "背景"));
+    for (const a of mergeEvents(list.sort((x, y) => rank(x) - rank(y)))) out.push([a, g.code]);
+  }
+  return out;
+}
+async function regData() {
+  if (!S.hasReg) return null;
+  try { return await load("pgreg"); } catch (e) { return null; }
+}
+function regTitle(r) { return S.lang === "en" ? r.t : (r.zh || r.t); }
+function dayAfter(iso, n) { const t = new Date(iso + "T00:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); }
+function weekBefore(iso) { return dayAfter(iso, -7); }
+
+async function viewRegulation() {
+  const renderId = S.renderId;
+  const P = S.regPeriod || (S.regPeriod = { mode: 7 });
+  const dates = periodDates(P);
+  const head = el("div", "mast ghead");
+  head.append(el("h1", "serif", S.ui.regTab));
+  const sub = el("div", "sub");
+  sub.append(el("span", null, periodText(P, dates)));
+  head.append(sub); main.append(head);
+  const chips = el("div", "regchips");
+  for (const [text, on, pick] of periodItems(P)) {
+    const b = el("button", "facet"); b.append(el("span", null, text));
+    b.setAttribute("aria-pressed", String(on)); b.onclick = pick; chips.append(b);
+  }
+  main.append(chips);
+  const page = el("div", "regpage");
+  main.append(page);
+  const from = dates.length ? dates[dates.length - 1] : "", to = dates[0] || "";
+
+  const pg = el("section", "regsec regpg");
+  page.append(pg);
+  section(pg, S.ui.regPg, undefined, S.ui.nRegPg);
+  const R = await regData();
+  if (renderId !== S.renderId) return;
+  const row = (r, showSrc) => {
+    const a = el("a", "regrow"); a.href = r.u; a.target = "_blank"; a.rel = "noopener";
+    const top = el("span", "rgt");
+    if (r.new) top.append(el("span", "rtag pg", S.ui.regNew));
+    top.append(document.createTextNode(regTitle(r)));
+    a.append(top);
+    const meta = [showSrc ? R.sources[r.s] : "", r.d ? r.d : r.new ? r.seen : "", S.lang === "en" || !r.zh ? "" : r.t].filter(Boolean).join("・");
+    a.append(el("span", "rgm", meta));
+    return a;
+  };
+  if (!R) pg.append(el("p", "muted", S.ui.none));
+  else {
+    const fresh = R.items.filter(r => (r.new && r.seen >= from && r.seen <= to) || (r.s === "news" && r.d >= from && r.d <= to));
+    pg.append(el("h2", "reghd", S.ui.regNew + "　" + fresh.length));
+    if (!fresh.length) pg.append(el("p", "muted", S.ui.regPgNone + paren(S.ui.pgChecked + " " + (R.checked || "—"))));
+    for (const r of fresh) pg.append(row(r, true));
+    for (const sid of Object.keys(R.sources)) {
+      const list = R.items.filter(r => r.s === sid && !fresh.includes(r));
+      if (!list.length) continue;
+      pg.append(el("h2", "reghd", R.sources[sid] + "　" + list.length));
+      for (const r of list.slice(0, 5)) pg.append(row(r, false));
+      if (list.length > 5) {
+        const more = el("details"); more.append(el("summary", "muted", S.ui.regMoreBase + "　" + (list.length - 5)));
+        for (const r of list.slice(5)) more.append(row(r, false));
+        pg.append(more);
+      }
+    }
+    pg.append(el("p", "regsrc muted", S.ui.regPgFrom + "・" + S.ui.pgChecked + " " + (R.checked || "—")));
+  }
+
+  const news = el("div", "regnews"), core = el("section", "regsec"), other = el("section", "regsec");
+  news.append(core, other);
+  page.append(news);
+  const byGroup = new Map();
+  for (const date of dates) {
+    const day = date === S.date ? S.day : await load("day:" + date);
+    if (renderId !== S.renderId) return;
+    for (const [a, code] of regArticles(day)) {
+      if (!byGroup.has(code)) byGroup.set(code, []);
+      byGroup.get(code).push([date, a]);
+    }
+  }
+  const groupsMeta = S.day.groups;
+  const CORE = S.ui.core || [];
+  const cardOf = (date, a, showRegion) => {
+    const c = card(a, showRegion);
+    if (dates.length > 1) { const m = c.querySelector(".meta"); if (m) m.prepend(document.createTextNode(mmdd(date) + "　")); }
+    return c;
+  };
+  const coreHit = CORE.filter(code => byGroup.has(code));
+  section(core, S.ui.regCore, coreHit.length + " / " + CORE.length, S.ui.nRegNews);
+  for (const code of coreHit) {
+    const g = groupsMeta.find(x => x.code === code) || { flag: "", name: code };
+    const list = byGroup.get(code);
+    core.append(el("h2", "reghd", g.flag + " " + g.name + "　" + list.length));
+    for (const [date, a] of list) core.append(cardOf(date, a, false));
+  }
+  const quiet = CORE.filter(code => !byGroup.has(code)).map(code => (groupsMeta.find(x => x.code === code) || { name: code }).name);
+  if (quiet.length) core.append(el("p", "muted regquiet", quiet.join("、") + "：" + (dates.length > 1 ? S.ui.regEmpty : S.ui.regNoneCore)));
+  const otherCodes = [...byGroup.keys()].filter(code => !CORE.includes(code));
+  section(other, S.ui.regOther, otherCodes.reduce((n, code) => n + byGroup.get(code).length, 0));
+  if (!otherCodes.length) other.append(el("p", "muted", S.ui.regEmpty));
+  for (const code of otherCodes) {
+    const g = groupsMeta.find(x => x.code === code) || { flag: "", name: code };
+    const list = byGroup.get(code);
+    other.append(el("h2", "reghd", g.flag + " " + g.name + "　" + list.length));
+    for (const [date, a] of list) other.append(cardOf(date, a, true));
+  }
 }
 function group_of(day, article) {
   if (!day._groupOf) {
@@ -1745,6 +1907,9 @@ async function viewGroup() {
   const dates = periodDates(P);
   if (S.mkMarket) { (S.nf || (S.nf = {})).market = S.mkMarket; S.mkMarket = null; }
 
+  const back = el("button", "backbtn", S.ui.backFront);
+  back.onclick = () => { S.tab = "overview"; S.nf = {}; render(); window.scrollTo(0, 0); };
+  main.append(back);
   const head = el("div", "mast ghead");
   head.append(el("h1", "serif", S.ui.marketNews));
   const sub = el("div", "sub"), totalNote = el("span", null, "");
@@ -2709,6 +2874,7 @@ function render() {
   else if (S.tab === "calendar") viewCalendar();
   else if (S.tab === "official") viewOfficial();
   else if (S.tab === "search") viewSearch();
+  else if (S.tab === "reg") viewRegulation();
   else viewGroup();
   localize(document.body);
 }
