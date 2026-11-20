@@ -930,7 +930,11 @@ svg.hov .dseg:not(.on) { opacity: .35; } .dseg.on { stroke-width: 28px; }
 }
 
 .fp2 { display: grid; grid-template-columns: minmax(0, 1fr) 340px; grid-template-areas: "focus rail" "rest rail"; column-gap: 32px; align-items: start; }
-.fpfocus { grid-area: focus; } .fprail { grid-area: rail; position: sticky; top: 76px; } .fprest { grid-area: rest; }
+.fpfocus { grid-area: focus; } .fprest { grid-area: rest; }
+.fprail { grid-area: rail; position: sticky; top: 70px; max-height: calc(100vh - 84px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding-right: 2px; }
+.fprail .railbox:first-child { margin-top: 18px; }
+.railrow .rspec { flex-basis: 100%; font-size: 12px; color: var(--muted); }
+.fpmore > summary { cursor: pointer; padding: 8px 0; font-size: 14px; }
 .fpfocus .kicker { margin-top: 18px; }
 main .fpfocus .card { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--must-fg); border-radius: 10px; padding: 14px 18px; margin: 8px 0; }
 main .fpfocus .card.lead h3 { font-size: 26px; line-height: 1.35; }
@@ -955,7 +959,7 @@ button.railrow { cursor: pointer; } button.railrow:hover .rtx { color: var(--acc
 @media (max-width: 1100px) { .fp2 { grid-template-columns: minmax(0, 1fr) 300px; column-gap: 22px; } }
 @media (max-width: 900px) {
   .fp2 { grid-template-columns: minmax(0, 1fr); grid-template-areas: "focus" "rail" "rest"; }
-  .fprail { position: static; }
+  .fprail { position: static; max-height: none; overflow: visible; }
 }
 
 .backbtn { background: none; border: 0; padding: 10px 0 0; color: var(--accent); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
@@ -978,6 +982,331 @@ button.railrow { cursor: pointer; } button.railrow:hover .rtx { color: var(--acc
   .railbox { border: 0; border-radius: 12px; background: var(--card); margin: 10px 0; }
   .fphist { border-radius: 12px; }
 }
+.regpage { display: grid; grid-template-columns: minmax(0, 1fr) 400px; column-gap: 32px; align-items: start; }
+.regfresh .kicker { margin-top: 10px; }
+.reglib { position: sticky; top: 70px; max-height: calc(100vh - 84px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; margin-top: 0 !important; padding-right: 2px; }
+.reglib .kicker { margin-top: 10px; }
+.regfresh .regdiv:first-of-type { margin-top: 14px; }
+@media (max-width: 1000px) { .regpage { grid-template-columns: minmax(0, 1fr) 320px; column-gap: 22px; } }
+@media (max-width: 900px) { .regpage { grid-template-columns: minmax(0, 1fr); } .reglib { position: static; max-height: none; overflow: visible; margin-top: 30px !important; } }
+.regrow { display: block; padding: 9px 0; border-top: 1px solid var(--line); }
+.regrow .rgt { display: block; font-size: 15px; line-height: 1.5; color: var(--text); text-decoration: none; } .regrow .rgt:hover { color: var(--accent); }
+.regrow .rgm { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+.regrow .rgsrc { color: var(--accent); text-decoration: none; }
+.regdiv { display: flex; align-items: center; gap: 10px; margin: 26px 0 0; font-size: 14px; font-weight: 800; color: var(--muted); }
+.regdiv::after { content: ""; flex: 1; border-top: 1px dashed var(--line); }
+.reglib { margin-top: 30px; }
+.regdiv .regnone { font-weight: 400; font-size: 13.5px; }
+.regdiv { flex-wrap: wrap; row-gap: 2px; } .regdiv > span:first-child { white-space: nowrap; }
+@media (max-width: 760px) { .regdiv .regnone { flex-basis: 100%; order: 3; } }
+.regfind { width: 100%; box-sizing: border-box; margin: 8px 0 6px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text); font: inherit; font-size: 14px; }
+.regfold { border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; margin: 8px 0; background: var(--card); }
+.regfold > summary { cursor: pointer; padding: 11px 0; font-size: 15px; } .regfold[open] > summary { border-bottom: 1px solid var(--line); }
+.regfold .regrow:first-of-type { border-top: 0; }
+
+.fphead { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.fphistbtn { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--text); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.fphistbtn:hover { border-color: var(--accent); color: var(--accent); }
+.fptiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 14px 0 6px; }
+.fptile { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--text); font: inherit; text-align: left; cursor: pointer; min-width: 0; }
+.fptile:hover { border-color: var(--accent); }
+.fptile .tl { font-size: 13.5px; font-weight: 700; color: var(--muted); } .fptile .tn { font-size: 30px; font-weight: 900; line-height: 1.15; }
+.fptile .ts { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.fptile.hot { background: var(--must-bg); border-color: transparent; } .fptile.hot .tl, .fptile.hot .tn, .fptile.hot .ts { color: var(--must-fg); }
+.fp2 { grid-template-areas: none; grid-template-columns: minmax(0, 1fr) 430px; }
+.fpmain { min-width: 0; } .fpmain > section > .kicker { margin-top: 22px; }
+.fprail { grid-area: auto; }
+main .fpmain .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin: 8px 0; }
+main .fpmust .card { border-left: 4px solid var(--must-fg); } main .fpmust .card.lead h3 { font-size: 26px; line-height: 1.35; }
+main .fpown .card { border-left: 4px solid var(--opp-fg); background: var(--opp-bg); }
+.mkchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.mkchip { padding: 4px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--muted); font: inherit; font-size: 13.5px; cursor: pointer; }
+.mkchip.on { background: var(--must-bg); color: var(--must-fg); border-color: transparent; font-weight: 800; }
+.compstat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 4px 0 6px; }
+.cstat { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 6px 8px; border: 0; border-radius: 8px; background: var(--chip); font: inherit; font-size: 12px; color: var(--text); cursor: pointer; text-align: left; min-width: 0; }
+.cstat span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.cstat b { font-size: 20px; font-weight: 900; line-height: 1.1; } .cstat.zero { color: var(--muted); } .cstat.zero b { font-weight: 400; } .cstat:hover { color: var(--accent); }
+.complist .railrow:first-child { border-top: 0; }
+.kindtiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 10px 0 4px; }
+.kindtile { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--text); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; text-align: left; }
+.kindtile b { font-size: 26px; font-weight: 900; line-height: 1.15; } .kindtile.zero { color: var(--muted); } .kindtile:hover { border-color: var(--accent); }
+.kindtile.on { border-color: var(--accent); background: var(--ref-bg); color: var(--ref-fg); }
+@media (max-width: 1100px) { .fptiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } .fp2 { grid-template-columns: minmax(0, 1fr) 320px; } }
+@media (max-width: 900px) { .fp2 { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  .fptiles { display: flex; overflow-x: auto; scrollbar-width: none; gap: 8px; } .fptile { flex: 0 0 150px; border: 0; }
+  .kindtiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kindtile { border: 0; }
+  main .fpmain .card { border: 0 !important; border-radius: 0; background: transparent; padding: 12px 0 !important; border-bottom: 1px solid var(--line) !important; margin: 0; }
+  main .fpmain .fpown .card { background: var(--opp-bg) !important; border-radius: 10px; padding: 12px !important; margin: 6px 0; border-bottom: 0 !important; }
+  main .fpmust .card.lead h3 { font-size: 21px; }
+}
+.topictiles { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .topictiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .topictiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.fpmust > .kicker { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
+.fpmust > .kicker .mkchips { margin: 0 0 0 auto; gap: 5px; align-items: center; }
+.mklabel { font-size: 13px; font-weight: 700; color: var(--muted); margin-right: 2px; }
+.fpmust > .kicker .mkchip { padding: 2px 9px; font-size: 12.5px; font-weight: 400; }
+.fpmust > .kicker .mkchip.on { font-weight: 800; }
+@media (max-width: 760px) { .fpmust > .kicker .mkchips { margin-left: 0; flex-basis: 100%; } }
+
+.fptile .tl { font-size: 16.5px; font-weight: 800; color: var(--text); }
+.fptile .ts { font-size: 13.5px; }
+.kindtile, .kindtile span { font-size: 15.5px; font-weight: 800; }
+.cstat span { font-size: 13.5px; font-weight: 700; }
+main .kicker, .sheet .kicker { font-size: 22px; font-weight: 900; letter-spacing: .02em; }
+main .kicker .kn { font-size: 15px; }
+.railhd { padding-bottom: 8px; border-bottom: 2px solid var(--line); margin-bottom: 8px; }
+.railhd b { font-size: 19px; font-weight: 900; }
+.railhd .rn { font-size: 15px; }
+main .right .kicker { font-size: 19px; }
+@media (max-width: 760px) {
+  main .kicker, .sheet .kicker { font-size: 19px !important; }
+  .fptile .tl { font-size: 15px; } .railhd b { font-size: 17.5px; }
+}
+
+.regpage2 { display: grid; grid-template-columns: minmax(0, 1fr) 440px; grid-template-areas: "dn dp" "body side"; column-gap: 24px; align-items: start; margin-top: 10px; }
+.rnews { grid-area: dn; } .rpg { grid-area: dp; } .rbody { grid-area: body; } .rside { grid-area: side; position: sticky; top: 70px; max-height: calc(100vh - 84px); overflow-y: auto; scrollbar-width: thin; }
+.rdash { align-self: stretch; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin-bottom: 18px; background: var(--card); }
+.rpg { background: var(--ref-bg); border-color: transparent; }
+.rdh { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; } .rdh b { font-size: 19px; font-weight: 900; } .rdh small { color: var(--muted); font-size: 13px; }
+.rtiles { display: grid; gap: 8px; flex: 1; } .rtiles.four { grid-template-columns: repeat(4, minmax(0, 1fr)); } .rtiles.three { grid-template-columns: 1fr 1.25fr 1fr; }
+.rtile { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); font: inherit; text-align: left; }
+button.rtile { cursor: pointer; } button.rtile:hover { border-color: var(--accent); }
+.rtile .rl { font-size: 15.5px; font-weight: 800; white-space: nowrap; } .rtile .rn { font-size: 28px; font-weight: 900; line-height: 1.15; }
+.rtile .rs { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.rtile.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); } .rtile.zero .rn { color: var(--muted); font-weight: 400; }
+.rtile.due .rn { font-size: 23px; padding: 3px 0 2px; }
+.rtile.hot { background: var(--must-bg); border-color: transparent; } .rtile.hot .rl, .rtile.hot .rn, .rtile.hot .rs { color: var(--must-fg); }
+.rbody { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 22px; align-items: start; }
+.rbody .facets { position: sticky; top: 70px; }
+.rlist .kicker .kd { margin-left: 10px; font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+.facet.fmore { color: var(--accent); }
+.rbox { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; }
+.rbh { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 2px solid var(--line); font-size: 19px; font-weight: 900; }
+.rbh b { font-weight: 900; } .rbh .rbn { font-size: 13px; font-weight: 400; color: var(--muted); }
+.rpgnew { border: 2px solid var(--must-fg); } .rpgnew .rbn { color: var(--must-fg); }
+.rnote { font-size: 12.5px; color: var(--muted); margin: -2px 0 6px; }
+.rni { padding: 9px 0; border-top: 1px solid var(--line); } .rni:first-of-type { border-top: 0; }
+.rnt { font-weight: 800; font-size: 15px; } .rnw { font-size: 13.5px; margin-top: 3px; } .rnw b { margin-right: 4px; }
+.rnm { font-size: 12px; color: var(--muted); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.rnm .age { color: var(--must-fg); } .rnm .todo { background: var(--chip); border-radius: 999px; padding: 0 7px; } .rnm a { margin-left: auto; }
+.kbbar { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); }
+.kbbar:focus-within { border-color: var(--accent); } .kbbar input { flex: 1; min-width: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 15px; outline: 0; }
+.kbquick { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin: 8px 0 4px; font-size: 12.5px; }
+.kbquick button { border: 0; background: var(--chip); color: var(--text); padding: 2px 10px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer; } .kbquick button:hover { color: var(--accent); }
+.kbres { font-size: 14px; padding: 8px 0 4px; border-top: 1px solid var(--line); margin-top: 6px; } .kbres small { display: block; color: var(--muted); font-size: 12px; }
+.kbres.big { font-size: 16px; border: 0; margin: 0 0 8px; }
+.kgrp { background: var(--bg); border-radius: 8px; padding: 6px 10px; margin: 6px 0; } .kgrp.big { background: var(--card); border: 1px solid var(--line); padding: 8px 14px; margin: 10px 0; }
+.kgh { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; font-size: 14.5px; cursor: pointer; padding: 3px 0; } .kgh i { font-style: normal; color: var(--accent); font-size: 12.5px; font-weight: 400; }
+.khit { display: flex; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); font-size: 13.5px; cursor: pointer; } .khit:hover { color: var(--accent); } .khit > div { min-width: 0; overflow-wrap: anywhere; }
+.kk { flex: 0 0 auto; font-size: 11px; padding: 1px 6px; border-radius: 5px; background: var(--chip); color: var(--muted); height: fit-content; margin-top: 2px; }
+.kk.r { background: var(--ref-bg); color: var(--ref-fg); } .kk.c { background: var(--opp-bg); color: var(--opp-fg); }
+.khit mark, .kgrp mark { background: #f3d36b55; color: inherit; border-radius: 3px; padding: 0 1px; }
+.kball { display: block; margin-top: 6px; border: 0; background: none; color: var(--accent); font: inherit; font-size: 13px; cursor: pointer; padding: 0; }
+.kbfoot { margin-top: 10px; } .kbfoot button { border: 1px solid var(--line); background: var(--bg); color: var(--accent); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+
+.kbnote { font-size: 12.5px; color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; padding: 6px 10px; margin: 6px 0 14px; }
+.kbwrap { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 26px; align-items: start; }
+.kbnav { position: sticky; top: 70px; max-height: calc(100vh - 84px); overflow-y: auto; scrollbar-width: thin; }
+.kbng { font-size: 12px; font-weight: 700; margin: 12px 0 4px; } .kbng.hi { color: var(--must-fg); } .kbng.mid { color: var(--risk-fg); } .kbng.lo { color: var(--muted); }
+.kbn { display: flex; justify-content: space-between; gap: 8px; width: 100%; text-align: left; border: 0; background: none; color: var(--text); font: inherit; font-size: 14.5px; padding: 7px 10px; border-radius: 8px; cursor: pointer; }
+.kbn:hover { background: var(--chip); } .kbn.on { background: var(--accent); color: #fff; font-weight: 700; } .kbn small { color: var(--muted); } .kbn.on small { color: #fff; } .kbn.zero { opacity: .4; }
+.kdue { display: flex; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); font-size: 14px; cursor: pointer; } .kdue:first-of-type { border-top: 0; }
+.kdue b { flex: 0 0 96px; color: var(--accent); } .kdue i { margin-left: auto; font-style: normal; color: var(--risk-fg); font-size: 12.5px; white-space: nowrap; }
+.kbcards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.kbcard { border: 1px solid var(--line); background: var(--card); color: var(--text); border-radius: 12px; padding: 12px 14px; text-align: left; font: inherit; cursor: pointer; } .kbcard:hover { border-color: var(--accent); }
+.kbcard h3 { margin: 0 0 4px; font-size: 15.5px; } .kbcard p { margin: 0; color: var(--muted); font-size: 13.5px; }
+.kbadge { font-size: 11.5px; font-weight: 700; padding: 1px 8px; border-radius: 999px; white-space: nowrap; vertical-align: middle; }
+.kbadge.hi { background: var(--must-bg); color: var(--must-fg); } .kbadge.mid { background: var(--risk-bg); color: var(--risk-fg); } .kbadge.lo { background: var(--chip); color: var(--muted); }
+.kbh1 { font-size: 24px; margin: 0; } .kbtldr { margin: 10px 0 4px; padding: 10px 14px; border-left: 4px solid var(--accent); background: var(--card); border-radius: 6px; font-size: 15.5px; }
+.kbsec { margin-top: 22px; } .kbsec > h3 { font-size: 17px; margin: 0 0 8px; } .kbrules { margin: 0; padding-left: 20px; } .kbrules li { margin: 5px 0; }
+.kbimpact { background: var(--risk-bg); color: var(--risk-fg); border-radius: 8px; padding: 10px 14px; }
+.kcase { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; } .kcase h4 { margin: 0 0 6px; font-size: 15.5px; }
+.know { background: var(--opp-bg); color: var(--opp-fg); border-radius: 8px; padding: 8px 12px; font-size: 14px; margin-bottom: 8px; }
+.ktl { margin-left: 6px; padding-left: 18px; border-left: 2px solid var(--line); }
+.kstep { position: relative; padding: 4px 0 8px; font-size: 14px; } .kstep::before { content: ""; position: absolute; left: -24px; top: 10px; width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.kstep.last::before { background: var(--opp-fg); } .kstep .kd { color: var(--accent); font-weight: 700; margin-right: 8px; } .kstep a { color: var(--muted); font-size: 12.5px; margin-left: 6px; }
+.kstep .ktag { font-size: 11px; background: var(--opp-bg); color: var(--opp-fg); border-radius: 999px; padding: 0 6px; margin-left: 6px; }
+.kdl { display: flex; gap: 10px; font-size: 14px; padding: 2px 0; } .kdl b { flex: 0 0 96px; color: var(--accent); } .kdl.past, .kdl.past b { color: var(--muted); }
+.kdoc { border-top: 1px solid var(--line); padding: 9px 0; font-size: 14px; } .kdoc:first-of-type { border-top: 0; }
+.kdt { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; } .kdm { color: var(--muted); font-size: 12px; } .kds { margin-top: 2px; }
+.kdoc summary { color: var(--accent); cursor: pointer; font-size: 13px; margin-top: 2px; } .kdoc a { color: var(--accent); font-size: 13px; }
+.flash { animation: kfl 2.2s ease; } @keyframes kfl { 0%, 40% { background: #f3d36b44; } 100% { background: transparent; } }
+@media (max-width: 1100px) { .regpage2 { grid-template-columns: minmax(0, 1fr) 360px; } .rtiles.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  .regpage2 { grid-template-columns: minmax(0, 1fr); grid-template-areas: "dp" "side" "dn" "body"; }
+  .rside { position: static; max-height: none; overflow: visible; } .rbody { grid-template-columns: minmax(0, 1fr); } .rbody .facets { position: static; }
+  .kbwrap { grid-template-columns: minmax(0, 1fr); } .kbnav { position: static; max-height: none; } .kbcards { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) { .rtiles.three { grid-template-columns: repeat(3, minmax(0, 1fr)); } .rtile .rn { font-size: 22px; } .rtile.due .rn { font-size: 16px; } .rtile .rl { font-size: 13.5px; } }
+.regdiv.regcore { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; }
+.regdiv.regcore .mkchips { margin: 0 0 0 auto; gap: 5px; order: 3; } .regdiv.regcore .mkchip { padding: 2px 9px; font-size: 12.5px; }
+.mkchip.sel { outline: 2px solid var(--accent); }
+@media (max-width: 760px) { .regdiv.regcore .mkchips { margin-left: 0; flex-basis: 100%; } }
+
+.kans { border: 2px solid var(--accent); border-radius: 10px; padding: 10px 12px; margin: 6px 0 8px; cursor: pointer; background: var(--bg); }
+.kah { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; font-weight: 800; color: var(--accent); margin-bottom: 4px; } .kah i { font-style: normal; font-weight: 400; color: var(--muted); }
+.kab { font-size: 15px; line-height: 1.6; } .kab mark { background: #f3d36b55; color: inherit; border-radius: 3px; padding: 0 1px; }
+.kmorelab { font-size: 12.5px; color: var(--muted); margin: 6px 0 2px; }
+.knum { font-weight: 800; color: var(--text); }
+.kbimpact .knum, .know .knum { color: inherit; }
+.ktoc { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 4px; position: sticky; top: var(--headh, 56px); z-index: 2; padding: 6px 0; background: var(--bg); }
+.ktoc button { border: 1px solid var(--line); background: var(--card); color: var(--text); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 13px; cursor: pointer; } .ktoc button:hover { border-color: var(--accent); color: var(--accent); }
+.kdocs > summary { cursor: pointer; color: var(--accent); font-size: 14px; margin-bottom: 8px; }
+.kbzone { font-size: 15px; margin: 20px 0 8px; padding-bottom: 6px; border-bottom: 2px solid var(--line); } .kbzone.hi { color: var(--must-fg); border-bottom-color: var(--must-fg); } .kbzone.mid { color: var(--risk-fg); } .kbzone.lo { color: var(--muted); }
+.kbcards.high { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kbcards.high .kbcard { padding: 16px 18px; border-left: 4px solid var(--must-fg); } .kbcards.high .kbcard h3 { font-size: 17.5px; } .kbcards.high .kbcard p { font-size: 14.5px; color: var(--text); }
+.kbcards.mid, .kbcards.low { grid-template-columns: repeat(3, minmax(0, 1fr)); } .kbcards.low .kbcard p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.kbcard .kbcn { display: block; margin-top: 6px; font-size: 12px; color: var(--muted); }
+.kdue .kt { font-style: normal; color: var(--muted); font-size: 12.5px; }
+@media (max-width: 900px) { .kbcards.high, .kbcards.mid, .kbcards.low { grid-template-columns: minmax(0, 1fr); } }
+
+.kbimpact.top { margin: 10px 0 2px; } .kbimpact .kih { display: block; margin-bottom: 2px; }
+.kbbody { padding-bottom: 70vh; }
+.ktoc button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.kbsec, .kcase, .kdoc, .kbrules li, .kbimpact { scroll-margin-top: 150px; }
+.flash { animation: kfl 2.4s ease; } @keyframes kfl { 0%, 45% { background: #f3d36b55; box-shadow: 0 0 0 4px #f3d36b55; border-radius: 8px; } 100% { background: transparent; box-shadow: none; } }
+.khd { display: inline-block; font-size: 11.5px; color: var(--muted); background: var(--chip); border-radius: 5px; padding: 0 6px; margin-right: 6px; font-weight: 700; }
+.rtile.due .rs { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.35; margin-top: 2px; }
+main .dayhead.regday { position: sticky; top: var(--headh, 52px); z-index: 3; margin: 22px 0 8px; padding: 9px 14px; font-size: 17.5px; font-weight: 900;
+  background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+main .dayhead.regday .muted { margin-left: auto; font-size: 13px; }
+
+abbr.gl { text-decoration: none; border-bottom: 1px dotted var(--accent); cursor: help; position: relative; }
+abbr.gl.show::after { content: attr(data-tip); position: absolute; left: 0; top: 1.6em; z-index: 20; width: max-content; max-width: 260px; white-space: normal;
+  background: var(--text); color: var(--bg); font-size: 12.5px; font-weight: 400; line-height: 1.45; padding: 6px 9px; border-radius: 7px; box-shadow: 0 4px 14px #0004; }
+.knew { background: var(--accent) !important; color: #fff !important; font-size: 10.5px !important; font-weight: 800 !important; letter-spacing: .04em; border-radius: 4px; padding: 0 5px !important; margin-right: 6px; }
+
+.ksplit { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 26px; align-items: start; }
+.ksplit-main { min-width: 0; }
+.ksplit-side { position: sticky; top: calc(var(--headh, 56px) + 12px); max-height: calc(100vh - var(--headh, 56px) - 24px); overflow-y: auto; scrollbar-width: thin;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.ksplit-side .ksh { font-size: 17px; font-weight: 900; margin: 0 0 10px; padding-bottom: 8px; border-bottom: 2px solid var(--line); }
+.ksplit-side .kbsec { margin-top: 0; } .ksplit-side .kbsec + .kbsec { margin-top: 18px; } .ksplit-side .kbsec > h3 { font-size: 15px; margin-bottom: 8px; }
+.ksplit-side .kdl { display: block; padding: 8px 10px; border-radius: 8px; background: var(--bg); margin-bottom: 6px; border-left: 3px solid var(--accent); font-size: 13.5px; }
+.ksplit-side .kdl b { display: block; font-size: 16px; color: var(--accent); } .ksplit-side .kdl i { display: block; font-style: normal; font-size: 12px; color: var(--risk-fg); margin-top: 2px; }
+.ksplit-side .kcase { background: none; border: 0; padding: 0; margin-bottom: 16px; } .ksplit-side .kcase h4 { font-size: 14.5px; }
+.ksplit-side .know { font-size: 13px; padding: 6px 10px; }
+.ksplit-side .ktl { margin-left: 4px; padding-left: 14px; } .ksplit-side .kstep { font-size: 13.5px; padding: 3px 0 10px; } .ksplit-side .kstep::before { left: -20px; top: 7px; }
+.kst { display: flex; align-items: center; gap: 6px; } .kst .kd { margin: 0; } .kst a { margin-left: auto !important; }
+.kwhat { font-weight: 700; margin-top: 2px; } .kdet { color: var(--muted); font-size: 12.5px; line-height: 1.55; margin-top: 2px; }
+@media (max-width: 1100px) { .ksplit { grid-template-columns: minmax(0, 1fr); } .ksplit-side { position: static; max-height: none; } }
+
+:root { --on-accent: #fff; }
+:root[data-theme="dark"] { --on-accent: #0b1220; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --on-accent: #0b1220; } }
+.tab[aria-selected="true"], select.tab.more[aria-selected="true"], .chip[aria-pressed="true"], .facet[aria-pressed="true"], .facet[aria-pressed="true"] small,
+.kbn.on, .kbn.on small, .ktoc button.on, .cell.cur .dn, .tile[aria-pressed="true"] .tcode { color: var(--on-accent); }
+.knew { color: var(--on-accent) !important; }
+
+.fptile, .rtile, .kindtile { padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; gap: 1px; min-width: 0; }
+.fptile, .kindtile { background: var(--card); }
+.fptile .tl, .rtile .rl, .kindtile > span { font-size: 15.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.fptile .tn, .rtile .rn, .kindtile > b { font-size: 28px; font-weight: 900; line-height: 1.15; }
+.fptile .ts, .rtile .rs { font-size: 12.5px; color: var(--muted); }
+.fptile:hover, button.rtile:hover, .kindtile:hover { border-color: var(--accent); }
+.kindtile.zero, .kindtile.zero > span { color: var(--muted); } .kindtile.zero > b, .rtile.zero .rn { color: var(--muted); font-weight: 400; }
+.fptile.hot, .rtile.hot { background: var(--must-bg); border-color: transparent; }
+.fptile.hot .tl, .fptile.hot .tn, .fptile.hot .ts, .rtile.hot .rl, .rtile.hot .rn, .rtile.hot .rs { color: var(--must-fg); }
+.fptiles, .kindtiles, .rtiles { gap: 10px; }
+
+.kindtile.on, .rtile.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--card); color: var(--text); }
+.rtile.on { background: var(--bg); }
+.mkchip.sel { outline: 0; background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+main .dayhead { position: sticky; top: var(--headh, 52px); z-index: 3; margin: 22px 0 8px; padding: 9px 14px; font-size: 17.5px; font-weight: 900;
+  background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+main .dayhead .muted { margin-left: auto; font-size: 13px; font-weight: 600; }
+
+.cols3 > .right > .kicker:first-child, main .cols3 > .right > .kicker { font-size: 19px; font-weight: 900; margin: 10px 0 8px; padding: 0 0 8px; border: 0; border-bottom: 2px solid var(--line); background: none; }
+
+.findbar { border: 2px solid var(--line); border-radius: 10px; }
+.findbar:focus-within, .kbbar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ref-bg); }
+.cols3 > .right .findbar { border-width: 2px; padding: 9px 12px; background: var(--bg); } .cols3 > .right .findbar .find { font-size: 15px; }
+.kbbar { border-radius: 10px; }
+
+@media (max-width: 1100px) { .rbody { grid-template-columns: minmax(0, 1fr); gap: 8px; } .rbody .facets { position: static; } }
+
+.ksplit-side details.kcase > summary.kcsum { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 2px 0 6px; }
+.ksplit-side details.kcase > summary.kcsum::-webkit-details-marker { display: none; }
+.kcsum h4 { margin: 0 !important; flex: 1; min-width: 0; } .kcsum small { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.kcpm { flex: none; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 5px; background: var(--bg); color: var(--muted); font-weight: 700; font-size: 14px; line-height: 1; }
+.kcpm::before { content: "+"; } details.kcase[open] > summary .kcpm::before { content: "−"; }
+.kcsum:hover .kcpm { border-color: var(--accent); color: var(--accent); }
+details.kcase:not([open]) { margin-bottom: 8px; }
+details.kcase:not([open]) > .know { display: block; }
+
+.railrow .star, .ghd .star { white-space: nowrap; font-size: 11.5px; font-weight: 800; border-radius: 5px; padding: 1px 6px; }
+.star.lv0 { background: var(--cmp-bg); color: var(--cmp-fg); }
+.star.lv1 { background: transparent; color: var(--cmp-fg); box-shadow: inset 0 0 0 1px var(--cmp-fg); }
+.star.lv2 { background: var(--chip); color: var(--muted); }
+
+.rdhbtn { margin-left: auto; border: 1px solid var(--accent); background: var(--card); color: var(--accent); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.rdhbtn:hover { background: var(--accent); color: var(--on-accent); }
+.rdue details.dui { border-top: 1px solid var(--line); } .rdue details.dui:first-of-type { border-top: 0; }
+.rdue summary.duh { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+.rdue summary.duh::-webkit-details-marker { display: none; }
+.rdue details.dui[open] > summary .kcpm::before { content: "−"; }
+.rdue summary.duh:hover .kcpm { border-color: var(--accent); color: var(--accent); }
+.rdue .dud { font-size: 16px; font-weight: 900; color: var(--accent); white-space: nowrap; }
+.rdue .duw { flex: 1; min-width: 0; font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rdue details[open] .duw { white-space: normal; }
+.rdue .dul { font-size: 12px; font-weight: 800; color: var(--risk-fg); white-space: nowrap; }
+.rdue .dub { padding: 0 0 10px 28px; }
+.rdue .dut { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.rdue .dux { font-size: 13.5px; line-height: 1.6; }
+.rdue .dutb { width: 100%; border-collapse: collapse; margin: 8px 0 4px; font-size: 13px; }
+.rdue .dutb th, .rdue .dutb td { padding: 5px 6px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.rdue .dutb tr > th:first-child { text-align: left; font-weight: 600; color: var(--muted); white-space: normal; }
+.rdue .dutb tr:first-child th { font-size: 12px; color: var(--muted); font-weight: 700; }
+.rdue .dutb td.new { font-weight: 800; color: var(--text); }
+.rdue .duj { font-size: 13.5px; line-height: 1.6; margin-top: 8px; padding: 2px 0 2px 10px; border-left: 3px solid var(--risk-fg); }
+.rdue .duj b { color: var(--risk-fg); margin-right: 6px; }
+.rdue .dua { margin-top: 6px; border: 0; background: none; padding: 0; font: inherit; font-size: 13px; color: var(--accent); cursor: pointer; }
+
+.rdue details.dui > summary, .ksplit-side details.kcase > summary { background: none; border: 0; border-radius: 0; }
+.rdue details.dui > summary::after, .ksplit-side details.kcase > summary::after { content: none; }
+.rdue details.dui > summary { padding: 8px 0; } .ksplit-side details.kcase > summary { padding: 2px 0 6px; }
+details.kcase, details.dui { margin: 0; }
+
+main .datehead { margin: 16px 0 6px; padding: 7px 12px; font-size: 15px; font-weight: 900; background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 8px; display: flex; align-items: center; gap: 8px; }
+main .datehead::after { display: none; } main .datehead .muted { margin-left: auto; font-size: 12.5px; }
+
+main .tile { padding: 10px 12px; border-radius: 10px; }
+main .tile .tlabel, main .tile > span:first-child, main .tile .tl { font-size: 15.5px; font-weight: 800; color: var(--text); }
+main .tile b, main .tile .tn, main .tile .tnum { font-family: inherit; font-size: 28px; font-weight: 900; line-height: 1.15; }
+main .tile[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+
+main .cols3 > .right > .kicker .kt::before { display: none; }
+main .tile small { font-size: 12.5px; } main .tile[aria-pressed="true"] .tl { color: var(--text); }
+
+main .kick > span, main .rtag, main .gtag, main .ghd .star, main .kbadge, main .ktag, main .kk, main .khd, main .tcode, main .knew, main .rnm .todo {
+  display: inline-flex !important; align-items: center; font-size: 12px !important; font-weight: 700 !important; line-height: 1.6 !important;
+  padding: 0 8px !important; border-radius: 999px !important; border: 0 !important; box-shadow: none !important; letter-spacing: 0 !important;
+  font-style: normal !important; white-space: nowrap; vertical-align: middle; height: auto !important; margin-top: 0 !important;
+  background: var(--chip) !important; color: var(--text) !important; }
+main .kick > span::before, main .gtag::before { content: none !important; }
+main .kick { gap: 6px !important; }
+
+            main .kick .kmust, main .kbadge.hi { background: var(--must-bg) !important; color: var(--must-fg) !important; }
+      main .kick .kreg, main .rtag:not(.pg):not(.date):not(.star) { background: var(--ref-bg) !important; color: var(--ref-fg) !important; }
+      main .kick .ktyp { background: var(--chip) !important; color: var(--text) !important; font-weight: 600 !important; }
+            main .kick .who { background: var(--co-bg) !important; color: var(--co-fg) !important; }
+ main .kick .focus:not(.watch), main .rtag.star.lv0, main .ghd .star, main .gtag.tr { background: var(--cmp-bg) !important; color: var(--cmp-fg) !important; }
+   main .kick .focus.watch, main .rtag.star.lv1, main .gtag.watch { background: transparent !important; color: var(--cmp-fg) !important; box-shadow: inset 0 0 0 1px var(--cmp-fg) !important; }
+            main .rtag.star.lv2 { background: var(--chip) !important; color: var(--muted) !important; }
+            main .gtag.own { background: var(--opp-bg) !important; color: var(--opp-fg) !important; }
+    main .rtag.pg, main .gtag.ph { background: color-mix(in srgb, var(--ph) 20%, transparent) !important; color: var(--ph) !important; }
+     main .knew, main .gtag.isnew { background: var(--accent) !important; color: var(--on-accent) !important; }
+    main .kbadge.mid { background: var(--risk-bg) !important; color: var(--risk-fg) !important; }
+
+main .rtag.date, main .khd, main .kk, main .ktag, main .rnm .todo, main .tcode, main .kbadge.lo { background: var(--chip) !important; color: var(--muted) !important; font-weight: 600 !important; }
+
+:root { --tg-meta: #4b5563; --tg-ph: #8f4300; }
+:root[data-theme="dark"] { --tg-meta: var(--muted); --tg-ph: var(--ph); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --tg-meta: var(--muted); --tg-ph: var(--ph); } }
+main .rtag.date, main .khd, main .kk, main .ktag, main .rnm .todo, main .tcode, main .kbadge.lo, main .rtag.star.lv2 { color: var(--tg-meta) !important; }
+main .rtag.pg, main .gtag.ph { color: var(--tg-ph) !important; }
 </style>
 </head>
 <body>
@@ -1066,7 +1395,7 @@ async function start(keyText) {
     S.cache = {};
     const index = await load("index");
     store(keyText);
-    S.uiZh = index.ui; S.uiEn = index.ui_en || null; applyLang(); S.vocab = index.vocab || {}; S.dates = index.dates; S.registry = index.registry || {}; S.roster = index.roster || null; S.hasLaunches = !!index.launches; S.hasApproved = !!index.approved; S.hasReg = !!index.pgreg;
+    S.uiZh = index.ui; S.uiEn = index.ui_en || null; applyLang(); S.vocab = index.vocab || {}; S.dates = index.dates; S.registry = index.registry || {}; S.roster = index.roster || null; S.hasLaunches = !!index.launches; S.hasApproved = !!index.approved; S.hasReg = !!index.pgreg; S.hasKb = !!index.pgkb;
     document.title = S.ui.title;
     document.getElementById("title").textContent = S.ui.title;
     document.getElementById("head").hidden = false;
@@ -1079,7 +1408,7 @@ async function start(keyText) {
     select.onchange = () => openDate(select.value);
     document.getElementById("prev").onclick = () => step(1);
     document.getElementById("next").onclick = () => step(-1);
-    if (S.startTab && ["overview", "ALLM", "competitors", "calendar", "official"].includes(S.startTab)) S.tab = S.startTab;
+    if (S.startTab && ["overview", "ALLM", "reg", "competitors", "calendar", "official"].includes(S.startTab)) S.tab = S.startTab;
     const startDate = S.dates.some(d => d.d === S.startDate) ? S.startDate : (S.dates[0] || {}).d;
     if (startDate) await openDate(startDate); else { clear(main); main.append(el("p", "center muted", S.ui.none)); }
   } catch (e) {
@@ -1130,7 +1459,7 @@ function tabs() {
   const isMarket = isNews && S.tab !== "overview";
   if (isNews) S.lastNews = S.tab;
   if (isMarket) S.lastMarket = S.tab;
-  const go = id => { S.tab = id; S.topic = null; S.company = null; S.coView = null; S.offType = null; S.nf = {}; render(); window.scrollTo(0, 0); };
+  const go = id => { S.tab = id; S.topic = null; S.company = null; S.coView = null; S.offType = null; S.nf = {}; S.kbView = null; render(); window.scrollTo(0, 0); };
   const add = (target, id, label, count, dot, selected) => {
     const b = el("button", "tab", label);
     if (target === bar && TAB_ICONS[id]) b.prepend(tabIcon(TAB_ICONS[id]));
@@ -1226,7 +1555,7 @@ function openHelp() {
   openSheet(S.ui.help, body => {
     body.append(el("p", "helpt", S.ui.tagTitle));
     const lg = el("div", "kick legend");
-    for (const [cls, text] of [["kmust", S.ui.must], ["who", S.ui.tagCo], ["kreg", S.ui.tagRegion], ["ktyp", S.ui.tagKind], ["risk", tv("風險")], ["opp", tv("機會")], ["focus", S.ui.focus], ["focus watch", S.ui.watch]])
+    for (const [cls, text] of [["kmust", S.ui.must], ["who", S.ui.tagCo], ["kreg", S.ui.tagRegion], ["ktyp", S.ui.tagKind], ...(SHOW_STANCE ? [["risk", tv("風險")], ["opp", tv("機會")]] : []), ["focus", S.ui.focus], ["focus watch", S.ui.watch]])
       lg.append(el("span", cls, text));
     body.append(lg, noteP("helpp", S.ui.nTags));
     for (const [title, text] of S.help.concat(S.ui.helpGeneral || [])) {
@@ -1375,7 +1704,7 @@ function newsFacets(scope, articles, withRegion, period, opts) {
   const bucketOf = d => d.bucket || "", isPast = d => d.when === "past";
   const words = () => (F.q || "").split(/\s+/).filter(Boolean);
   const others = (d, skip) => (skip === "market" || !F.market || d.market === F.market) && words().every(w => (d.hay || "").includes(w))
-    && (skip === "when" || !F.when || !isPast(d)) && (skip === "kind" || !F.kind || d.kind === F.kind)
+    && (skip === "when" || !F.when || !isPast(d)) && (skip === "kind" || !F.kind || d.kind === F.kind) && (skip === "topic" || !F.topic || d.topic === F.topic)
     && (skip === "region" || !F.region || d.region === F.region) && (skip === "stance" || !F.stance || d.stance === F.stance);
   const unique = () => {
     const seen = new Map();
@@ -1384,7 +1713,7 @@ function newsFacets(scope, articles, withRegion, period, opts) {
   };
   const apply = () => {
     const bucket = F.bucket || "";
-    const active = !!(F.kind || F.region || F.stance || F.when || F.market || F.q || bucket);
+    const active = !!(F.kind || F.topic || F.region || F.stance || F.when || F.market || F.q || bucket);
     scope.classList.toggle("filtering", active);
     scope.classList.toggle("bucketview", !!bucket);
     for (const c of scope.querySelectorAll(".card")) c.hidden = !(others(c.dataset) && (!bucket || bucketOf(c.dataset) === bucket));
@@ -1432,6 +1761,7 @@ function newsFacets(scope, articles, withRegion, period, opts) {
   const resetAll = () => {
     for (const k of Object.keys(F)) delete F[k];
     const box = side.querySelector(".sidefind input"); if (box) box.value = "";
+    for (const x of document.querySelectorAll(".topictiles .on")) x.classList.remove("on");
     draw(); window.scrollTo({ top: 0 });
   };
   const draw = () => {
@@ -1486,8 +1816,8 @@ function newsFacets(scope, articles, withRegion, period, opts) {
     };
     group(S.ui.fKind, "kind", d => d.kind);
     if (withRegion) group(S.ui.fRegion, "region", d => d.region);
-    group(S.ui.fStance, "stance", d => d.stance === "風險" || d.stance === "機會" ? d.stance : "");
-    if (F.kind || F.region || F.stance || F.when || F.market || F.q || bucket) {
+    if (SHOW_STANCE) group(S.ui.fStance, "stance", d => d.stance === "風險" || d.stance === "機會" ? d.stance : "");
+    if (F.kind || F.topic || F.region || F.stance || F.when || F.market || F.q || bucket) {
       const reset = el("button", "btn fclear", "✕ " + S.ui.fCancel);
       reset.onclick = resetAll;
       dyn.append(reset);
@@ -1563,10 +1893,10 @@ function card(a, showRegion) {
   if (showRegion && a.region) kick.append(el("span", "kreg", a.region));
   const kind = a.event_type && a.event_type !== "無" ? a.event_type : a.topic;
   if (kind) kick.append(el("span", "ktyp", kind));
-  c.dataset.kind = kind || ""; c.dataset.region = a.region || ""; c.dataset.stance = a.stance || ""; c.dataset.url = a.url || a.title || "";
+  c.dataset.kind = kind || ""; c.dataset.topic = a.topic || ""; c.dataset.region = a.region || ""; c.dataset.stance = a.stance || ""; c.dataset.url = a.url || a.title || "";
   c.dataset.hay = [a.title, a.title_orig, a.summary, a.region, a.topic, a.source, (a.actors || []).map(x => x.name).join(" ")].join(" ").toLowerCase();
-  if (a.stance === "機會") kick.append(el("span", "opp", a.stance));
-  if (a.stance === "風險") kick.append(el("span", "risk", a.stance));
+  if (SHOW_STANCE && a.stance === "機會") kick.append(el("span", "opp", a.stance));
+  if (SHOW_STANCE && a.stance === "風險") kick.append(el("span", "risk", a.stance));
   c.append(el("h3", null, artText(a, "title")));
   const meta = el("div", "meta");
   const sources = a.sources && a.sources.length > 1 ? a.sources : [a];
@@ -1648,68 +1978,103 @@ function mergeEvents(list) {
   return out;
 }
 
+const COMP_KINDS = [["launch", "kLaunch"], ["moves", "kMoves"], ["license", "kLicense"], ["other", "kOther"]];
+function compKind(e) {
+  if (e.event_type === S.vocab.launch && e.main_role === S.vocab.provider) return "launch";
+  if (["市場進入", "合作", "併購"].includes(e.event_type)) return "moves";
+  if (e.event_type === "牌照") return "license";
+  return "other";
+}
+
 async function viewOverview() {
   const renderId = S.renderId;
   const d = S.day;
+  const goTab = id => () => { S.tab = id; S.company = null; S.coView = null; render(); window.scrollTo(0, 0); };
   const mast = el("div", "fphead"), dateBox = el("div", "fpdate");
   dateBox.append(el("h1", "serif", dayLabel(d.date)));
   if (S.dates.length && S.dates[0].d === d.date) dateBox.append(el("span", "fplatest", S.ui.fpLatestTag));
-  mast.append(dateBox);
+  const hist = el("button", "fphistbtn", "🔎 " + S.ui.fpHistory + " →");
+  hist.onclick = () => { S.tab = "ALLM"; S.topic = null; S.nf = {}; render(); window.scrollTo(0, 0); };
+  mast.append(dateBox, hist);
   main.append(mast);
 
   const everything = allArticles(d);
   const rank = a => (a.tier === "必讀" ? 0 : a.tier === "參考" ? 1 : 2) * 100 - (a.score || 0);
   const isComp = a => (a.competitors || []).length || (a.watch || []).length || (a.peers || []).length;
-  const market = everything.filter(a => !a.low && a.tier !== "背景" && (a.tier === "必讀" || !isComp(a))).sort((x, y) => rank(x) - rank(y));
-  const mustEv = mergeEvents(d.must_read);
-  const lead = mustEv.length ? mustEv : mergeEvents(market).slice(0, 1);
+  const own = mergeEvents(everything.filter(a => !a.low && (a.own || []).length).sort((x, y) => rank(x) - rank(y)));
+  const ownUrls = new Set(own.flatMap(a => (a.sources || [a]).map(x => x.url)));
+  const notOwn = a => !(a.sources || [a]).some(x => ownUrls.has(x.url));
+  const market = everything.filter(a => !a.low && a.tier !== "背景" && !(a.own || []).length && (a.tier === "必讀" || !isComp(a))).sort((x, y) => rank(x) - rank(y));
+  const mustEv = mergeEvents(d.must_read).filter(notOwn);
+  const lead = mustEv;
   const used = new Set(lead.flatMap(a => (a.sources || [a]).map(x => x.url)));
 
+  const tiles = el("div", "fptiles");
+  main.append(tiles);
+  const tile = (label, go, hot) => {
+    const t = el("button", "fptile" + (hot ? " hot" : ""));
+    const n = el("b", "tn", "…"), s = el("span", "ts", "");
+    t.append(el("span", "tl", label), n, s);
+    t.onclick = go; tiles.append(t);
+    return { n, s, t };
+  };
+  const tMust = tile("🚨 " + S.ui.must, () => { const x = main.querySelector(".fpmust"); if (x) { window.scrollTo(0, x.getBoundingClientRect().top + window.scrollY - headH() - 12); x.classList.remove("flash"); void x.offsetWidth; x.classList.add("flash"); } }, mustEv.length);
+  const tReg = tile("⚖️ " + S.ui.regTab, goTab("reg"));
+  const tComp = tile("🎯 " + S.ui.competitors, goTab("competitors"));
+  const tLaunch = tile("🎰 " + S.ui.railLaunch, goTab("calendar"));
+  const tPg = tile("📋 " + S.ui.railPg, goTab("official"));
+  tMust.n.textContent = String(mustEv.length);
+  tMust.s.textContent = mustEv.length ? artText(mustEv[0], "title") : S.ui.quiet;
+
   const grid = el("div", "fp2");
-  const left = el("section", "fpfocus"), rail = el("aside", "fprail"), rest = el("section", "fprest");
-  grid.append(left, rail, rest);
+  const left = el("section", "fpmain"), rail = el("aside", "fprail");
+  grid.append(left, rail);
   main.append(grid);
 
-  section(left, S.ui.must, mustEv.length || undefined, S.ui.nMust);
-  if (!mustEv.length) left.append(el("p", "muted", S.ui.quiet));
+  if (own.length) {
+    const box = el("section", "fpown");
+    section(box, "🏠 " + S.ui.ownNews, own.length, S.ui.nOwn);
+    for (const a of own) box.append(card(a, true));
+    left.append(box);
+  }
+  const focus = el("section", "fpmust");
+  section(focus, "🚨 " + S.ui.must, mustEv.length || undefined, S.ui.nMust);
+  const chips = el("div", "mkchips");
+  chips.append(el("span", "mklabel", "🌏 " + S.ui.coreMarkets));
+  for (const code of S.ui.core || []) {
+    const g = d.groups.find(x => x.code === code);
+    if (!g) continue;
+    const n = mergeEvents(g.topics.flatMap(t => t.articles).filter(a => !a.low && a.tier !== "背景")).length;
+    const b = el("button", "mkchip" + (n ? " on" : ""), g.name + (n ? " " + n : ""));
+    b.title = S.ui.fpCoreNote;
+    b.onclick = () => { S.tab = code; render(); window.scrollTo(0, 0); };
+    chips.append(b);
+  }
+  focus.querySelector(".kicker").append(chips);
+  if (!mustEv.length) focus.append(el("p", "muted", S.ui.quiet));
   lead.forEach((a, i) => {
     const c = card(a, true); c.classList.add("open"); if (i === 0) c.classList.add("lead");
     c.querySelector("h3").classList.add("serif");
-    left.append(c);
+    focus.append(c);
   });
-  const sumText = dayText(d, "overview") || dayText(d, "summary") || "";
-  if (sumText) {
-    const g = el("section", "glance fpglance"), hd = el("div", "ghd");
-    hd.append(el("b", null, S.ui.glance));
-    g.append(hd, el("p", "gtext", sumText));
-    const more = el("button", "gmorebtn", S.ui.fpRead + " ▾");
-    more.onclick = () => g.classList.add("full");
-    g.append(more);
-    left.append(g);
-  }
-
+  left.append(focus);
   const groups = d.groups.map(g => [g, mergeEvents(market.filter(a => !(a.sources || [a]).some(x => used.has(x.url)) && group_of(d, a) === g.code))]).filter(x => x[1].length);
-  section(rest, S.ui.fpNotable, groups.reduce((n, x) => n + x[1].length, 0), S.ui.nOthers);
+  const rest = el("section", "fprest");
+  section(rest, "📰 " + S.ui.fpNotable, groups.reduce((n, x) => n + x[1].length, 0), S.ui.nOthers);
   if (!groups.length) rest.append(el("p", "muted", S.ui.noToday));
   for (const [g, list] of groups) {
-    rest.append(el("h2", "fpgrp", g.flag + " " + g.name + "　" + list.length));
+    rest.append(el("h2", "fpgrp", g.name + "　" + list.length));
     for (const a of list) rest.append(card(a, g.code === "ASIA" || g.code === "GLOBAL"));
   }
-  const background = everything.filter(a => !a.low && a.tier === "背景");
-  if (background.length) rest.append(fold(S.ui.fBackground, background, true, "bg"));
-  const hist = el("button", "fphist");
-  hist.append(el("b", null, S.ui.fpHistory), el("span", "muted", S.ui.nHistory), el("span", "go", "→"));
-  hist.onclick = () => { S.tab = "ALLM"; S.topic = null; S.nf = {}; render(); window.scrollTo(0, 0); };
-  rest.append(hist);
+  left.append(rest);
 
   const box = (title, goLabel, go) => {
     const b = el("section", "railbox"), hd = el("div", "railhd");
     hd.append(el("b", null, title));
-    if (go) { const a = el("button", "railgo", goLabel); a.onclick = go; hd.append(a); }
+    const a = el("button", "railgo", goLabel); a.onclick = go; hd.append(a);
     b.append(hd); rail.append(b); return b;
   };
-  const goTab = id => () => { S.tab = id; S.company = null; S.coView = null; render(); window.scrollTo(0, 0); };
-  const line = (container, tag, text, sub, onclick, tagCls) => {
+  const line = (container, tag, text, sub, tagCls, onclick) => {
     const r = el(onclick ? "button" : "div", "railrow");
     if (tag) r.append(el("span", "rtag" + (tagCls ? " " + tagCls : ""), tag));
     r.append(el("span", "rtx", text));
@@ -1717,34 +2082,57 @@ async function viewOverview() {
     if (onclick) r.onclick = onclick;
     container.append(r); return r;
   };
-  const regBox = box(S.ui.regTab, S.ui.railAll, goTab("reg"));
-  const compBox = box(S.ui.competitors, S.ui.railAll, goTab("competitors"));
-  const launchBox = box(S.ui.railLaunch, S.ui.railCal, goTab("calendar"));
-  const pgBox = box(S.ui.railPg, S.ui.railAll, goTab("official"));
+  const regBox = box("⚖️ " + S.ui.regTab, S.ui.railAll, goTab("reg"));
+  const compBox = box("🎯 " + S.ui.competitors, S.ui.railAll, goTab("competitors"));
+  const launchBox = box("🎰 " + S.ui.railLaunch, S.ui.railCal, goTab("calendar"));
+  const pgBox = box("📋 " + S.ui.railPg, S.ui.railAll, goTab("official"));
 
-  const c = d.competitors, nameN = list => list.map(x => x.name + " " + x.articles.length).join("・");
-  const nComp = [...c.tracked, ...(c.watch || [])].reduce((n, x) => n + x.articles.length, 0);
-  compBox.querySelector(".railhd b").append(el("span", "rn", String(nComp)));
-  if (c.tracked.length) line(compBox, "★", nameN(c.tracked), "", goTab("competitors"), "star");
-  if ((c.watch || []).length) line(compBox, "☆", nameN(c.watch), "", goTab("competitors"), "star");
-  if (!nComp) compBox.append(el("p", "muted", S.ui.noToday));
+  const c = d.competitors;
+  const level = a => (a.competitors || []).length ? 0 : (a.watch || []).length ? 1 : 2;
+  const compArts = mergeEvents([...c.tracked, ...(c.watch || []), ...(c.unlisted || [])].flatMap(x => x.articles))
+    .filter((a, i, all) => all.findIndex(b => b.url === a.url) === i).sort((x, y) => level(x) - level(y) || rank(x) - rank(y));
+  const entries = await competitorEntries([d.date]);
+  if (renderId !== S.renderId) return;
+  const byWho = new Map();
+  for (const e of entries) { if (!byWho.has(e._who)) byWho.set(e._who, []); byWho.get(e._who).push(e); }
+  const events = [...byWho.values()].flatMap(l => mergeEvents(l));
+  const uniqN = l => new Set(l.map(e => e.url)).size;
+  const kindN = Object.fromEntries(COMP_KINDS.map(([id]) => [id, uniqN(events.filter(e => compKind(e) === id))]));
+  tComp.n.textContent = String(uniqN(events));
+  tComp.s.textContent = S.ui.focusShort + " " + c.tracked.length + "・" + S.ui.watchShort + " " + (c.watch || []).length + "・" + S.ui.peer + " " + (c.unlisted || []).length + " " + S.ui.coCount;
+  const stat = el("div", "compstat"), list = el("div", "complist");
+  for (const [id, key] of COMP_KINDS) {
+    const r = el("button", "cstat" + (kindN[id] ? "" : " zero"));
+    r.append(el("span", null, S.ui[key + "Short"] || S.ui[key]), el("b", null, String(kindN[id])));
+    r.title = S.ui[key];
+    r.onclick = () => { S.compKind = id; S.compWho = "all"; S.coPeriod = { mode: 1 }; goTab("competitors")(); };
+    stat.append(r);
+  }
+  if (!c.tracked.length) line(list, S.ui.focusShort, S.ui.railNoTracked, "", "star lv0");
+  for (const a of compArts.slice(0, 6)) {
+    const who = [S.ui.focusShort, S.ui.watchShort, S.ui.peer][level(a)];
+    line(list, who, artText(a, "title"), (a.competitors || []).concat(a.watch || [], a.peers || []).join("・"), "star lv" + level(a), goTab("competitors"));
+  }
+  if (compArts.length > 6) line(list, "", S.ui.fpMoreN.replace("{n}", compArts.length - 6), "", "", goTab("competitors"));
+  if (!compArts.length) list.append(el("p", "muted", S.ui.noToday));
+  compBox.append(stat, list);
 
   const regNews = regArticles(d);
-  const coreNews = regNews.filter(x => (S.ui.core || []).includes(x[1]));
-  const otherNews = regNews.filter(x => !(S.ui.core || []).includes(x[1]));
+  const isCore = x => (S.ui.core || []).includes(x[1]);
+  const gName = code => (d.groups.find(x => x.code === code) || { name: code }).name;
   const R = await regData();
   if (renderId !== S.renderId) return;
-  if (R) {
-    const wk = weekBefore(d.date), fresh = R.items.filter(r => r.s === "news" ? r.d > wk && r.d <= d.date : r.new && r.seen > wk && r.seen <= d.date);
-    const pick = fresh.length ? fresh.slice(0, 2) : R.items.filter(r => r.s !== "news").slice(0, 1);
-    for (const r of pick) line(regBox, fresh.includes(r) ? S.ui.regNew : S.ui.regPgShort, regTitle(r), R.sources[r.s], () => window.open(r.u, "_blank", "noopener"), "pg");
-  }
-  for (const [a, code] of coreNews.slice(0, 3)) {
-    const g = d.groups.find(x => x.code === code);
-    line(regBox, S.ui.regCore, artText(a, "title"), g ? g.flag + " " + g.name : "", goTab("reg"));
-  }
-  if (!coreNews.length) line(regBox, S.ui.regCore, S.ui.regNoneCore, "", null);
-  if (otherNews.length) line(regBox, S.ui.regOther, [...new Set(otherNews.map(x => x[0].region))].slice(0, 4).join("・"), otherNews.length + " " + S.ui.unit, goTab("reg"));
+  const wk = weekBefore(d.date);
+  const fresh = R ? R.items.filter(r => r.s === "news" ? r.d > wk && r.d <= d.date : r.new && r.seen > wk && r.seen <= d.date) : [];
+  tReg.n.textContent = String(fresh.length + regNews.length);
+  tReg.s.textContent = fresh.length ? S.ui.regPgShort + " " + S.ui.regNew + " " + fresh.length : S.ui.regPgShort + " " + S.ui.regPgNoNewShort;
+  for (const r of fresh.slice(0, 3)) line(regBox, S.ui.regPgShort, regTitle(r), R.sources[r.s], "pg", () => window.open(r.u, "_blank", "noopener"));
+  if (!fresh.length) line(regBox, S.ui.regPgShort, S.ui.regPgNoNew, "", "pg");
+  const coreNews = regNews.filter(isCore), otherNews = regNews.filter(x => !isCore(x));
+  for (const [a, code] of coreNews.slice(0, 3)) line(regBox, gName(code), artText(a, "title"), "", "", goTab("reg"));
+  if (!coreNews.length) line(regBox, S.ui.regCore, S.ui.regNoneCore, "");
+  for (const [a] of otherNews.slice(0, 3)) line(regBox, a.region || S.ui.regOther, artText(a, "title"), "", "other", goTab("reg"));
+  if (otherNews.length > 3) line(regBox, "", S.ui.fpMoreN.replace("{n}", otherNews.length - 3), "", "", goTab("reg"));
 
   const L = await schedule();
   if (renderId !== S.renderId) return;
@@ -1752,20 +2140,34 @@ async function viewOverview() {
     const end = dayAfter(d.date, 6);
     const todayG = L.games.filter(g => g.d === d.date), weekG = L.games.filter(g => g.d > d.date && g.d <= end);
     const key = g => g.own || g.tr;
-    line(launchBox, S.ui.railLaunchToday, todayG.length + " " + S.ui.pgUnit + (todayG.some(key) ? "（★ " + todayG.filter(key).length + "）" : ""), "", goTab("calendar"));
-    line(launchBox, S.ui.railLaunchWeek, weekG.length + " " + S.ui.pgUnit + (weekG.some(key) ? "（★ " + weekG.filter(key).length + "）" : ""), "", goTab("calendar"));
-    const star = [...todayG, ...weekG].filter(key).sort((x, y) => x.d.localeCompare(y.d)).slice(0, 3);
-    for (const g of star) line(launchBox, mmdd(g.d), g.n, g.c || g.p || "", goTab("calendar"), "date");
-  } else launchBox.append(el("p", "muted", S.ui.noLaunch));
+    const count = gl => {
+      const parts = [];
+      if (gl.some(g => g.tr)) parts.push(S.ui.railOfTracked.replace("{n}", gl.filter(g => g.tr).length));
+      if (gl.some(g => g.own)) parts.push(S.ui.railOfOwn.replace("{n}", gl.filter(g => g.own).length));
+      return gl.length + " " + S.ui.pgUnit + (parts.length ? S.ui.railOf + parts.join("、") : "");
+    };
+    tLaunch.n.textContent = String(todayG.length);
+    tLaunch.s.textContent = todayG.some(g => g.tr) ? S.ui.railOfTracked.replace("{n}", todayG.filter(g => g.tr).length) : S.ui.railLaunchWeek + " " + weekG.length + " " + S.ui.pgUnit;
+    line(launchBox, S.ui.railLaunchToday, count(todayG), "", "", goTab("calendar"));
+    line(launchBox, S.ui.railLaunchWeek, count(weekG), "", "", goTab("calendar"));
+    for (const g of [...todayG, ...weekG].filter(key).sort((x, y) => x.d.localeCompare(y.d) || (y.tr || 0) - (x.tr || 0))) {
+      const r = line(launchBox, mmdd(g.d), g.n, (g.own ? S.ui.ownTag : S.ui.focusShort) + "・" + (g.c || g.p || ""), "date", goTab("calendar"));
+      const spec = [g.t, g.rtp && S.ui.rtp + " " + g.rtp, g.v && S.ui.variance + " " + g.v, g.mw && S.ui.maxWin + " " + g.mw].filter(Boolean).join("・");
+      if (spec) r.append(el("span", "rspec", spec));
+    }
+  } else { tLaunch.n.textContent = "—"; tLaunch.s.textContent = S.ui.noLaunch; launchBox.append(el("p", "muted", S.ui.noLaunch)); }
 
   const P = await approvedData();
   if (renderId !== S.renderId) return;
-  const ev = P ? P.events.filter(e => e.d > weekBefore(d.date) && e.d <= d.date) : [];
-  if (ev.length) {
-    pgBox.querySelector(".railhd b").append(el("span", "rn", String(ev.length)));
-    for (const e of ev.slice(0, 4)) line(pgBox, mmdd(e.d), [e.k, e.c].filter(Boolean).join(" "), [e.n, e.t].filter(Boolean).join("・"), goTab("official"), "date");
-  } else pgBox.append(el("p", "muted", S.ui.railPgNone));
+  const ev = P ? P.events.filter(e => e.d > wk && e.d <= d.date) : [];
+  tPg.n.textContent = String(ev.length);
+  tPg.s.textContent = ev.length ? [ev[0].k, ev[0].c].filter(Boolean).join(" ") : S.ui.railPgNone;
+  for (const e of ev.slice(0, 4)) line(pgBox, mmdd(e.d), [e.k, e.c].filter(Boolean).join(" "), [e.n, e.t].filter(Boolean).join("・"), "date", goTab("official"));
+  if (ev.length > 4) line(pgBox, "", S.ui.fpMoreN.replace("{n}", ev.length - 4), "", "", goTab("official"));
+  if (!ev.length) pgBox.append(el("p", "muted", S.ui.railPgNone));
 }
+const SHOW_STANCE = false;
+const TOPIC_EMOJI = [["法規政策", "⚖️"], ["執法掃蕩", "🚔"], ["營運商動態", "🏢"], ["供應商與產品", "🎮"], ["支付金流", "💳"], ["市場數據", "📊"], ["其他", "📌"]];
 const REG_TOPICS = () => (S.vocab && S.vocab.regTopics) || [];
 function regArticles(day) {
   const out = [];
@@ -1785,98 +2187,604 @@ function regTitle(r) { return S.lang === "en" ? r.t : (r.zh || r.t); }
 function dayAfter(iso, n) { const t = new Date(iso + "T00:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); }
 function weekBefore(iso) { return dayAfter(iso, -7); }
 
+function kbRoll(x, latest) {
+  if (!x.yearly || x.date >= latest) return x;
+  let d = x.date; while (d < latest) d = (Number(d.slice(0, 4)) + 1) + d.slice(4);
+  return Object.assign({}, x, { date: d });
+}
+function kbUpcoming(K, latest) {
+  return K.topics.flatMap(t => (t.dates || []).map(x => Object.assign(kbRoll(x, latest), { t }))).filter(x => x.date >= latest).sort((a, b) => a.date.localeCompare(b.date));
+}
+async function kbData() {
+  if (!S.hasKb) return null;
+  let K;
+  try { K = await load("pgkb"); } catch (e) { return null; }
+  if (S.lang !== "en" || !K.en) return K;
+  if (K._enView) return K._enView;
+  const E = K.en, X = JSON.parse(JSON.stringify(K));
+  delete X.en;
+  for (const d of X.docs) {
+    const e = E.docs[String(d.n)];
+    if (e) for (const k of ["title_zh", "summary_zh", "points_zh"]) if (e[k]) d[k] = e[k];
+    if (E.dept && E.dept[d.dept]) d.dept = E.dept[d.dept];
+  }
+  for (const t of X.topics) {
+    const e = E.topics[t.id];
+    if (e) {
+      for (const k of ["name", "tldr", "points", "impact"]) if (e[k]) t[k] = e[k];
+      (t.dates || []).forEach((x, i) => { const y = (e.dates || [])[i]; if (y) for (const k of ["what", "detail", "forUs", "table"]) if (y[k]) x[k] = y[k]; });
+    }
+    const c = E.cases[t.id];
+    (t.cases || []).forEach((x, i) => {
+      const y = (c || [])[i]; if (!y) return;
+      for (const k of ["name", "status"]) if (y[k]) x[k] = y[k];
+      (x.steps || []).forEach((s, j) => { const z = (y.steps || [])[j]; if (z && z.what) s.what = z.what; });
+    });
+  }
+  if (Array.isArray(E.quick) && E.quick.length === (X.quick || []).length) X.quick = E.quick;
+  if (X.glossary) for (const k in X.glossary) if (E.glossary[k]) X.glossary[k] = E.glossary[k];
+  K._enView = X;
+  return X;
+}
+function regTile(label, n, s, cls, onclick) {
+  const t = el(onclick ? "button" : "div", "rtile" + (cls ? " " + cls : ""));
+  t.append(el("span", "rl", label), el("b", "rn", String(n)), el("span", "rs", s || ""));
+  if (onclick) t.onclick = onclick;
+  return t;
+}
+function headH() {
+  const h = document.getElementById("head"), r = h ? h.getBoundingClientRect() : null;
+  const v = r && r.top < 5 && r.height < 200 ? Math.round(r.height) : 0;
+  document.documentElement.style.setProperty("--headh", v + "px");
+  return v;
+}
+function fmtDay(iso) { const [y, m, d] = iso.split("-"); return y + "/" + Number(m) + "/" + Number(d); }
+function daysBetween(a, b) { return Math.round((new Date(b + "T00:00:00Z") - new Date(a + "T00:00:00Z")) / 864e5); }
+
 async function viewRegulation() {
+  headH();
+  if (S.kbView) return viewKb();
   const renderId = S.renderId;
   const P = S.regPeriod || (S.regPeriod = { mode: 7 });
   const dates = periodDates(P);
+  const F = S.rf || (S.rf = {});
   const head = el("div", "mast ghead");
   head.append(el("h1", "serif", S.ui.regTab));
-  const sub = el("div", "sub");
-  sub.append(el("span", null, periodText(P, dates)));
+  const sub = el("div", "sub"); sub.append(el("span", null, periodText(P, dates)));
   head.append(sub); main.append(head);
-  const chips = el("div", "regchips");
-  for (const [text, on, pick] of periodItems(P)) {
-    const b = el("button", "facet"); b.append(el("span", null, text));
-    b.setAttribute("aria-pressed", String(on)); b.onclick = pick; chips.append(b);
-  }
-  main.append(chips);
-  const page = el("div", "regpage");
-  main.append(page);
-  const from = dates.length ? dates[dates.length - 1] : "", to = dates[0] || "";
-
-  const pg = el("section", "regsec regpg");
-  page.append(pg);
-  section(pg, S.ui.regPg, undefined, S.ui.nRegPg);
-  const R = await regData();
+  const page = el("div", "regpage2");
+  const dn = el("section", "rdash rnews"), dp = el("section", "rdash rpg"), body = el("div", "rbody"), side = el("aside", "rside");
+  page.append(dn, dp, body, side); main.append(page);
+  const [R, K] = await Promise.all([regData(), kbData()]);
   if (renderId !== S.renderId) return;
-  const row = (r, showSrc) => {
-    const a = el("a", "regrow"); a.href = r.u; a.target = "_blank"; a.rel = "noopener";
-    const top = el("span", "rgt");
-    if (r.new) top.append(el("span", "rtag pg", S.ui.regNew));
-    top.append(document.createTextNode(regTitle(r)));
-    a.append(top);
-    const meta = [showSrc ? R.sources[r.s] : "", r.d ? r.d : r.new ? r.seen : "", S.lang === "en" || !r.zh ? "" : r.t].filter(Boolean).join("・");
-    a.append(el("span", "rgm", meta));
-    return a;
-  };
-  if (!R) pg.append(el("p", "muted", S.ui.none));
-  else {
-    const fresh = R.items.filter(r => (r.new && r.seen >= from && r.seen <= to) || (r.s === "news" && r.d >= from && r.d <= to));
-    pg.append(el("h2", "reghd", S.ui.regNew + "　" + fresh.length));
-    if (!fresh.length) pg.append(el("p", "muted", S.ui.regPgNone + paren(S.ui.pgChecked + " " + (R.checked || "—"))));
-    for (const r of fresh) pg.append(row(r, true));
-    for (const sid of Object.keys(R.sources)) {
-      const list = R.items.filter(r => r.s === sid && !fresh.includes(r));
-      if (!list.length) continue;
-      pg.append(el("h2", "reghd", R.sources[sid] + "　" + list.length));
-      for (const r of list.slice(0, 5)) pg.append(row(r, false));
-      if (list.length > 5) {
-        const more = el("details"); more.append(el("summary", "muted", S.ui.regMoreBase + "　" + (list.length - 5)));
-        for (const r of list.slice(5)) more.append(row(r, false));
-        pg.append(more);
-      }
-    }
-    pg.append(el("p", "regsrc muted", S.ui.regPgFrom + "・" + S.ui.pgChecked + " " + (R.checked || "—")));
-  }
 
-  const news = el("div", "regnews"), core = el("section", "regsec"), other = el("section", "regsec");
-  news.append(core, other);
-  page.append(news);
-  const byGroup = new Map();
+  let seenBefore = "";
+  try { seenBefore = localStorage.getItem("regSeen") || ""; } catch (e) {  }
+  const isNew = d => !!seenBefore && !!d && d > seenBefore;
+  const items = [];
   for (const date of dates) {
     const day = date === S.date ? S.day : await load("day:" + date);
     if (renderId !== S.renderId) return;
-    for (const [a, code] of regArticles(day)) {
-      if (!byGroup.has(code)) byGroup.set(code, []);
-      byGroup.get(code).push([date, a]);
-    }
+    for (const [a, code] of regArticles(day)) items.push({ date, a, code });
   }
-  const groupsMeta = S.day.groups;
-  const CORE = S.ui.core || [];
+  const CORE = S.ui.core || [], groupsMeta = S.day.groups;
+  const gname = code => (groupsMeta.find(x => x.code === code) || { name: code }).name;
+  const mk = code => CORE.includes(code) ? "core" : code === "GLOBAL" ? "west" : "asia";
+  const country = x => (x.code === "ASIA" || x.code === "GLOBAL") ? (x.a.region || gname(x.code)) : gname(x.code);
+  const pass = (x, skip) => (skip === "market" || !F.market || mk(x.code) === F.market) && (skip === "country" || !F.country || country(x) === F.country)
+    && (skip === "type" || !F.type || x.a.topic === F.type) && (skip === "tier" || !F.tier || x.a.tier === F.tier);
+  const shown = items.filter(x => pass(x));
+  const topNames = list => { const c = new Map(); for (const x of list) c.set(country(x), (c.get(country(x)) || 0) + 1); return [...c.entries()].sort((a, b) => b[1] - a[1]).map(e => e[0]); };
+
+  const setMarket = m => () => { F.market = F.market === m ? "" : m; F.country = ""; render(); };
+  const hd = el("div", "rdh"); hd.append(el("b", null, S.ui.rNewsDash), el("small", null, S.ui.rNewsDashSub)); dn.append(hd);
+  const tn = el("div", "rtiles four");
+  const nMust = items.filter(x => x.a.tier === "必讀").length;
+  const coreHit = CORE.filter(code => items.some(x => x.code === code));
+  const asia = items.filter(x => mk(x.code) === "asia"), west = items.filter(x => mk(x.code) === "west");
+  tn.append(regTile(S.ui.rtNews, items.length, S.ui.must + " " + nMust + "・" + S.ui.ref + " " + (items.length - nMust), F.market ? "" : "on", () => { F.market = ""; F.country = ""; render(); }));
+  tn.append(regTile(S.ui.rtCore, coreHit.length + " / " + CORE.length, coreHit.map(gname).join("・") || S.ui.none, (coreHit.length ? "" : "zero") + (F.market === "core" ? " on" : ""), setMarket("core")));
+  tn.append(regTile(S.ui.rtAsia, asia.length, topNames(asia).slice(0, 3).join("・"), (asia.length ? "" : "zero") + (F.market === "asia" ? " on" : ""), setMarket("asia")));
+  tn.append(regTile(S.ui.rtWest, west.length, topNames(west).slice(0, 3).join("・"), (west.length ? "" : "zero") + (F.market === "west" ? " on" : ""), setMarket("west")));
+  dn.append(tn);
+
+  const facets = el("aside", "facets"), list = el("section", "left flat rlist");
+  body.append(facets, list);
+  const item = (box, label, n, active, pick) => {
+    const b = el("button", "facet"); b.append(el("span", null, label));
+    if (n !== undefined) b.append(el("small", null, String(n)));
+    b.setAttribute("aria-pressed", String(active)); b.onclick = pick; box.append(b); return b;
+  };
+  const cnt = (skip, f) => items.filter(x => pass(x, skip) && f(x)).length;
+  periodGroup(facets, P);
+  const gm = facetGroup(facets, S.ui.fMarket);
+  item(gm, S.ui.all, cnt("market", () => true), !F.market, () => { F.market = ""; render(); });
+  for (const [id, label] of [["core", S.ui.rtCore], ["asia", S.ui.rtAsia], ["west", S.ui.rtWest]])
+    item(gm, label, cnt("market", x => mk(x.code) === id), F.market === id, () => { F.market = id; F.country = ""; render(); });
+  const gc = facetGroup(facets, S.ui.fCountry);
+  const cs = new Map(); for (const x of items.filter(y => pass(y, "country"))) cs.set(country(x), (cs.get(country(x)) || 0) + 1);
+  const clist = [...cs.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  if (!clist.length) gc.append(el("p", "muted small", S.ui.noneInPeriod));
+  clist.forEach(([name, n], i) => {
+    const b = item(gc, tv(name), n, F.country === name, () => { F.country = F.country === name ? "" : name; render(); });
+    if (i >= 5 && F.country !== name && !S.rfMore) b.hidden = true;
+  });
+  if (clist.length > 5 && !S.rfMore) { const m = el("button", "facet fmore", S.ui.fMoreN.replace("{n}", clist.length - 5)); m.onclick = () => { S.rfMore = true; render(); }; gc.append(m); }
+  const gtier = facetGroup(facets, S.ui.fTier);
+  item(gtier, S.ui.all, cnt("tier", () => true), !F.tier, () => { F.tier = ""; render(); });
+  for (const [t, label] of [["必讀", S.ui.must], ["參考", S.ui.ref], ["背景", S.ui.bg]]) {
+    const n = cnt("tier", x => x.a.tier === t);
+    if (n || F.tier === t) item(gtier, label, n, F.tier === t, () => { F.tier = t; render(); });
+  }
+
+  section(list, S.ui.rNewsTitle, shown.length, S.ui.nRegNews);
+  const kn = list.querySelector(".kicker"); if (kn) kn.append(el("span", "kd", periodText(P, dates)));
+  if (F.market || F.country || F.type || F.tier)
+    list.append(clearBar(S.ui.fResult + "　" + shown.length + " " + S.ui.unit, () => { S.rf = {}; render(); }));
   const cardOf = (date, a, showRegion) => {
     const c = card(a, showRegion);
+    if (isNew(date)) c.querySelector(".kick").prepend(el("span", "knew", "NEW"));
     if (dates.length > 1) { const m = c.querySelector(".meta"); if (m) m.prepend(document.createTextNode(mmdd(date) + "　")); }
     return c;
   };
-  const coreHit = CORE.filter(code => byGroup.has(code));
-  section(core, S.ui.regCore, coreHit.length + " / " + CORE.length, S.ui.nRegNews);
-  for (const code of coreHit) {
-    const g = groupsMeta.find(x => x.code === code) || { flag: "", name: code };
-    const list = byGroup.get(code);
-    core.append(el("h2", "reghd", g.flag + " " + g.name + "　" + list.length));
-    for (const [date, a] of list) core.append(cardOf(date, a, false));
+  const divider = text => { const d = el("p", "regdiv"); d.append(el("span", null, text)); list.append(d); };
+  const coreShown = shown.filter(x => mk(x.code) === "core");
+  const multi = dates.length > 1;
+  if (!F.market || F.market === "core") {
+    const hit = CORE.filter(code => coreShown.some(x => x.code === code));
+    const d = el("p", "regdiv regcore"); d.append(el("span", null, S.ui.rtCore + "　" + hit.length + " / " + CORE.length));
+    const chips = el("div", "mkchips");
+    for (const code of CORE) {
+      const n = coreShown.filter(x => x.code === code).length, name = gname(code);
+      const b = el("button", "mkchip" + (n ? " on" : "") + (F.country === name ? " sel" : ""), name + (n ? " " + n : ""));
+      b.onclick = () => { F.country = F.country === name ? "" : name; F.market = ""; render(); };
+      chips.append(b);
+    }
+    d.append(chips); list.append(d);
+    if (!multi) for (const code of hit) {
+      const g = coreShown.filter(x => x.code === code);
+      list.append(el("h2", "reghd", gname(code) + "　" + g.length));
+      for (const x of g) list.append(cardOf(x.date, x.a, false));
+    }
+    if (!hit.length) list.append(el("p", "muted regquiet", (dates.length > 1 ? S.ui.regEmpty : S.ui.regNoneCore) + paren(S.ui.rPgSee)));
   }
-  const quiet = CORE.filter(code => !byGroup.has(code)).map(code => (groupsMeta.find(x => x.code === code) || { name: code }).name);
-  if (quiet.length) core.append(el("p", "muted regquiet", quiet.join("、") + "：" + (dates.length > 1 ? S.ui.regEmpty : S.ui.regNoneCore)));
-  const otherCodes = [...byGroup.keys()].filter(code => !CORE.includes(code));
-  section(other, S.ui.regOther, otherCodes.reduce((n, code) => n + byGroup.get(code).length, 0));
-  if (!otherCodes.length) other.append(el("p", "muted", S.ui.regEmpty));
-  for (const code of otherCodes) {
-    const g = groupsMeta.find(x => x.code === code) || { flag: "", name: code };
-    const list = byGroup.get(code);
-    other.append(el("h2", "reghd", g.flag + " " + g.name + "　" + list.length));
-    for (const [date, a] of list) other.append(cardOf(date, a, true));
+  if (multi) {
+    const mrank = x => ({ core: 0, asia: 1, west: 2 })[mk(x.code)];
+    for (const date of dates) {
+      const g = shown.filter(x => x.date === date).sort((a, b) => mrank(a) - mrank(b));
+      if (!g.length) continue;
+      const h = el("h2", "dayhead regday", dayLabel(date)); h.append(el("span", "muted", g.length + " " + S.ui.unit)); list.append(h);
+      for (const x of g) { const c = card(x.a, true); if (isNew(x.date)) c.querySelector(".kick").prepend(el("span", "knew", "NEW")); list.append(c); }
+    }
   }
+  if (!multi) for (const [id, label] of [["asia", S.ui.rtAsia], ["west", S.ui.rtWest]]) {
+    if (F.market && F.market !== id) continue;
+    const g = shown.filter(x => mk(x.code) === id);
+    if (!g.length) continue;
+    divider(label + "　" + g.length);
+    for (const x of g) list.append(cardOf(x.date, x.a, true));
+  }
+  if (!shown.length) list.append(el("p", "muted", S.ui.noneInPeriod));
+
+  const latest = S.dates[0] ? S.dates[0].d : "";
+  const from7 = latest ? dayAfter(latest, -6) : "";
+  const pgNew = R ? R.items.filter(r => r.s === "news" ? (r.d || "") >= from7 && (r.d || "") <= latest : r.new && r.seen >= from7 && r.seen <= latest) : [];
+  const ph = el("div", "rdh"); ph.append(el("b", null, S.ui.rPgDash), el("small", null, S.ui.pgChecked + " " + ((R && R.checked) || "—")));
+  if (K) { const kb = el("button", "rdhbtn", S.ui.rKbOpen); kb.onclick = () => { S.kbView = {}; render(); window.scrollTo(0, 0); }; ph.append(kb); }
+  dp.append(ph);
+  const tp = el("div", "rtiles three");
+  tp.append(regTile(S.ui.rtPgNew, pgNew.length, pgNew.length ? S.ui.rtPgNewS : S.ui.regPgNoNew, pgNew.length ? "hot" : "zero",
+    pgNew.length ? () => { const b = document.getElementById("rpgnew"); if (b) { window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - headH() - 12); b.classList.remove("flash"); void b.offsetWidth; b.classList.add("flash"); } } : null));
+  const ups = K ? kbUpcoming(K, latest) : [];
+  if (ups.length) {
+    tp.append(regTile(S.ui.rtPgDue, ups.length, S.ui.rtPgDueS.replace("{d}", fmtDay(ups[0].date)), "", () => {
+      const b = document.getElementById("rdue"); if (!b) return;
+      window.scrollTo(0, b.getBoundingClientRect().top + window.scrollY - headH() - 12); b.classList.remove("flash"); void b.offsetWidth; b.classList.add("flash");
+    }));
+  }
+  const nDocs = K ? K.docs.length : (R ? R.items.length : 0);
+  tp.append(regTile(S.ui.rtPgDocs, nDocs, K ? S.ui.rtPgDocsS.replace("{n}", K.topics.length) : "", "",
+    K ? () => { S.kbView = {}; render(); window.scrollTo(0, 0); } : null));
+  dp.append(tp);
+
+  const docByUrl = K ? Object.fromEntries(K.docs.map(d => [d.url, d])) : {};
+  if (pgNew.length) {
+    const box = el("section", "rbox rpgnew"); box.id = "rpgnew";
+    const h = el("div", "rbh"); h.append(el("b", null, S.ui.rNewTitle), el("span", "rbn", S.ui.rNewRange.replace("{n}", pgNew.length))); box.append(h);
+    box.append(el("p", "rnote", S.ui.rNewNote.replace("{a}", mmdd(from7)).replace("{b}", mmdd(latest))));
+    for (const r of pgNew.sort((a, b) => (b.seen || b.d || "").localeCompare(a.seen || a.d || ""))) {
+      const it = el("div", "rni"), when = r.s === "news" ? r.d : r.seen, ago = daysBetween(when, latest);
+      const tl = el("div", "rnt", regTitle(r)); if (isNew(when)) tl.prepend(el("span", "knew", "NEW")); it.append(tl);
+      const d = docByUrl[r.u];
+      if (d && d.summary_zh) { const w = el("div", "rnw"); w.append(el("b", null, S.ui.rSaid), d.summary_zh); it.append(w); }
+      const m = el("div", "rnm");
+      m.append(el("b", "age", (ago <= 0 ? S.ui.rToday : S.ui.rAgo.replace("{n}", ago)).replace("{d}", mmdd(when))));
+      m.append("　" + (R.sources[r.s] || ""));
+      if (!d) m.append(el("span", "todo", S.ui.rTodo));
+      const a = el("a", null, S.ui.source + " ↗"); a.href = r.u; a.target = "_blank"; a.rel = "noopener"; a.title = r.t; m.append(a);
+      it.append(m); box.append(it);
+    }
+    side.append(box);
+  }
+
+  try { if (latest) localStorage.setItem("regSeen", latest); } catch (e) {  }
+  if (K && ups.length) {
+    const box = el("section", "rbox rdue"); box.id = "rdue";
+    const h = el("div", "rbh"); h.append(el("b", null, S.ui.rDueTitle), el("span", "rbn", S.ui.rDueN.replace("{n}", ups.length))); box.append(h);
+    ups.forEach((x, i) => {
+      const it = el("details", "dui"); it.open = i === 0;
+      const sm = el("summary", "duh");
+      sm.append(el("span", "kcpm"), el("span", "dud", fmtDay(x.date)), el("span", "duw", x.what), el("span", "dul", S.ui.kbLeft.replace("{n}", daysBetween(latest, x.date))));
+      it.append(sm);
+      const body = el("div", "dub");
+      body.append(el("div", "dut", x.t.emoji + " " + x.t.name));
+      if (x.detail) body.append(kbRich(el("div", "dux"), x.detail));
+      if (x.table) {
+        const tb = el("table", "dutb"), hr = el("tr");
+        for (const c of x.table.head) hr.append(el("th", null, c));
+        tb.append(hr);
+        for (const row of x.table.rows) { const tr = el("tr"); row.forEach((c, k) => tr.append(el(k ? "td" : "th", k === row.length - 1 ? "new" : null, c))); tb.append(tr); }
+        body.append(tb);
+      }
+      if (x.forUs) { const j = el("div", "duj"); j.append(el("b", null, S.ui.rDueUs)); kbRich(j, x.forUs); body.append(j); }
+      const more = el("button", "dua", S.ui.rDueMore); more.onclick = () => { S.kbView = { topic: x.t.id }; render(); window.scrollTo(0, 0); }; body.append(more);
+      it.append(body); box.append(it);
+    });
+    side.append(box);
+  }
+  if (K) { kbGloss(side, K); }
+  else if (R) {
+    const box = el("section", "rbox"); box.append(el("div", "rbh", S.ui.regLib));
+    for (const r of R.items.slice(0, 8)) { const row = el("div", "regrow"), a = el("a", "rgt", regTitle(r)); a.href = r.u; a.target = "_blank"; a.rel = "noopener"; row.append(a); box.append(row); }
+    side.append(box);
+  }
+}
+
+function kbIndex(K) {
+  if (K._idx) return K._idx;
+  const norm = s => [...String(s || "").normalize("NFKC").toLowerCase()].map(c => K.t2s[c] || c).join("").replace(/[\s\-_.,，、。:：;；/()（）「」『』'"!！?？#]+/g, "");
+  const isLatin = s => /^[a-z0-9]+$/.test(s);
+  const SYN = K.synonyms.map(g => g.map(norm).filter(Boolean));
+  const docBy = Object.fromEntries(K.docs.map(d => [d.n, d])), topicBy = Object.fromEntries(K.topics.map(t => [t.id, t]));
+  const units = [], docTopic = {};
+  const add = o => { o.n = norm(o.text); o.w = String(o.text).normalize("NFKC").toLowerCase(); units.push(o); };
+  for (const t of K.topics) {
+    add({ kind: "r", topic: t.id, text: t.name + "：" + t.tldr, anchor: "kt-top" });
+    t.points.forEach((p, i) => add({ kind: "r", topic: t.id, text: p, anchor: "kr-" + i }));
+    if (t.impact) add({ kind: "r", topic: t.id, text: t.impact, anchor: "kimpact" });
+    (t.cases || []).forEach((c, ci) => {
+      add({ kind: "c", topic: t.id, text: c.name + "：" + c.status, anchor: "kc-" + ci });
+      c.steps.forEach((s, si) => add({ kind: "c", topic: t.id, text: c.name + "｜" + s.date + " " + s.what, anchor: "kc-" + ci + "-" + si }));
+    });
+    for (const n of t.docs) (docTopic[n] = docTopic[n] || []).push(t.id);
+  }
+  for (const d of K.docs) {
+    const tp = (docTopic[d.n] || [])[0] || "";
+    add({ kind: "d", topic: tp, doc: d.n, text: d.title_zh + " " + d.orig, anchor: "kd-" + d.n, title: true });
+    add({ kind: "d", topic: tp, doc: d.n, text: d.summary_zh || "", anchor: "kd-" + d.n });
+    (d.points_zh || []).forEach(p => add({ kind: "d", topic: tp, doc: d.n, text: p, anchor: "kd-" + d.n }));
+  }
+  const parse = q => {
+    const whole = norm(q), wg = SYN.filter(g => g.includes(whole));
+    if (whole && wg.length) return [{ label: q.trim(), vars: [whole, ...new Set(wg.flat())] }];
+    const terms = [];
+    for (const tok of q.split(/\s+/).filter(Boolean)) {
+      const t = norm(tok); if (!t) continue;
+      const short = isLatin(t) && t.length <= 3;
+      const hit = SYN.filter(g => g.some(v => v === t || (!short && t.length >= 2 && v.includes(t)) || (v.length >= 2 && !(isLatin(v) && v.length < 3) && t.includes(v))));
+      if (!hit.length) { terms.push({ label: tok, vars: [t] }); continue; }
+      const wh = hit.filter(g => g.some(v => v === t || v.includes(t)));
+      if (wh.length) terms.push({ label: tok, vars: [t, ...new Set(wh.flat())] });
+      else for (const g of hit) terms.push({ label: K.synonyms[SYN.indexOf(g)][0], vars: [...g] });
+    }
+    return terms;
+  };
+  const has = (u, v) => isLatin(v) && v.length <= 3 ? new RegExp("(^|[^a-z0-9])" + v + "($|[^a-z0-9])").test(u.w) : u.n.includes(v);
+  const bigrams = s => { const a = []; for (let i = 0; i < s.length - 1; i++) a.push(s.slice(i, i + 2)); return a; };
+  const matchTerm = (u, term) => {
+    if (has(u, term.vars[0])) return 3;
+    if (term.vars.some(v => has(u, v))) return 2;
+    const v = term.vars[0];
+    if (!isLatin(v) && v.length >= 3) { const b = bigrams(v); if (b.filter(x => u.n.includes(x)).length / b.length >= 0.6) return 1; }
+    return 0;
+  };
+  const search = q => {
+    const terms = parse(q); if (!terms.length) return { terms, full: [], part: [] };
+    const best = new Map();
+    for (const u of units) {
+      const ms = terms.map(t => matchTerm(u, t)), got = ms.filter(Boolean).length;
+      if (!got) continue;
+      const s = { u, all: got === terms.length, score: ms.reduce((a, b) => a + b, 0) * 10 + (u.kind === "r" ? 3 : u.kind === "c" ? 2 : 1) };
+      const key = u.kind === "d" ? "d" + u.doc : u.topic + u.anchor, o = best.get(key);
+      if (!o || s.score > o.score) best.set(key, s);
+    }
+    const list = [...best.values()].sort((a, b) => b.score - a.score);
+    return { terms, full: list.filter(s => s.all), part: list.filter(s => !s.all) };
+  };
+  const orig = v => { for (const g of K.synonyms) for (const w of g) if (norm(w) === v) return w; return null; };
+  const mark = (node, text, terms) => {
+    const raw = String(text || "");
+    if (!terms || !terms.length) { node.textContent = raw; return node; }
+    const chars = [...raw], map = [], nch = [];
+    chars.forEach((c, i) => { for (const x of norm(c)) { nch.push(x); map.push(i); } });
+    const nt = nch.join(""), on = new Array(chars.length).fill(false);
+    for (const v of terms.flatMap(t => t.vars)) { if (!v || (isLatin(v) && v.length <= 2)) continue; let i = nt.indexOf(v); while (i >= 0) { for (let k = i; k < i + v.length; k++) on[map[k]] = true; i = nt.indexOf(v, i + 1); } }
+    let buf = "", cur = false;
+    const flush = () => { if (!buf) return; node.append(cur ? el("mark", null, buf) : buf); buf = ""; };
+    chars.forEach((c, i) => { if (on[i] !== cur) { flush(); cur = on[i]; } buf += c; }); flush();
+    return node;
+  };
+  const topicDate = {};
+  for (const t of K.topics) topicDate[t.id] = t.docs.map(n => (docBy[n] || {}).issued || "").sort().pop() || "";
+  const dateOf = u => u.kind === "d" ? (docBy[u.doc] || {}).issued || "" : u.kind === "c" ? ((u.text.match(/\d{4}-\d{2}-\d{2}/) || [])[0] || topicDate[u.topic]) : topicDate[u.topic];
+  return (K._idx = { search, mark, orig, docBy, topicBy, norm, dateOf });
+}
+const KB_NUM = /((?:PHP|PhP|Php|USD|US\$)\s?[\d,.]+\s?(?:萬|億|million)?|[\d,.]+\s?(?:萬|億)\s?(?:披索|美元)|\d{4}-\d{2}-\d{2}|\d{4}\/\d{1,2}\/\d{1,2}|\d+(?:\.\d+)?\s?%|\d+\s?(?:個(?:日曆|工作)?|個銀行營業)?天|\d+\s?個月|\d+\s?年)/g;
+function kbRich(node, text) {
+  const parts = String(text || "").split(KB_NUM);
+  parts.forEach((part, i) => { if (!part) return; node.append(i % 2 ? el("b", "knum", part) : part); });
+  return node;
+}
+const KB_KIND_RANK = { r: 0, c: 1, d: 2 };
+function kbGloss(root, K) {
+  const G = (K && K.glossary) || {}, keys = Object.keys(G).sort((a, b) => b.length - a.length);
+  if (!keys.length || !root) return;
+  const re = new RegExp("(^|[^A-Za-z0-9])(" + keys.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/ /g, "\\s?")).join("|") + ")(?![A-Za-z0-9])", "g");
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement.closest("a, button, abbr, input, summary, .kah, .kgh, h1, h2") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (const n of nodes) {
+    const t = n.nodeValue; re.lastIndex = 0; if (!re.test(t)) continue;
+    const frag = document.createDocumentFragment(); let last = 0; re.lastIndex = 0; let m;
+    while ((m = re.exec(t))) {
+      const start = m.index + m[1].length, word = m[2], key = keys.find(k => k.replace(/ /g, "") === word.replace(/\s/g, "")) || word;
+      frag.append(t.slice(last, start));
+      const ab = el("abbr", "gl", word); ab.title = key + "：" + G[key]; ab.onclick = e => { e.stopPropagation(); ab.classList.toggle("show"); };
+      ab.dataset.tip = G[key]; frag.append(ab); last = start + word.length;
+    }
+    frag.append(t.slice(last)); n.replaceWith(frag);
+  }
+}
+const KB_REL = () => ({ high: ["hi", S.ui.relHigh], mid: ["mid", S.ui.relMid], low: ["lo", S.ui.relLow], none: ["lo", S.ui.relLow] });
+function kbSynLine(I, terms) {
+  const shown = terms.filter(t => t.vars.length > 1).map(t => t.label + "＝" + [...new Set(t.vars.map(I.orig).filter(w => w && w.toLowerCase() !== t.label.toLowerCase()))].slice(0, 6).join("、"));
+  return shown.length ? S.ui.kbSyn + shown.join("；") : "";
+}
+function kbHitRow(I, x, terms, onclick) {
+  const r = el("div", "khit"), k = { r: ["kk r", S.ui.kbRule], c: ["kk c", S.ui.kbCase], d: ["kk", S.ui.kbDoc] }[x.u.kind];
+  r.append(el("span", k[0], k[1]));
+  const b = el("div");
+  const dt = I.dateOf(x.u);
+  if (dt) { const tag = el("span", "khd", (x.u.kind === "r" ? S.ui.kbUpd : "") + dt); if (x.u.kind === "r") tag.title = S.ui.kbUpdTip; b.append(tag); }
+  if (x.u.kind === "d" && !x.u.title) b.append(el("b", null, I.docBy[x.u.doc].title_zh + "："));
+  I.mark(b, x.u.text, terms); r.append(b);
+  r.onclick = onclick; return r;
+}
+function kbSearchBox(side, K) {
+  const I = kbIndex(K);
+  const box = el("section", "rbox rkb");
+  const h = el("div", "rbh"); h.append(el("b", null, S.ui.kbTitle), el("span", "rbn", S.ui.kbSub.replace("{n}", K.docs.length).replace("{t}", K.topics.length))); box.append(h);
+  const bar = el("label", "kbbar"), input = el("input"); input.type = "search"; input.placeholder = S.ui.kbHint; input.value = S.kbQ || "";
+  bar.append(el("span", "findicon", "🔍"), input); box.append(bar);
+  const quick = el("div", "kbquick"); quick.append(el("span", "muted", S.ui.kbQuick));
+  for (const w of K.quick || []) { const b = el("button", null, w); b.onclick = () => { input.value = w; run(); }; quick.append(b); }
+  box.append(quick);
+  const out = el("div", "kbout"); box.append(out);
+  const foot = el("div", "kbfoot");
+  const browse = el("button", null, S.ui.kbBrowse); browse.onclick = () => { S.kbView = {}; render(); window.scrollTo(0, 0); };
+  foot.append(browse); box.append(foot);
+  const run = () => {
+    const q = input.value.trim(); S.kbQ = q; out.textContent = "";
+    if (!q) return;
+    const { terms, full, part } = I.search(q), list = full.length ? full : part;
+    const head = el("div", "kbres"); head.append(S.ui.kbFound.replace("{q}", q).replace("{n}", full.length));
+    const syn = kbSynLine(I, terms); if (syn) head.append(el("small", null, syn));
+    out.append(head);
+    if (!list.length) { out.append(el("p", "muted small", S.ui.kbNone)); return; }
+    if (!full.length) out.append(el("p", "muted small", S.ui.kbPartial));
+    const top = list.find(x => x.u.kind !== "d") || list[0];
+    const tt = I.topicBy[top.u.topic];
+    if (tt) {
+      const ans = el("div", "kans");
+      const ah = el("div", "kah"); ah.append(el("span", null, S.ui.kbAnswer), el("i", null, tt.emoji + " " + tt.name + " →")); ans.append(ah);
+      const body = el("div", "kab");
+      const tdt = I.dateOf(top.u); if (tdt) body.append(el("span", "khd", (top.u.kind === "r" ? S.ui.kbUpd : "") + tdt));
+      if (top.u.kind === "d") body.append(el("b", null, I.docBy[top.u.doc].title_zh + "："));
+      I.mark(body, top.u.text, terms); ans.append(body);
+      ans.onclick = () => { S.kbView = { topic: top.u.topic, anchor: top.u.anchor }; render(); };
+      out.append(ans);
+    }
+    const rest = list.filter(x => x !== top);
+    if (rest.length) out.append(el("p", "kmorelab", S.ui.kbMoreLab));
+    const byT = new Map(); for (const x of rest) (byT.get(x.u.topic) || byT.set(x.u.topic, []).get(x.u.topic)).push(x);
+    for (const xs of byT.values()) xs.sort((a, b) => KB_KIND_RANK[a.u.kind] - KB_KIND_RANK[b.u.kind] || b.score - a.score);
+    let shownT = 0;
+    for (const [tid, xs] of byT) {
+      const t = I.topicBy[tid]; if (!t || shownT >= 4) continue; shownT++;
+      const g = el("div", "kgrp"), gh = el("div", "kgh"); gh.append(el("span", null, t.emoji + " " + t.name), el("i", null, String(xs.length)));
+      gh.onclick = () => { S.kbView = { topic: tid }; render(); window.scrollTo(0, 0); }; g.append(gh);
+      for (const x of xs.slice(0, 2)) g.append(kbHitRow(I, x, terms, () => { S.kbView = { topic: tid, anchor: x.u.anchor }; render(); }));
+      out.append(g);
+    }
+    const all = el("button", "kball", S.ui.kbAll.replace("{n}", list.length)); all.onclick = () => { S.kbView = { q }; render(); window.scrollTo(0, 0); };
+    out.append(all);
+    kbGloss(out, K);
+  };
+  let tm; input.oninput = () => { clearTimeout(tm); tm = setTimeout(run, 200); };
+  run();
+  side.append(box);
+}
+
+async function viewKb() {
+  const renderId = S.renderId;
+  const K = await kbData();
+  if (renderId !== S.renderId) return;
+  if (!K) { S.kbView = null; return render(); }
+  const I = kbIndex(K), V = S.kbView, REL = KB_REL();
+  const latest = S.dates[0] ? S.dates[0].d : "";
+  const go = v => { S.kbView = v; render(); window.scrollTo(0, 0); };
+  const back = el("button", "backbtn", S.ui.kbBack); back.onclick = () => { S.kbView = null; render(); window.scrollTo(0, 0); };
+  main.append(back);
+  const head = el("div", "mast ghead"); head.append(el("h1", "serif", S.ui.kbPage));
+  const sub = el("div", "sub"); sub.append(el("span", null, S.ui.kbSub.replace("{n}", K.docs.length).replace("{t}", K.topics.length) + "・" + K.updated)); head.append(sub);
+  main.append(head, el("p", "kbnote", S.ui.kbNote));
+  const wrap = el("div", "kbwrap"), nav = el("aside", "kbnav"), body = el("section", "kbbody");
+  wrap.append(nav, body); main.append(wrap);
+  const bar = el("label", "kbbar"), input = el("input"); input.type = "search"; input.placeholder = S.ui.kbHint; input.value = V.q || "";
+  bar.append(el("span", "findicon", "🔍"), input); nav.append(bar);
+  let tm; input.oninput = () => { clearTimeout(tm); tm = setTimeout(() => { const q = input.value.trim(); S.kbView = q ? { q } : {}; render(); const i = main.querySelector(".kbnav input"); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 300); };
+  const quick = el("div", "kbquick"); for (const w of K.quick || []) { const b = el("button", null, w); b.onclick = () => go({ q: w }); quick.append(b); } nav.append(quick);
+  const res = V.q ? I.search(V.q) : null;
+  const counts = {}; if (res) for (const x of res.full) counts[x.u.topic] = (counts[x.u.topic] || 0) + 1;
+  const all = el("button", "kbn" + (!V.topic && !V.ft ? " on" : "")); all.append(el("span", null, S.ui.kbHome), el("small", null, res ? String(res.full.length) : String(K.topics.length)));
+  all.onclick = () => go(V.q ? { q: V.q } : {}); nav.append(all);
+  for (const rel of ["high", "mid", "low"]) {
+    const ts = K.topics.filter(t => t.rel === rel); if (!ts.length) continue;
+    nav.append(el("p", "kbng " + REL[rel][0], REL[rel][1]));
+    for (const t of ts) {
+      const n = res ? (counts[t.id] || 0) : t.docs.length, on = res ? V.ft === t.id : V.topic === t.id;
+      const b = el("button", "kbn" + (on ? " on" : "") + (res && !n ? " zero" : "")); b.append(el("span", null, t.emoji + " " + t.name), el("small", null, String(n)));
+      b.onclick = () => go(res ? { q: V.q, ft: V.ft === t.id ? "" : t.id } : { topic: t.id }); nav.append(b);
+    }
+  }
+  if (res) { kbResults(body, I, res, V); kbGloss(body, K); return; }
+  if (V.topic && I.topicBy[V.topic]) {
+    kbTopic(body, I, I.topicBy[V.topic], REL, latest); kbGloss(body, K);
+    if (V.anchor) {
+      const a = document.getElementById(V.anchor), toc = main.querySelector(".ktoc"), side = a && a.closest(".ksplit-side");
+      if (a) { const d = a.closest("details"); if (d) d.open = true; if (a.tagName === "DETAILS") a.open = true; }
+      if (a && side && getComputedStyle(side).position === "sticky") { window.scrollTo(0, 0); side.scrollTop = a.offsetTop - side.offsetTop - 10; }
+      else if (a) window.scrollTo({ top: a.getBoundingClientRect().top + window.scrollY - headH() - (toc ? toc.offsetHeight : 0) - 16 });
+      if (a) a.classList.add("flash");
+    }
+    return;
+  }
+  const ups = kbUpcoming(K, latest);
+  if (ups.length) {
+    const box = el("div", "rbox"); box.append(el("div", "rbh", S.ui.kbDue));
+    for (const x of ups) { const r = el("div", "kdue"); r.append(el("b", null, x.date), el("span", null, x.t.emoji + " " + x.what), el("i", null, S.ui.kbLeft.replace("{n}", daysBetween(latest, x.date)))); r.onclick = () => go({ topic: x.t.id }); box.append(r); }
+    body.append(box);
+  }
+  const topicOfDoc = {}; for (const t of K.topics) for (const n of t.docs) if (!topicOfDoc[n]) topicOfDoc[n] = t;
+  const recent = K.docs.filter(d => d.issued && topicOfDoc[d.n] && (d.relevance === "high" || d.relevance === "mid")).sort((a, b) => b.issued.localeCompare(a.issued)).slice(0, 5);
+  if (recent.length) {
+    const box = el("div", "rbox"); box.append(el("div", "rbh", S.ui.kbRecent));
+    for (const d of recent) {
+      const t = topicOfDoc[d.n], r = el("div", "kdue");
+      r.append(el("b", null, d.issued), el("span", null, d.title_zh), el("i", "kt", t.emoji + " " + t.name));
+      r.onclick = () => go({ topic: t.id, anchor: "kd-" + d.n }); box.append(r);
+    }
+    body.append(box);
+  }
+  for (const rel of ["high", "mid", "low"]) {
+    const ts = K.topics.filter(t => t.rel === rel); if (!ts.length) continue;
+    body.append(el("h3", "kbzone " + REL[rel][0], REL[rel][1] + "　" + ts.length));
+    const cards = el("div", "kbcards " + rel);
+    for (const t of ts) {
+      const c = el("button", "kbcard"), h = el("h3"); h.append(t.emoji + " " + t.name);
+      c.append(h, el("p", null, t.tldr), el("span", "kbcn", t.docs.length + " " + S.ui.kbDocUnit)); c.onclick = () => go({ topic: t.id }); cards.append(c);
+    }
+    body.append(cards);
+  }
+  kbGloss(body, K);
+}
+function kbDocBlock(d, REL) {
+  const r = el("div", "kdoc"); r.id = "kd-" + d.n;
+  const dt = el("div", "kdt"); dt.append(el("b", null, d.title_zh), el("span", "kbadge " + (REL[d.relevance] || REL.low)[0], (REL[d.relevance] || REL.low)[1]));
+  r.append(dt, el("div", "kdm", [d.issued, d.dept].filter(Boolean).join("・")), kbRich(el("div", "kds"), d.summary_zh || ""));
+  const det = el("details"); det.append(el("summary", null, S.ui.kbPoints));
+  const ul = el("ul"); for (const p of d.points_zh || []) ul.append(kbRich(el("li"), p)); det.append(ul);
+  const a = el("a", null, S.ui.kbOrig); a.href = d.url; a.target = "_blank"; a.rel = "noopener"; det.append(a);
+  r.append(det); return r;
+}
+function kbTopic(body, I, t, REL, latest) {
+  const ups = (t.dates || []).map(x => kbRoll(x, latest)).filter(x => x.date >= latest);
+  const hasSide = ups.length || (t.cases || []).length;
+  const wrap = el("div", hasSide ? "ksplit" : ""), mainCol = el("div", "ksplit-main");
+  wrap.append(mainCol); body.append(wrap);
+  const h = el("h2", "kbh1"); h.id = "kt-top"; h.append(t.emoji + " " + t.name + " ", el("span", "kbadge " + REL[t.rel][0], REL[t.rel][1]));
+  mainCol.append(h, kbRich(el("div", "kbtldr"), t.tldr));
+  if (t.impact) { const im = el("div", "kbimpact top"); im.id = "kimpact"; im.append(el("b", "kih", S.ui.kbImpact)); kbRich(im, t.impact); mainCol.append(im); }
+  const toc = el("div", "ktoc"); mainCol.append(toc);
+  const jump = (label, id) => {
+    const b = el("button", null, label); b.dataset.to = id;
+    b.onclick = () => {
+      const x = document.getElementById(id); if (!x) return;
+      const off = headH() + toc.getBoundingClientRect().height + 16;
+      window.scrollTo(0, x.getBoundingClientRect().top + window.scrollY - off);
+      for (const o of toc.children) o.classList.toggle("on", o === b);
+      x.classList.remove("flash"); void x.offsetWidth; x.classList.add("flash");
+    };
+    toc.append(b);
+  };
+  const sec = (parent, title, id) => { const s = el("section", "kbsec"); if (id) s.id = id; s.append(el("h3", null, title)); parent.append(s); return s; };
+  jump(S.ui.kbRules, "ksec-rules");
+  jump(S.ui.kbDocs + " " + t.docs.length, "ksec-docs");
+  let s = sec(mainCol, S.ui.kbRules, "ksec-rules"); const ul = el("ul", "kbrules");
+  t.points.forEach((p, i) => { const li = kbRich(el("li"), p); li.id = "kr-" + i; ul.append(li); }); s.append(ul);
+  const docs = t.docs.map(n => I.docBy[n]).filter(Boolean).sort((a, b) => (b.issued || "").localeCompare(a.issued || ""));
+  if (docs.length) {
+    s = sec(mainCol, S.ui.kbDocs + "　" + docs.length, "ksec-docs");
+    const det = el("details", "kdocs"); det.append(el("summary", null, S.ui.kbDocsOpen.replace("{n}", docs.length)));
+    const box = el("div", "rbox"); for (const d of docs) box.append(kbDocBlock(d, REL)); det.append(box); s.append(det);
+    if ((S.kbView || {}).anchor && S.kbView.anchor.startsWith("kd-")) det.open = true;
+  }
+  if (!hasSide) return;
+  const side = el("aside", "ksplit-side"); wrap.append(side);
+  side.append(el("p", "ksh", S.ui.kbSchedule));
+  if (ups.length) {
+    s = sec(side, S.ui.kbDates, "kdates");
+    for (const x of ups.sort((a, b) => a.date.localeCompare(b.date))) {
+      const r = el("div", "kdl"); r.append(el("b", null, x.date), el("span", null, x.what), el("i", null, S.ui.kbLeft.replace("{n}", daysBetween(latest, x.date))));
+      s.append(r);
+    }
+  }
+  if ((t.cases || []).length) {
+    s = sec(side, S.ui.kbCases, "ksec-cases");
+    t.cases.forEach((c, ci) => {
+      const box = el("details", "kcase"); box.id = "kc-" + ci; box.open = ci === 0;
+      const sum = el("summary", "kcsum"); sum.append(el("span", "kcpm"), el("h4", null, c.name), el("small", null, c.steps.length + " " + S.ui.kbSteps));
+      box.append(sum);
+      const now = el("div", "know"); now.append(el("b", null, S.ui.kbNow + "　")); kbRich(now, c.status); box.append(now);
+      const tl = el("div", "ktl");
+      c.steps.map((st, si) => [st, si]).reverse().forEach(([st, si], k) => {
+        const r = el("div", "kstep" + (k === 0 ? " last" : "")); r.id = "kc-" + ci + "-" + si;
+        const top = el("div", "kst"); top.append(el("span", "kd", st.date));
+        if (k === 0) top.append(el("span", "ktag", S.ui.kbLatest));
+        const d = I.docBy[st.n];
+        if (d) { const a = el("a", null, S.ui.source + " ↗"); a.href = d.url; a.target = "_blank"; a.rel = "noopener"; top.append(a); }
+        r.append(top, kbRich(el("div", "kwhat"), st.what));
+        if (d && d.summary_zh && d.summary_zh !== st.what) r.append(kbRich(el("div", "kdet"), d.summary_zh));
+        tl.append(r);
+      });
+      box.append(tl); s.append(box);
+    });
+  }
+}
+function kbResults(body, I, res, V) {
+  const { terms, full, part } = res;
+  const head = el("div", "kbres big"); head.append(S.ui.kbFound.replace("{q}", V.q).replace("{n}", full.length));
+  const syn = kbSynLine(I, terms); if (syn) head.append(el("small", null, syn));
+  body.append(head);
+  const show = list => {
+    const byT = new Map(); for (const x of list) { if (V.ft && x.u.topic !== V.ft) continue; (byT.get(x.u.topic) || byT.set(x.u.topic, []).get(x.u.topic)).push(x); }
+    for (const [tid, xs] of byT) {
+      const t = I.topicBy[tid]; if (!t) continue;
+      xs.sort((a, b) => KB_KIND_RANK[a.u.kind] - KB_KIND_RANK[b.u.kind] || b.score - a.score);
+      const g = el("div", "kgrp big"), gh = el("div", "kgh"); gh.append(el("span", null, t.emoji + " " + t.name + "　" + xs.length), el("i", null, S.ui.kbSeeTopic));
+      gh.onclick = () => { S.kbView = { topic: tid }; render(); window.scrollTo(0, 0); }; g.append(gh);
+      const rows = xs.map(x => kbHitRow(I, x, terms, () => { S.kbView = { topic: tid, anchor: x.u.anchor }; render(); }));
+      rows.forEach((r, i) => { if (i >= 5) r.hidden = true; g.append(r); });
+      if (rows.length > 5) {
+        const more = el("button", "kball", S.ui.kbMoreN.replace("{n}", rows.length - 5));
+        more.onclick = () => { rows.forEach(r => { r.hidden = false; }); more.remove(); };
+        g.append(more);
+      }
+      body.append(g);
+    }
+  };
+  show(full);
+  if (part.length && full.length < 5) { body.append(el("p", "muted", S.ui.kbPartial + "（" + part.length + "）")); show(part.slice(0, 20)); }
+  if (!full.length && !part.length) body.append(el("p", "muted", S.ui.kbNone));
 }
 function group_of(day, article) {
   if (!day._groupOf) {
@@ -1907,6 +2815,7 @@ async function viewGroup() {
   const dates = periodDates(P);
   if (S.mkMarket) { (S.nf || (S.nf = {})).market = S.mkMarket; S.mkMarket = null; }
 
+  const topicTiles = el("div", "kindtiles topictiles");
   const back = el("button", "backbtn", S.ui.backFront);
   back.onclick = () => { S.tab = "overview"; S.nf = {}; render(); window.scrollTo(0, 0); };
   main.append(back);
@@ -1915,12 +2824,12 @@ async function viewGroup() {
   const sub = el("div", "sub"), totalNote = el("span", null, "");
   sub.append(el("span", null, periodText(P, dates)), totalNote);
   head.append(sub); main.append(head);
-  main.append(glanceBox("market"));
+  main.append(topicTiles);
 
   const wrap = el("div", "withside"), page = el("div", "sidebody"), list = el("section", "left flat tl");
   page.append(list);
   const CORE = S.ui.core || [];
-  const markets = S.day.groups.map(g => ({ code: g.code, label: g.flag + " " + g.name, core: CORE.includes(g.code) }));
+  const markets = S.day.groups.map(g => ({ code: g.code, label: (/[\u{1F1E6}-\u{1F1FF}]/u.test(g.flag || "") ? "" : (g.flag || "") + " ") + g.name, core: CORE.includes(g.code) }));
   wrap.append(newsFacets(page, [], true, periodItems(P), { search: true, markets, periodExtra: periodExtra(P) }), page);
   main.append(wrap);
   const heading = el("p", "kicker"); heading.append(el("span", "kt", S.ui.marketNews));
@@ -1947,6 +2856,16 @@ async function viewGroup() {
   }
   if (!total) list.append(el("p", "muted", S.ui.noneInPeriod));
   headCount.textContent = String(total);
+  const F = S.nf || (S.nf = {});
+  const byTopic = new Map();
+  for (const c of list.querySelectorAll(":scope > .card")) byTopic.set(c.dataset.topic, (byTopic.get(c.dataset.topic) || new Set()).add(c.dataset.url));
+  for (const [topic, emoji] of TOPIC_EMOJI) {
+    const n = (byTopic.get(topic) || new Set()).size;
+    const t = el("button", "kindtile" + (n ? "" : " zero") + (F.topic === topic ? " on" : ""));
+    t.append(el("span", null, emoji + " " + tv(topic)), el("b", null, String(n)));
+    t.onclick = () => { F.topic = F.topic === topic ? "" : topic; render(); };
+    topicTiles.append(t);
+  }
   totalNote.textContent = total + " " + S.ui.unit;
   const dated = (rows, bucket, label) => {
     if (!rows.length) return;
@@ -2308,19 +3227,19 @@ function gameRow(g, L, withDate, compact) {
   if (compact) box.onclick = e => { if (e.target.tagName !== "A" && !e.target.classList.contains("jump")) box.classList.toggle("open"); };
   const head = el("div", "ghd");
   if (withDate) head.append(el("span", "td", mmdd(g.d)));
-  if (compact && (g.tr || g.own)) head.append(el("span", "star", "★"));
+  if (compact && (g.tr || g.own)) head.append(el("span", "star lv0", g.own ? S.ui.ownTag : S.ui.focusShort));
   head.append(el("b", null, g.n), el("span", "muted", g.p));
   box.append(head);
   const tags = el("div", "gtags");
-  if (g.own) tags.append(el("span", "gtag tr", S.ui.ownTag));
+  if (g.own) tags.append(el("span", "gtag own", S.ui.ownTag));
   if (g.tr) tags.append(el("span", "gtag tr", S.ui.tracked));
-  if (g.w) tags.append(el("span", "gtag", S.ui.watch));
+  if (g.w) tags.append(el("span", "gtag watch", S.ui.watch));
   if (g.ph) {
     const tag = el("span", "gtag ph jump", S.ui.phTag + " →");
     tag.onclick = e => { e.stopPropagation(); for (const o of document.querySelectorAll(".overlay")) o.remove(); openBrand(g.c); };
     tags.append(tag);
   }
-  if (g.new) tags.append(el("span", "gtag", S.ui.isNew));
+  if (g.new) tags.append(el("span", "gtag isnew", S.ui.isNew));
   if (g.was) tags.append(el("span", "gtag", S.ui.movedFrom + " " + mmdd(g.was)));
   if (tags.childNodes.length) box.append(tags);
   const spec = [g.t];
@@ -2491,7 +3410,8 @@ async function viewCompetitors() {
   if (!S.company) sub.append(el("span", null, periodText(period, dates)));
   head.append(sub); main.append(head);
   if (S.company) { head.classList.add("slim"); await viewProfile(S.ui.competitors); return; }
-  main.append(glanceBox("comp"));
+  const kindTiles = el("div", "kindtiles");
+  main.append(kindTiles);
 
   let entries = await competitorEntries(dates);
   if (renderId !== S.renderId) return;
@@ -2503,8 +3423,7 @@ async function viewCompetitors() {
   for (const list of byWho.values()) events.push(...mergeEvents(list));
   events.sort((x, y) => y._date.localeCompare(x._date) || Number(y._tracked) - Number(x._tracked) || Number(y._watch) - Number(x._watch) || Number(y._asia) - Number(x._asia));
 
-  const kindOf = e => e.event_type === S.vocab.launch && e.main_role === S.vocab.provider ? "launch"
-    : ["市場進入", "牌照", "合作", "併購"].includes(e.event_type) ? "moves" : "other";
+  const kindOf = compKind;
   const whoOf = e => e._tracked ? "focus" : e._watch ? "watch" : "outside";
   const kind = S.company ? "all" : (S.compKind || "all"), who = S.company ? "all" : (S.compWho || "all");
   let shown = events.filter(e => (kind === "all" || kindOf(e) === kind) && (who === "all" || whoOf(e) === who));
@@ -2532,8 +3451,15 @@ async function viewCompetitors() {
     const uniq = list => new Set(list.map(e => e.url)).size;
     const kinds = group(S.ui.fKind);
     item(kinds, S.ui.all, uniq(byKind), kind === "all", () => { S.compKind = "all"; render(); });
-    for (const [id, label] of [["launch", S.ui.launches], ["moves", S.ui.moves], ["other", S.ui.otherMoves]])
-      item(kinds, label, uniq(byKind.filter(e => kindOf(e) === id)), kind === id, () => { S.compKind = id; render(); });
+    for (const [id, key] of COMP_KINDS)
+      item(kinds, S.ui[key], uniq(byKind.filter(e => kindOf(e) === id)), kind === id, () => { S.compKind = id; render(); });
+    for (const [id, key] of COMP_KINDS) {
+      const n = uniq(byKind.filter(e => kindOf(e) === id));
+      const t = el("button", "kindtile" + (n ? "" : " zero") + (kind === id ? " on" : ""));
+      t.append(el("span", null, S.ui[key]), el("b", null, String(n)));
+      t.onclick = () => { S.compKind = kind === id ? "all" : id; render(); };
+      kindTiles.append(t);
+    }
     const lists = group(S.ui.fWho);
     lists.before(el("p", "fnote", S.ui.nWho));
     addHelp(S.ui.termTitle, S.ui.nTerms);
@@ -2852,12 +3778,13 @@ window.addEventListener("popstate", async e => {
   S.tab = st.tab; S.company = st.company; S.coView = st.coView; S.offView = st.offView; S.offType = null;
   try { if (st.date && st.date !== S.date) await openDate(st.date); else render(); } finally { S.restoring = false; }
 });
+window.addEventListener("resize", () => headH());
 function render() {
   if (S.day && S.day.groups.some(g => g.code === S.tab)) { S.mkMarket = S.tab; S.tab = "ALLM"; }
   recordNav();
   S.renderId = (S.renderId || 0) + 1;
   S.help = [];
-  tabs(); clear(main);
+  tabs(); clear(main); headH();
   const tools = el("div", "tools"); tools.id = "tools"; main.append(tools);
   const help = document.getElementById("helpbtn");
   if (!help.firstChild) help.append(el("span", "ti", "ⓘ"), el("span", null, S.ui.help));
