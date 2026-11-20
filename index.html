@@ -1307,6 +1307,32 @@ main .rtag.date, main .khd, main .kk, main .ktag, main .rnm .todo, main .tcode, 
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --tg-meta: var(--muted); --tg-ph: var(--ph); } }
 main .rtag.date, main .khd, main .kk, main .ktag, main .rnm .todo, main .tcode, main .kbadge.lo, main .rtag.star.lv2 { color: var(--tg-meta) !important; }
 main .rtag.pg, main .gtag.ph { color: var(--tg-ph) !important; }
+
+.tab .tshort { display: none; }
+@media (max-width: 760px) {
+
+  #tabs .tab .tfull { display: none; } #tabs .tab .tshort { display: inline; }
+
+  main .fptiles { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; overflow: visible !important; gap: 8px; mask-image: none !important; }
+  main .fptiles .fptile { min-width: 0 !important; width: auto !important; flex: none !important; }
+  main .fptiles .fptile:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  main .fptiles .fptile .tl, main .fptiles .fptile .ts { white-space: normal; overflow-wrap: anywhere; }
+
+  main .rdash.rpg .rtiles { grid-template-columns: 1fr !important; gap: 6px; }
+  main .rdash.rpg .rtile { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "l n" "s n"; align-items: center; column-gap: 10px; text-align: left; }
+  main .rdash.rpg .rtile .rl { grid-area: l; white-space: normal; overflow: visible; text-overflow: clip; }
+  main .rdash.rpg .rtile .rs { grid-area: s; white-space: normal; overflow: visible; text-overflow: clip; }
+  main .rdash.rpg .rtile .rn { grid-area: n; }
+
+  main .kindtiles.topictiles { display: flex !important; flex-wrap: wrap; gap: 6px; }
+  main .kindtiles.topictiles .kindtile { flex-direction: row; align-items: baseline; gap: 6px; padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; }
+  main .kindtiles.topictiles .kindtile, main .kindtiles.topictiles .kindtile span { font-size: 13px; }
+  main .kindtiles.topictiles .kindtile b { font-size: 14px; }
+
+  main .kdue { flex-wrap: wrap; } main .kdue > * { min-width: 0; } main .kdue .kt { flex-basis: 100%; white-space: normal; }
+
+  main .compstat { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
 </style>
 </head>
 <body>
@@ -1461,7 +1487,10 @@ function tabs() {
   if (isMarket) S.lastMarket = S.tab;
   const go = id => { S.tab = id; S.topic = null; S.company = null; S.coView = null; S.offType = null; S.nf = {}; S.kbView = null; render(); window.scrollTo(0, 0); };
   const add = (target, id, label, count, dot, selected) => {
-    const b = el("button", "tab", label);
+    const b = el("button", "tab");
+    b.append(el("span", "tfull", label));
+    const short = target === bar && S.ui["nav_" + id];
+    if (short) b.append(el("span", "tshort", short));
     if (target === bar && TAB_ICONS[id]) b.prepend(tabIcon(TAB_ICONS[id]));
     b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(selected === undefined ? S.tab === id : selected));
     if (count !== undefined) b.append(el("small", null, String(count)));
