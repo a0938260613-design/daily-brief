@@ -1842,7 +1842,7 @@ function newsFacets(scope, articles, withRegion, period, opts) {
       k.hidden = active && !any;
       const kn = k.querySelector(".kn");
       if (kn) {
-        if (kn.dataset.orig === undefined) kn.dataset.orig = kn.textContent;
+        if (kn.dataset.orig === undefined || !/^[0-9]+$/.test(kn.dataset.orig)) kn.dataset.orig = kn.textContent;
         const want = active ? String(urls.size) : kn.dataset.orig;
         if (/^[0-9]+$/.test(kn.dataset.orig) && kn.textContent !== want) kn.textContent = want;
       }
@@ -1858,7 +1858,7 @@ function newsFacets(scope, articles, withRegion, period, opts) {
   };
   const resetAll = () => {
     for (const k of Object.keys(F)) delete F[k];
-    const box = side.querySelector(".sidefind input"); if (box) box.value = "";
+    const box = main.querySelector(".sidefind input"); if (box) box.value = "";
     for (const x of document.querySelectorAll(".topictiles .on")) x.classList.remove("on");
     draw(); window.scrollTo({ top: 0 });
   };
