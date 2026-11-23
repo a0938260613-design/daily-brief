@@ -2068,7 +2068,8 @@ function mergeEvents(list) {
       const shared = [...names].some(n => e._names.has(n));
       const sameEvent = a.event_type === e.event_type && a.event_type !== "無" && a.event_type !== S.vocab.launch;
       const local = a.region && a.region === e.region && !["全球", "歐洲", "北美", "亞太", "美國", "拉丁美洲", "非洲", "中東"].includes(a.region);
-      if (overlap(all, e._all) >= 0.6 || (shared && sameEvent) || (shared && overlap(cjk, e._cjk) >= 0.3) || (local && overlap(cjk, e._cjk) >= 0.25)) { hit = e; break; }
+      if (overlap(all, e._all) >= 0.6 || (shared && sameEvent) || (shared && overlap(cjk, e._cjk) >= 0.3) || (local && overlap(cjk, e._cjk) >= 0.25)
+        || (shared && local && a.topic && a.topic === e.topic)) { hit = e; break; }
     }
     if (hit) { hit.sources.push(a); for (const n of names) hit._names.add(n); }
     else out.push(Object.assign({}, a, { _all: all, _cjk: cjk, _names: names, sources: [a] }));
