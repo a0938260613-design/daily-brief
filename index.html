@@ -2059,6 +2059,11 @@ function fold(label, articles, showRegion, bucket) {
   return d;
 }
 function allArticles(day) { return day.groups.flatMap(g => g.topics.flatMap(t => t.articles)); }
+function selEvent(day, urls) {
+  if (!day._byUrl) { day._byUrl = new Map(); for (const a of allArticles(day)) if (!day._byUrl.has(a.url)) day._byUrl.set(a.url, a); }
+  const arts = urls.map(u => day._byUrl.get(u)).filter(Boolean);
+  return arts.length ? Object.assign({}, arts[0], { sources: arts }) : null;
+}
 
 function grams(text, cjkOnly) {
   let t = (text || "").toLowerCase().replace(/[\s\p{P}\p{S}]/gu, "");
@@ -2115,11 +2120,12 @@ async function viewOverview() {
   const everything = allArticles(d);
   const rank = a => (a.tier === "必讀" ? 0 : a.tier === "參考" ? 1 : 2) * 100 - (a.score || 0);
   const isComp = a => (a.competitors || []).length || (a.watch || []).length || (a.peers || []).length;
-  const own = mergeEvents(everything.filter(a => !a.low && (a.own || []).length).sort((x, y) => rank(x) - rank(y)));
+  const own = d.sel ? d.sel.own.map(u => selEvent(d, u)).filter(Boolean)
+    : mergeEvents(everything.filter(a => !a.low && (a.own || []).length).sort((x, y) => rank(x) - rank(y)));
   const ownUrls = new Set(own.flatMap(a => (a.sources || [a]).map(x => x.url)));
   const notOwn = a => !(a.sources || [a]).some(x => ownUrls.has(x.url));
   const market = everything.filter(a => !a.low && a.tier !== "背景" && !(a.own || []).length && (a.tier === "必讀" || !isComp(a))).sort((x, y) => rank(x) - rank(y));
-  const mustEv = mergeEvents(d.must_read).filter(notOwn);
+  const mustEv = d.sel ? d.sel.focus.map(u => selEvent(d, u)).filter(Boolean) : mergeEvents(d.must_read).filter(notOwn);
   const lead = mustEv;
   const used = new Set(lead.flatMap(a => (a.sources || [a]).map(x => x.url)));
 
@@ -2173,7 +2179,9 @@ async function viewOverview() {
     focus.append(c);
   });
   left.append(focus);
-  const groups = d.groups.map(g => [g, mergeEvents(market.filter(a => !(a.sources || [a]).some(x => used.has(x.url)) && group_of(d, a) === g.code))]).filter(x => x[1].length);
+  const groups = d.sel
+    ? d.groups.map(g => [g, d.sel.notable.filter(x => x.c === g.code).map(x => selEvent(d, x.u)).filter(Boolean)]).filter(x => x[1].length)
+    : d.groups.map(g => [g, mergeEvents(market.filter(a => !(a.sources || [a]).some(x => used.has(x.url)) && group_of(d, a) === g.code))]).filter(x => x[1].length);
   const rest = el("section", "fprest");
   section(rest, "📰 " + S.ui.fpNotable, groups.reduce((n, x) => n + x[1].length, 0), S.ui.nOthers);
   if (!groups.length) rest.append(el("p", "muted", S.ui.noToday));
@@ -2285,6 +2293,7 @@ const SHOW_STANCE = false;
 const TOPIC_EMOJI = [["法規政策", "⚖️"], ["執法掃蕩", "🚔"], ["營運商動態", "🏢"], ["供應商與產品", "🎮"], ["支付金流", "💳"], ["市場數據", "📊"], ["其他", "📌"]];
 const REG_TOPICS = () => (S.vocab && S.vocab.regTopics) || [];
 function regArticles(day) {
+  if (day.sel) return day.sel.reg.map(x => [selEvent(day, x.u), x.c]).filter(x => x[0]);
   const out = [];
   const rank = a => (a.tier === "必讀" ? 0 : a.tier === "參考" ? 1 : 2) * 100 - (a.score || 0);
   for (const g of day.groups) {
