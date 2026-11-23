@@ -1333,6 +1333,55 @@ main .rtag.pg, main .gtag.ph { color: var(--tg-ph) !important; }
 
   main .compstat { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 }
+.fptile .tlsh { display: none; }
+
+@media (max-width: 760px) {
+  main .fptiles { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 6px !important; margin: 10px 0 4px; }
+  main .fptiles .fptile { flex-direction: row !important; align-items: center; justify-content: space-between; gap: 6px; padding: 8px 10px; border-radius: 10px; }
+  main .fptiles .fptile:last-child:nth-child(odd) { grid-column: auto; }
+  main .fptiles .fptile:nth-child(5):last-child { grid-column: 2 / 4; }
+  main .fptiles .fptile .tl, main .fptiles .fptile .ts { display: none; }
+  main .fptiles .fptile .tlsh { display: inline; font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  main .fptiles .fptile .tn { font-size: 20px; line-height: 1.1; }
+  main .fptiles .fptile.hot .tlsh { color: var(--must-fg); }
+  main .rdh { flex-wrap: wrap; row-gap: 2px; }
+  main .rdh b { white-space: nowrap; }
+  main .rdh small { flex-basis: 100%; order: 5; }
+  main .rdash.rpg .rtiles { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 6px; }
+  main .rdash.rpg .rtile { display: flex !important; flex-direction: column; align-items: flex-start; padding: 8px; }
+  main .rdash.rpg .rtile .rl { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  main .rdash.rpg .rtile .rn { font-size: 22px; }
+  main .rdash.rpg .rtile .rs { font-size: 11.5px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
+}
+.calfilt .fcnt { display: none; }
+
+@media (max-width: 760px) {
+  main .fprail .railbox { background: none !important; border: 0 !important; border-radius: 0; padding: 0; margin: 22px 0 4px !important; }
+  main .fprail .railhd { padding-bottom: 6px; margin-bottom: 2px; }
+  main .fprail .railhd b { font-size: 16.5px; }
+  main .fprail .compstat { display: none !important; }
+  main .fprail .railrow { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 6px; padding: 9px 0; border-top: 1px solid var(--line); }
+  main .fprail .railrow .rtx { order: -1; flex: 1 1 100%; font-size: 14.5px; line-height: 1.45; }
+  main .fprail .railrow .rtag { font-size: 11px; padding: 0 6px; }
+  main .fprail .railrow .rsub { font-size: 12px; }
+  main .fprail .railrow .rspec { display: none; }
+  main .fprail .complist .railrow:nth-child(n+4) { display: none; }
+  main .calhead { gap: 8px; margin-top: 6px; }
+  main .calfilt { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 6px; width: 100%; }
+  main .calfilt .idlabel, main .callegend { display: none; }
+  main .calfilt .chip { white-space: nowrap; padding: 5px 12px; font-size: 13px; flex: none; }
+  main .calfilt .fcnt { display: inline; font-weight: 800; }
+  main .agenda .agday { position: sticky; top: var(--headh, 52px); z-index: 3; display: flex; align-items: baseline; gap: 8px; margin: 14px 0 0; padding: 8px 2px; font-size: 16px; font-weight: 900; background: var(--bg); border-bottom: 2px solid var(--line); }
+  main .agenda .agday.now { color: var(--accent); border-bottom-color: var(--accent); }
+  main .agenda .agday .muted { margin-left: auto; font-size: 12.5px; font-weight: 600; }
+  main .agenda .game, main .agenda .game.compact { background: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; margin: 0; padding: 9px 2px; }
+  main .agenda .game .ghd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; }
+  main .agenda .game .ghd b { font-size: 14.5px; }
+  main .agenda .game .ghd .muted { flex-basis: 100%; font-size: 12.5px; }
+  main .agenda .game.ph { box-shadow: none; }
+  main .agpast { margin: 8px 0 0; }
+  main .agpast > summary { cursor: pointer; padding: 8px 2px; color: var(--accent); font-size: 13.5px; font-weight: 700; }
+}
 </style>
 </head>
 <body>
@@ -2040,18 +2089,18 @@ async function viewOverview() {
 
   const tiles = el("div", "fptiles");
   main.append(tiles);
-  const tile = (label, go, hot) => {
+  const tile = (label, go, hot, short) => {
     const t = el("button", "fptile" + (hot ? " hot" : ""));
     const n = el("b", "tn", "…"), s = el("span", "ts", "");
-    t.append(el("span", "tl", label), n, s);
+    t.append(el("span", "tl", label), el("span", "tlsh", short || label), n, s);
     t.onclick = go; tiles.append(t);
     return { n, s, t };
   };
-  const tMust = tile("🚨 " + S.ui.must, () => { const x = main.querySelector(".fpmust"); if (x) { window.scrollTo(0, x.getBoundingClientRect().top + window.scrollY - headH() - 12); x.classList.remove("flash"); void x.offsetWidth; x.classList.add("flash"); } }, mustEv.length);
-  const tReg = tile("⚖️ " + S.ui.regTab, goTab("reg"));
-  const tComp = tile("🎯 " + S.ui.competitors, goTab("competitors"));
-  const tLaunch = tile("🎰 " + S.ui.railLaunch, goTab("calendar"));
-  const tPg = tile("📋 " + S.ui.railPg, goTab("official"));
+  const tMust = tile("🚨 " + S.ui.must, () => { const x = main.querySelector(".fpmust"); if (x) { window.scrollTo(0, x.getBoundingClientRect().top + window.scrollY - headH() - 12); x.classList.remove("flash"); void x.offsetWidth; x.classList.add("flash"); } }, mustEv.length, S.ui.must);
+  const tReg = tile("⚖️ " + S.ui.regTab, goReg, 0, S.ui.nav_reg);
+  const tComp = tile("🎯 " + S.ui.competitors, goTab("competitors"), 0, S.ui.nav_competitors);
+  const tLaunch = tile("🎰 " + S.ui.railLaunch, goTab("calendar"), 0, S.ui.nav_calendar);
+  const tPg = tile("📋 " + S.ui.railPg, goTab("official"), 0, S.ui.nav_official);
   tMust.n.textContent = String(mustEv.length);
   tMust.s.textContent = mustEv.length ? artText(mustEv[0], "title") : S.ui.quiet;
 
@@ -2111,7 +2160,7 @@ async function viewOverview() {
     if (onclick) r.onclick = onclick;
     container.append(r); return r;
   };
-  const regBox = box("⚖️ " + S.ui.regTab, S.ui.railAll, goTab("reg"));
+  const regBox = box("⚖️ " + S.ui.regTab, S.ui.railAll, goReg);
   const compBox = box("🎯 " + S.ui.competitors, S.ui.railAll, goTab("competitors"));
   const launchBox = box("🎰 " + S.ui.railLaunch, S.ui.railCal, goTab("calendar"));
   const pgBox = box("📋 " + S.ui.railPg, S.ui.railAll, goTab("official"));
@@ -2158,10 +2207,10 @@ async function viewOverview() {
   for (const r of fresh.slice(0, 3)) line(regBox, S.ui.regPgShort, regTitle(r), R.sources[r.s], "pg", () => window.open(r.u, "_blank", "noopener"));
   if (!fresh.length) line(regBox, S.ui.regPgShort, S.ui.regPgNoNew, "", "pg");
   const coreNews = regNews.filter(isCore), otherNews = regNews.filter(x => !isCore(x));
-  for (const [a, code] of coreNews.slice(0, 3)) line(regBox, gName(code), artText(a, "title"), "", "", goTab("reg"));
+  for (const [a, code] of coreNews.slice(0, 3)) line(regBox, gName(code), artText(a, "title"), "", "", goReg);
   if (!coreNews.length) line(regBox, S.ui.regCore, S.ui.regNoneCore, "");
-  for (const [a] of otherNews.slice(0, 3)) line(regBox, a.region || S.ui.regOther, artText(a, "title"), "", "other", goTab("reg"));
-  if (otherNews.length > 3) line(regBox, "", S.ui.fpMoreN.replace("{n}", otherNews.length - 3), "", "", goTab("reg"));
+  for (const [a] of otherNews.slice(0, 3)) line(regBox, a.region || S.ui.regOther, artText(a, "title"), "", "other", goReg);
+  if (otherNews.length > 3) line(regBox, "", S.ui.fpMoreN.replace("{n}", otherNews.length - 3), "", "", goReg);
 
   const L = await schedule();
   if (renderId !== S.renderId) return;
@@ -2270,11 +2319,12 @@ function headH() {
 function fmtDay(iso) { const [y, m, d] = iso.split("-"); return y + "/" + Number(m) + "/" + Number(d); }
 function daysBetween(a, b) { return Math.round((new Date(b + "T00:00:00Z") - new Date(a + "T00:00:00Z")) / 864e5); }
 
+function goReg() { S.regPeriod = { mode: 1 }; S.rf = {}; S.kbView = null; S.tab = "reg"; S.company = null; S.coView = null; render(); window.scrollTo(0, 0); }
 async function viewRegulation() {
   headH();
   if (S.kbView) return viewKb();
   const renderId = S.renderId;
-  const P = S.regPeriod || (S.regPeriod = { mode: 7 });
+  const P = S.regPeriod || (S.regPeriod = { mode: 1 });
   const dates = periodDates(P);
   const F = S.rf || (S.rf = {});
   const head = el("div", "mast ghead");
@@ -3329,8 +3379,13 @@ async function launchCalendar(container, renderId) {
     const c = el("button", "chip", label); c.setAttribute("aria-pressed", String(on)); c.onclick = () => { flip(); render(); }; return c;
   };
   filt.append(el("span", "idlabel", S.ui.calShow));
-  for (const [id, label] of [["all", S.ui.calAll], ["focus", S.ui.calFocus], ["watch", S.ui.calWatch], ["ph", S.ui.calPh]])
-    filt.append(toggle(label, who === id, () => { S.calWho = id; }));
+  const monthAll = L ? L.games.filter(g => g.d.startsWith(month)) : [];
+  const whoPick = id => g => id === "all" || (id === "focus" ? g.tr || g.own : id === "watch" ? g.w && !g.tr && !g.own : g.ph);
+  for (const [id, label] of [["all", S.ui.calAll], ["focus", S.ui.calFocus], ["watch", S.ui.calWatch], ["ph", S.ui.calPh]]) {
+    const c = toggle(label, who === id, () => { S.calWho = id; });
+    c.append(el("span", "fcnt", " " + monthAll.filter(whoPick(id)).length));
+    filt.append(c);
+  }
   if (who !== "all") {
     const cancel = el("button", "chip cbchip", "✕ " + S.ui.fCancel);
     cancel.onclick = () => { S.calWho = "all"; render(); };
@@ -3394,13 +3449,32 @@ async function launchCalendar(container, renderId) {
 
   const agenda = el("div", "agenda");
   if (!allDates.length) agenda.append(el("p", "muted", S.ui.none));
-  for (const date of allDates) {
+  const tomorrow = dayAfter(today, 1);
+  const past = allDates.filter(d => d < today), ahead = allDates.filter(d => d >= today);
+  const dayBlock = (box, date) => {
     const list = byDate.get(date) || [], planned = sched.get(date) || [], notes = official.get(date) || [];
-    agenda.append(el("h2", null, mmdd(date) + "　" + (list.length + planned.length + notes.length)));
-    for (const e of notes) agenda.append(pgRow(e, false));
-    if (list.length) launchRows(agenda, list);
-    for (const g of planned) agenda.append(gameRow(g, L, false, true));
-  }
+    const wd = S.ui.weekPrefix + S.ui.weekdays[(new Date(date + "T00:00:00").getDay() + 6) % 7];
+    const name = date === today ? S.ui.agToday + " " : date === tomorrow ? S.ui.agTomorrow + " " : "";
+    const h = el("h2", "agday" + (date === today ? " now" : ""), name + mmdd(date) + "（" + wd + "）");
+    h.append(el("span", "muted", (list.length + planned.length + notes.length) + " " + S.ui.pgUnit));
+    box.append(h);
+    for (const e of notes) box.append(pgRow(e, false));
+    if (list.length) launchRows(box, list);
+    for (const g of planned) {
+      const r = gameRow(g, L, false, true);
+      const who = r.querySelector(".ghd .muted");
+      if (g.ph && who) who.textContent += "・" + S.ui.calPh;
+      box.append(r);
+    }
+  };
+  if (past.length && ahead.length) {
+    const n = past.reduce((k, d) => k + (sched.get(d) || []).length + (official.get(d) || []).length + (byDate.get(d) || []).length, 0);
+    const fold = el("details", "agpast");
+    fold.append(el("summary", null, S.ui.agEarlier.replace("{d}", past.length).replace("{n}", n)));
+    for (const date of past) dayBlock(fold, date);
+    agenda.append(fold);
+  } else for (const date of past) dayBlock(agenda, date);
+  for (const date of ahead) dayBlock(agenda, date);
   container.append(agenda);
   return true;
 }
