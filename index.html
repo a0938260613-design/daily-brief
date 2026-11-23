@@ -1382,6 +1382,26 @@ main .rtag.pg, main .gtag.ph { color: var(--tg-ph) !important; }
   main .agpast { margin: 8px 0 0; }
   main .agpast > summary { cursor: pointer; padding: 8px 2px; color: var(--accent); font-size: 13.5px; font-weight: 700; }
 }
+.ffold .fsum { display: none; }
+
+@media (max-width: 760px) {
+  main .kicker { flex-wrap: wrap; }
+  main .kicker .kt { white-space: nowrap; }
+  main .kicker .kd { flex-basis: 100%; margin-left: 0; }
+  main .fpmust.none .mkchips { display: none; }
+  main .kindtiles:not(.topictiles), main .rnews .rtiles.four { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
+  main .kindtiles:not(.topictiles) .kindtile { flex-direction: row !important; align-items: center; justify-content: space-between; gap: 6px; padding: 8px 10px; }
+  main .kindtiles:not(.topictiles) .kindtile > span { font-size: 14px; }
+  main .kindtiles:not(.topictiles) .kindtile > b { font-size: 20px; line-height: 1.1; }
+  main .rnews .rtiles.four .rtile { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 6px; padding: 8px 10px; }
+  main .rnews .rtiles.four .rtile .rs { display: none; }
+  main .rnews .rtiles.four .rtile .rl { font-size: 14px; }
+  main .rnews .rtiles.four .rtile .rn { font-size: 20px; line-height: 1.1; }
+  main .kbnav:not(.q) .kbng, main .kbnav:not(.q) .kbn:not(:first-of-type) { display: none; }
+  main .sidefind { display: flex; margin: 8px 0; }
+  main .ffold { display: flex; align-items: center; gap: 8px; }
+  main .ffold .fsum { display: inline; margin-left: auto; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 62%; }
+}
 </style>
 </head>
 <body>
@@ -2130,6 +2150,7 @@ async function viewOverview() {
   }
   focus.querySelector(".kicker").append(chips);
   if (!mustEv.length) focus.append(el("p", "muted", S.ui.quiet));
+  if (!mustEv.length && !chips.querySelector(".on")) focus.classList.add("none");
   lead.forEach((a, i) => {
     const c = card(a, true); c.classList.add("open"); if (i === 0) c.classList.add("lead");
     c.querySelector("h3").classList.add("serif");
@@ -2713,6 +2734,7 @@ async function viewKb() {
   let tm; input.oninput = () => { clearTimeout(tm); tm = setTimeout(() => { const q = input.value.trim(); S.kbView = q ? { q } : {}; render(); const i = main.querySelector(".kbnav input"); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 300); };
   const quick = el("div", "kbquick"); for (const w of K.quick || []) { const b = el("button", null, w); b.onclick = () => go({ q: w }); quick.append(b); } nav.append(quick);
   const res = V.q ? I.search(V.q) : null;
+  if (res) nav.classList.add("q");
   const counts = {}; if (res) for (const x of res.full) counts[x.u.topic] = (counts[x.u.topic] || 0) + 1;
   const all = el("button", "kbn" + (!V.topic && !V.ft ? " on" : "")); all.append(el("span", null, S.ui.kbHome), el("small", null, res ? String(res.full.length) : String(K.topics.length)));
   all.onclick = () => go(V.q ? { q: V.q } : {}); nav.append(all);
@@ -3504,7 +3526,7 @@ async function upcomingList(container, title, pick, limit) {
 }
 async function viewCompetitors() {
   const renderId = S.renderId;
-  const period = S.coPeriod || (S.coPeriod = { mode: 7 });
+  const period = S.coPeriod || (S.coPeriod = { mode: 1 });
   const dates = periodDates(period);
 
   const head = el("div", "mast ghead");
@@ -3917,6 +3939,13 @@ function foldFacets() {
       b.onclick = () => { S.facetOpen = !S.facetOpen; foldFacets(); };
       side.before(b);
     }
+    const find = side.querySelector(".sidefind");
+    if (find && window.innerWidth <= 760) b.before(find);
+    const picked = [...side.querySelectorAll(".facet[aria-pressed=true] > span:first-child")].map(x => x.textContent.trim()).filter((t, i, a) => t && a.indexOf(t) === i);
+    const summary = picked.filter(t => t !== S.ui.all).join("・") || S.ui.all;
+    let sm = b.querySelector(".fsum");
+    if (!sm) { sm = el("span", "fsum"); b.append(sm); }
+    if (sm.textContent !== summary) sm.textContent = summary;
     if (side.classList.contains("open") !== !!S.facetOpen) side.classList.toggle("open", !!S.facetOpen);
     if (b.classList.contains("on") !== !!S.facetOpen) b.classList.toggle("on", !!S.facetOpen);
     if (b.classList.contains("active") !== active) b.classList.toggle("active", active);
