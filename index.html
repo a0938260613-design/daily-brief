@@ -2292,7 +2292,7 @@ function kbRoll(x, latest) {
   return Object.assign({}, x, { date: d });
 }
 function kbUpcoming(K, latest) {
-  return K.topics.flatMap(t => (t.dates || []).map(x => Object.assign(kbRoll(x, latest), { t }))).filter(x => x.date >= latest).sort((a, b) => a.date.localeCompare(b.date));
+  return K.topics.flatMap(t => (t.dates || []).map(x => Object.assign({}, kbRoll(x, latest), { t }))   ).filter(x => x.date >= latest).sort((a, b) => a.date.localeCompare(b.date));
 }
 async function kbData() {
   if (!S.hasKb) return null;
@@ -2725,7 +2725,7 @@ async function viewKb() {
   const back = el("button", "backbtn", S.ui.kbBack); back.onclick = () => { S.kbView = null; render(); window.scrollTo(0, 0); };
   main.append(back);
   const head = el("div", "mast ghead"); head.append(el("h1", "serif", S.ui.kbPage));
-  const sub = el("div", "sub"); sub.append(el("span", null, S.ui.kbSub.replace("{n}", K.docs.length).replace("{t}", K.topics.length) + "・" + K.updated)); head.append(sub);
+  const sub = el("div", "sub"); sub.append(el("span", null, S.ui.kbSub.replace("{n}", K.docs.length).replace("{t}", K.topics.length) + "・" + S.ui.kbChecked + " " + (K.checked || K.updated))); head.append(sub);
   main.append(head, el("p", "kbnote", S.ui.kbNote));
   const wrap = el("div", "kbwrap"), nav = el("aside", "kbnav"), body = el("section", "kbbody");
   wrap.append(nav, body); main.append(wrap);
