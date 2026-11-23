@@ -1402,6 +1402,17 @@ main .rtag.pg, main .gtag.ph { color: var(--tg-ph) !important; }
   main .ffold { display: flex; align-items: center; gap: 8px; }
   main .ffold .fsum { display: inline; margin-left: auto; font-size: 12.5px; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 62%; }
 }
+
+.pgcols { display: grid; grid-template-columns: 196px minmax(0, 1fr); column-gap: 36px; margin-top: 6px; align-items: start; }
+.pgver { margin: 2px 0 10px; }
+.pgsh { display: flex; align-items: baseline; gap: 8px; margin: 18px 0 4px; padding-left: 10px; border-left: 3px solid var(--line); }
+.pgsh b { font-size: 16px; font-weight: 800; } .pgsh .pgshn { color: var(--muted); font-weight: 700; } .pgsh .muted { font-size: 13px; }
+.pgc { padding: 10px 2px; border-bottom: 1px solid var(--line); }
+.pgc1 { display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: baseline; font-size: 15px; } .pgc1 b { font-weight: 800; }
+.pgc2 { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin-top: 3px; font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
+.pgtag { font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 5px; background: var(--chip); color: var(--muted); }
+@media (max-width: 1100px) { .pgcols { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .pgsh { flex-wrap: wrap; } .pgsh .muted { flex-basis: 100%; } }
 </style>
 </head>
 <body>
@@ -3089,22 +3100,88 @@ function searchBox(container, rowsOf, hint) {
   };
   container.append(bar);
 }
-function officialChanges(box, P) {
-  const days = S.pgDays === undefined ? (S.pgDays = 7) : S.pgDays;
-  const base = S.dates && S.dates.length ? S.dates[0].d : todayISO();
-  const shown = days ? P.events.filter(e => e.d && daysBetween(e.d, base) < days) : P.events;
-  section(box, S.ui.pgRecent, shown.length, S.ui.nPgRecent);
-  const bar = el("div", "calfilt pgdays");
-  for (const [n, label] of [[7, S.ui.pgD7], [30, S.ui.pgD30], [0, S.ui.fAllTime]]) {
-    const c = el("button", "chip", label + " " + (n ? P.events.filter(e => e.d && daysBetween(e.d, base) < n).length : P.events.length));
-    c.setAttribute("aria-pressed", String(days === n));
-    c.onclick = () => { S.pgDays = n; render(); };
-    bar.append(c);
+const PGTXT = {
+  zh: { lists: { GSA: "營運商", GCP: "內容供應商", GA: "聚合商" }, fList: "名單", fKind: "變動類型",
+    groups: { 轉手: ["品牌轉手", "品牌換到另一家營運商名下"], 新增: ["新增", "新拿到資格或新登記"], 退出: ["退出名單", "從官方名單上移除"], 品牌網域: ["新增品牌、網域", "既有業者多了品牌、網址或改版"] },
+    ver: "官方名單 {d} 版，{s} 比對到", domains: "網域", more: "等 {n} 個",
+    k: { 新增聚合商: "新增為聚合商", 移除聚合商: "從聚合商名單移除", 新增內容供應商: "新增為內容供應商", 移除內容供應商: "從內容供應商名單移除",
+      新增營運商: "新增為營運商", 移除營運商: "退出營運商名單", 新增自有品牌: "的新自有品牌", 新增代理品牌: "新代理的品牌", 終止代理品牌: "終止代理",
+      營運商新增品牌: "新增品牌", 營運商新增網域: "新增網域", 營運商換主品牌: "更換主品牌" } },
+  en: { lists: { GSA: "Operators", GCP: "Content providers", GA: "Aggregators" }, fList: "List", fKind: "Type of change",
+    groups: { 轉手: ["Brand transfers", "A brand moved to another operator"], 新增: ["Added", "Newly licensed or registered"], 退出: ["Removed", "Taken off the official list"], 品牌網域: ["New brands and domains", "Existing licensees added brands, sites or new versions"] },
+    ver: "Official list dated {d}, found {s}", domains: "Domains", more: "+{n} more",
+    k: { 新增聚合商: "added as an aggregator", 移除聚合商: "removed from aggregators", 新增內容供應商: "added as a content provider", 移除內容供應商: "removed from content providers",
+      新增營運商: "added as an operator", 移除營運商: "left the operator list", 新增自有品牌: "new own brand of", 新增代理品牌: "newly distributed by", 終止代理品牌: "no longer distributed by",
+      營運商新增品牌: "added brand", 營運商新增網域: "added domains", 營運商換主品牌: "changed main brand" } },
+};
+function pgShort(name) {
+  const t = String(name || "").replace(/\s*\([^()]*\)\s*$/, "").trim().replace(/\.$/, "")
+    .replace(/,?\s+(INC|CORP|CORPORATION|INCORPORATED|OPC|LTD|CO)$/i, "").replace(/[\s,.]+$/, "");
+  return t.split(" ").map(w => /^[A-Z][A-Z]{3,}$/.test(w) ? w[0] + w.slice(1).toLowerCase() : w).join(" ") || name;
+}
+function pgGroupOf(e) {
+  if (e.g) return e.g;
+  if (e.k === "下架") return "退出";
+  if (e.k === "改版") return "品牌網域";
+  return "新增";
+}
+function pgChangeRow(e, T) {
+  const row = el("div", "pgc");
+  const line = el("div", "pgc1"), sub = el("div", "pgc2");
+  const doms = x => { const d = String(x || "").split("、").filter(Boolean); return d.slice(0, 3).join("、") + (d.length > 3 ? " " + T.more.replace("{n}", d.length) : ""); };
+  if (e.k === "品牌轉手") {
+    line.append(el("b", null, e.c), el("span", null, pgShort(e.f) + " → " + pgShort(e.to)));
+    if (e.x) sub.append(el("span", null, T.domains + "：" + doms(e.x)));
+  } else if (e.l === "G") {
+    line.append(el("b", null, e.c), el("span", null, [e.k, e.n, e.t && "（" + e.t + "）"].filter(Boolean).join(" ")));
+    if (e.x) sub.append(el("span", null, e.x));
+  } else if (["新增自有品牌", "新增代理品牌", "終止代理品牌"].includes(e.k)) {
+    line.append(el("b", null, e.c), el("span", null, pgShort(e.x) + " " + (T.k[e.k] || e.k)));
+  } else {
+    line.append(el("b", null, pgShort(e.c)), el("span", null, (T.k[e.k] || e.k) + (e.x ? " " + (e.k === "營運商新增網域" ? doms(e.x) : e.k === "移除營運商" ? "（" + e.x + "）" : e.x) : "")));
   }
-  box.append(bar);
-  if (!P.events.length) box.append(el("p", "muted", S.ui.pgBaseline + "（" + P.as_of + "）"));
-  else if (!shown.length) box.append(el("p", "muted", S.ui.pgNoneInPeriod));
-  limited(box, shown, 30, e => pgRow(e, true));
+  sub.prepend(el("span", "pgtag", e.l === "G" ? S.ui.pList : (T.lists[e.l] || e.l)));
+  row.append(line, sub);
+  return row;
+}
+function officialChanges(box, P) {
+  const T = PGTXT[S.lang === "en" ? "en" : "zh"];
+  const all = P.events.map(e => Object.assign({}, e, { s: e.s || e.d, l: e.l || "G", g: pgGroupOf(e) }));
+  const period = S.pgPeriod || (S.pgPeriod = { mode: 7 });
+  const F = S.pgf || (S.pgf = {});
+  const inPeriod = new Set(periodDates(period));
+  const inP = e => period.mode === 9999 || inPeriod.has(e.s) || [...inPeriod].some(d => d === e.s);
+  const pass = (e, skip) => (skip === "period" || inP(e)) && (skip === "list" || !F.list || e.l === F.list) && (skip === "kind" || !F.kind || e.g === F.kind);
+  const shown = all.filter(e => pass(e));
+  const cols = el("div", "pgcols"), side = el("aside", "facets"), list = el("section", "left flat");
+  cols.append(side, list); box.append(cols);
+  periodGroup(side, period);
+  const item = (g, label, n, on, pick) => { const b = el("button", "facet"); b.append(el("span", null, label), el("small", null, String(n))); b.setAttribute("aria-pressed", String(on)); b.onclick = pick; g.append(b); };
+  const gl = facetGroup(side, T.fList);
+  item(gl, S.ui.all, all.filter(e => pass(e, "list")).length, !F.list, () => { F.list = ""; render(); });
+  for (const id of ["GSA", "GCP", "GA", "G"]) {
+    const n = all.filter(e => pass(e, "list") && e.l === id).length;
+    if (n || F.list === id) item(gl, id === "G" ? S.ui.pList : T.lists[id], n, F.list === id, () => { F.list = id; render(); });
+  }
+  const gk = facetGroup(side, T.fKind);
+  item(gk, S.ui.all, all.filter(e => pass(e, "kind")).length, !F.kind, () => { F.kind = ""; render(); });
+  for (const id of ["轉手", "新增", "退出", "品牌網域"]) {
+    const n = all.filter(e => pass(e, "kind") && e.g === id).length;
+    if (n || F.kind === id) item(gk, T.groups[id][0], n, F.kind === id, () => { F.kind = id; render(); });
+  }
+  section(list, S.ui.pgRecent, shown.length, S.ui.nPgRecent);
+  if (!all.length) { list.append(el("p", "muted", S.ui.pgBaseline + "（" + P.as_of + "）")); return; }
+  if (!shown.length) { list.append(el("p", "muted", S.ui.pgNoneInPeriod)); return; }
+  const vers = [...new Set(shown.map(e => mmdd(e.d) + "|" + mmdd(e.s)))];
+  if (vers.length === 1) { const [d, s2] = vers[0].split("|"); list.append(el("p", "muted small pgver", T.ver.replace("{d}", d).replace("{s}", s2))); }
+  for (const id of ["轉手", "新增", "退出", "品牌網域"]) {
+    const rows = shown.filter(e => e.g === id);
+    if (!rows.length) continue;
+    const h = el("div", "pgsh"); h.append(el("b", null, T.groups[id][0]), el("span", "pgshn", String(rows.length)), el("span", "muted", T.groups[id][1]));
+    list.append(h);
+    const wrap = el("div", "pggroup"); list.append(wrap);
+    limited(wrap, rows, 20, e => pgChangeRow(e, T), true);
+  }
 }
 const typeOrder = () => S.vocab.typeOrder;
 function typeBar(types, label) {
