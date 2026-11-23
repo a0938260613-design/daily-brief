@@ -3090,9 +3090,21 @@ function searchBox(container, rowsOf, hint) {
   container.append(bar);
 }
 function officialChanges(box, P) {
-  section(box, S.ui.pgRecent, P.events.length, S.ui.nPgRecent);
+  const days = S.pgDays === undefined ? (S.pgDays = 7) : S.pgDays;
+  const base = S.dates && S.dates.length ? S.dates[0].d : todayISO();
+  const shown = days ? P.events.filter(e => e.d && daysBetween(e.d, base) < days) : P.events;
+  section(box, S.ui.pgRecent, shown.length, S.ui.nPgRecent);
+  const bar = el("div", "calfilt pgdays");
+  for (const [n, label] of [[7, S.ui.pgD7], [30, S.ui.pgD30], [0, S.ui.fAllTime]]) {
+    const c = el("button", "chip", label + " " + (n ? P.events.filter(e => e.d && daysBetween(e.d, base) < n).length : P.events.length));
+    c.setAttribute("aria-pressed", String(days === n));
+    c.onclick = () => { S.pgDays = n; render(); };
+    bar.append(c);
+  }
+  box.append(bar);
   if (!P.events.length) box.append(el("p", "muted", S.ui.pgBaseline + "（" + P.as_of + "）"));
-  limited(box, P.events, 30, e => pgRow(e, true));
+  else if (!shown.length) box.append(el("p", "muted", S.ui.pgNoneInPeriod));
+  limited(box, shown, 30, e => pgRow(e, true));
 }
 const typeOrder = () => S.vocab.typeOrder;
 function typeBar(types, label) {
