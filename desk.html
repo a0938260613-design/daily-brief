@@ -1685,9 +1685,16 @@ main.pgA .mast.ghead + :is(.cols3, .cols) { margin-top: 14px !important; }
 :is(main.pgA, .sheet.pgA) .offbox { border-top: 0 !important; padding-top: 0 !important; }
 :is(main.pgA, .sheet.pgA) .offbox .card, :is(main.pgA, .sheet.pgA) .bcard, :is(main.pgA, .sheet.pgA) .blist, :is(main.pgA, .sheet.pgA) .brands { border-radius: 0 !important; }
 
-.govpage { grid-template-columns: 200px minmax(0, 1fr) !important; }
+.govpage { grid-template-columns: 200px minmax(0, 1fr) minmax(240px, 290px) !important; }
 .govpage > .left { padding: 0 0 0 24px; }
 .govrow { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.govorgs .govoc { margin: 12px 0 4px; font-size: 12px; font-weight: 700; color: var(--must-fg); letter-spacing: .06em; }
+.govorgs .govoc.gap { color: var(--muted); }
+.govorgs .govorg { display: block; padding: 6px 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
+.govorgs a.govorg:hover b { color: var(--accent); }
+.govorgs .govorg b { display: block; font-size: 13.5px; font-weight: 700; }
+.govorgs .govorg span { display: block; font-size: 12px; color: var(--muted); }
+.govorgs .govorg.gap b { font-weight: 600; color: var(--muted); }
 .govk { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
 .govk b { color: var(--must-fg); font-weight: 700; }
 .govt { display: block; font-size: 17px; font-weight: 700; line-height: 1.5; color: var(--text); text-decoration: none; }
@@ -2938,6 +2945,24 @@ async function viewGov() {
   const shown = inPeriod.filter(x => pass(x));
   const body = el("div", "cols3 govpage"), facets = el("aside", "facets"), list = el("section", "left flat govlist");
   body.append(facets, list); main.append(body);
+  if (G.orgs && G.orgs.length) {
+    const side = el("section", "right govorgs");
+    section(side, S.ui.govOrgs, G.orgs.length);
+    side.append(el("p", "muted small", S.ui.govOrgsN.replace("{n}", G.orgs.length)));
+    let lastC = "";
+    for (const o of G.orgs) {
+      if (o.c !== lastC) { lastC = o.c; side.append(el("div", "govoc", o.c)); }
+      const r = el("a", "govorg"); r.href = o.u; r.target = "_blank"; r.rel = "noopener";
+      r.append(el("b", null, o.o), el("span", null, o.role));
+      side.append(r);
+    }
+    if (G.gaps && G.gaps.length) {
+      side.append(el("div", "govoc gap", S.ui.govGaps));
+      for (const g of G.gaps) { const r = el("div", "govorg gap"); r.append(el("b", null, g.c), el("span", null, g.why)); side.append(r); }
+      side.append(el("p", "muted small", S.ui.govGapsNote));
+    }
+    body.append(side);
+  }
   const item = (box, label, n, active, pick) => {
     const b = el("button", "facet"); b.append(el("span", null, label));
     if (n !== undefined) b.append(el("small", null, String(n)));
