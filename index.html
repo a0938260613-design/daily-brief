@@ -1545,6 +1545,10 @@ main .fpA .raillead b { font-size: 44px; font-weight: 900; color: var(--green); 
 main .fpA .railrow { border-top: 1px solid var(--rule); color: var(--ink); }
 main .fpA .raillead + .railrow, main .fpA .railhd + .railrow { border-top: 0; }
 main .fpA .railrow .rtag { font-family: ui-monospace, Consolas, monospace; font-weight: 700; color: var(--ink) !important; background: none !important; }
+
+main .fpA .railrow .rtag.star { font-family: inherit; box-shadow: none !important; border: 1px solid var(--rule); border-radius: 0 !important; padding: 0 6px; color: var(--ink) !important; }
+main .fpA .railrow .rtag.star.lv0 { border-color: var(--red); color: var(--red) !important; }
+main .fpA .railrow .rtag.star.lv2 { color: var(--sub) !important; }
 main .fpA .railrow .rspec { display: none; }
 main .fpA .railrow .amore, main .fpA .railrow.amore .rtx { color: var(--red); }
 main .fpA .railsub { border-top: 1px solid var(--ink); color: var(--sub); }
@@ -1661,6 +1665,17 @@ main.pgA :is(.cols3, .rbody) > :is(.left, .rlist) > .kicker:first-child { margin
 main.pgA :is(.cols3, .rbody) > :is(.left, .rlist, .facets) { margin-top: 0 !important; padding-top: 0 !important; }
 main.pgA :is(.cols3, .cols) > .right { margin-top: 0 !important; padding-top: 7px !important; }
 main.pgA .mast.ghead + :is(.cols3, .cols) { margin-top: 14px !important; }
+
+:is(main.pgA, .sheet.pgA) .tiles { border-top: 0 !important; border-left: 0 !important; border-right: 0 !important; border-radius: 0 !important; box-shadow: none !important; background: none !important; }
+@media (max-width: 760px) { main.pgA.wrap div.tiles { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+:is(main.pgA, .sheet.pgA) .tile[aria-pressed="true"] { box-shadow: none !important; background: var(--wash) !important; }
+:is(main.pgA, .sheet.pgA) .offbox .grid2, :is(main.pgA, .sheet.pgA) .offbox > .grid2 { border: 0 !important; border-radius: 0 !important; background: none !important; padding: 4px 0 8px !important; }
+:is(main.pgA, .sheet.pgA) .seg { border: 0 !important; border-radius: 0 !important; background: none !important; padding: 0 !important; gap: 18px !important; border-bottom: 1px solid var(--rule) !important; }
+:is(main.pgA, .sheet.pgA) .segbtn { border-radius: 0 !important; background: none !important; box-shadow: none !important; padding: 6px 0 !important; color: var(--sub) !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px; }
+:is(main.pgA, .sheet.pgA) .segbtn[aria-pressed="true"], :is(main.pgA, .sheet.pgA) .segbtn.on { color: var(--ink) !important; font-weight: 700; border-bottom-color: var(--ink) !important; }
+main.pgA .regpage2.pgonly > .rdash.rpg { display: none !important; }
+
+:is(main.pgA, .sheet.pgA) .ffold, :is(main.pgA, .sheet.pgA) .agpast > summary, :is(main.pgA, .sheet.pgA) details > summary { border-radius: 0 !important; box-shadow: none !important; background: none !important; border: 0 !important; border-top: 1px solid var(--rule) !important; border-bottom: 1px solid var(--rule) !important; }
 @media (max-width: 760px) {
   main.pgA { padding: 12px 14px 22px; margin: 4px -4px 0; }
   :is(main.pgA, .sheet.pgA) .cols3 > .right, :is(main.pgA, .sheet.pgA) .cols > .right { margin-left: 0; }
@@ -1677,16 +1692,21 @@ main.pgA .mast.ghead + :is(.cols3, .cols) { margin-top: 14px !important; }
 :is(main.pgA, .sheet.pgA) .tile { background: none !important; border: 0 !important; border-right: 1px solid var(--rule) !important; border-radius: 0 !important; box-shadow: none !important; padding: 12px 14px !important; }
 :is(main.pgA, .sheet.pgA) .tile:last-child { border-right: 0 !important; }
 :is(main.pgA, .sheet.pgA) .tile b { font-family: "Noto Serif TC", "PMingLiU", Georgia, serif; font-weight: 900; }
-:is(main.pgA, .sheet.pgA) .tile[aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--red) !important; }
+:is(main.pgA, .sheet.pgA) .tile[aria-pressed="true"] { box-shadow: none !important; background: var(--wash) !important; }
 :is(main.pgA, .sheet.pgA) .tile[aria-pressed="true"] .tl, :is(main.pgA, .sheet.pgA) .tile[aria-pressed="true"] b { color: var(--red) !important; }
 :is(main.pgA, .sheet.pgA) .tile .tcode, :is(main.pgA, .sheet.pgA) .tile[aria-pressed="true"] .tcode { background: none !important; border: 1px solid var(--rule); color: var(--sub) !important; border-radius: 0; }
 :is(main.pgA, .sheet.pgA) .seg .segbtn, :is(main.pgA, .sheet.pgA) .seg button { background: none !important; border: 0 !important; border-bottom: 2px solid transparent !important; border-radius: 0 !important; color: var(--sub) !important; box-shadow: none !important; }
-:is(main.pgA, .sheet.pgA) .seg .segbtn[aria-pressed="true"], :is(main.pgA, .sheet.pgA) .seg button[aria-pressed="true"], :is(main.pgA, .sheet.pgA) .seg .segbtn.on { color: var(--red) !important; border-bottom-color: var(--red) !important; font-weight: 700; }
+:is(main.pgA, .sheet.pgA) .seg .segbtn[aria-pressed="true"], :is(main.pgA, .sheet.pgA) .seg button[aria-pressed="true"], :is(main.pgA, .sheet.pgA) .seg .segbtn.on { color: var(--ink) !important; border-bottom-color: var(--ink) !important; font-weight: 700; }
 :is(main.pgA, .sheet.pgA) .offbox { border-top: 0 !important; padding-top: 0 !important; }
 :is(main.pgA, .sheet.pgA) .offbox .card, :is(main.pgA, .sheet.pgA) .bcard, :is(main.pgA, .sheet.pgA) .blist, :is(main.pgA, .sheet.pgA) .brands { border-radius: 0 !important; }
 
 .govpage { grid-template-columns: 200px minmax(0, 1fr) minmax(240px, 290px) !important; }
 .govpage > .left { padding: 0 0 0 24px; }
+@media (max-width: 760px) {
+  .govpage { grid-template-columns: minmax(0, 1fr) !important; row-gap: 18px; }
+  .govpage > .left { padding: 0; }
+  .govpage > .govorgs { margin-left: 0 !important; }
+}
 .govrow { padding: 12px 0; border-bottom: 1px solid var(--line); }
 .govorgs .govoc { margin: 12px 0 4px; font-size: 12px; font-weight: 700; color: var(--must-fg); letter-spacing: .06em; }
 .govorgs .govoc.gap { color: var(--muted); }
@@ -2630,7 +2650,7 @@ async function viewOverview() {
   }
   if (compArts.length > 3) line(list, "", S.ui.aMore.replace("{n}", compArts.length - 3), "", "", goTab("competitors")).classList.add("amore");
   const inFocus = (d.sel && d.sel.comp_in_focus) || 0;
-  const kinds = COMP_KINDS.filter(([id]) => kindN[id]).map(([id, key]) => (S.ui[key + "Short"] || S.ui[key]) + " " + kindN[id]);
+  const kinds = COMP_KINDS.filter(([id]) => kindN[id]).map(([id, key]) => (S.ui[key + "Short"] || S.ui[key]).replace(/^[^\p{L}\p{N}]+/u, "") + " " + kindN[id]);
   if (compArts.length && kinds.length) list.append(el("p", "muted railnote", kinds.join("・")));
   if (!compArts.length) list.append(el("p", "muted railnote", S.ui.railCompNone + (inFocus ? "；" + S.ui.fpCompInFocus.replace("{n}", inFocus) : "")));
   else if (inFocus) line(list, "", S.ui.fpCompInFocus.replace("{n}", inFocus), "", "", jump(".fpmust"));
@@ -2951,14 +2971,14 @@ async function viewGov() {
     side.append(el("p", "muted small", S.ui.govOrgsN.replace("{n}", G.orgs.length)));
     let lastC = "";
     for (const o of G.orgs) {
-      if (o.c !== lastC) { lastC = o.c; side.append(el("div", "govoc", o.c)); }
+      if (o.c !== lastC) { lastC = o.c; side.append(el("div", "govoc", tv(o.c))); }
       const r = el("a", "govorg"); r.href = o.u; r.target = "_blank"; r.rel = "noopener";
-      r.append(el("b", null, o.o), el("span", null, o.role));
+      r.append(el("b", null, S.lang === "en" && o.oe ? o.oe : o.o), el("span", null, S.lang === "en" && o.re ? o.re : o.role));
       side.append(r);
     }
     if (G.gaps && G.gaps.length) {
       side.append(el("div", "govoc gap", S.ui.govGaps));
-      for (const g of G.gaps) { const r = el("div", "govorg gap"); r.append(el("b", null, g.c), el("span", null, g.why)); side.append(r); }
+      for (const g of G.gaps) { const r = el("div", "govorg gap"); r.append(el("b", null, tv(g.c)), el("span", null, S.lang === "en" && g.we ? g.we : g.why)); side.append(r); }
       side.append(el("p", "muted small", S.ui.govGapsNote));
     }
     body.append(side);
@@ -2984,11 +3004,14 @@ async function viewGov() {
   for (const x of shown) {
     if (x.d !== last) { last = x.d; list.append(el("h2", "dayhead", dayLabel(x.d))); }
     const row = el("article", "govrow");
-    const kick = el("div", "govk"); kick.append(el("b", null, x.c)); if (x.k) kick.append(el("span", null, x.k)); kick.append(el("span", null, x.o));
-    const t = el("div", "govt serif", S.lang === "en" ? x.ot : x.t);
+    const en = S.lang === "en";
+    const kick = el("div", "govk"); kick.append(el("b", null, tv(x.c))); if (x.k) kick.append(el("span", null, tv(x.k))); kick.append(el("span", null, x.o));
+    const t = el("div", "govt serif", en ? (x.te || x.ot) : x.t);
     const more = el("div", "govb");
-    more.append(el("p", x.sum ? "govs" : "govs muted", x.sum || S.ui.govNoSum));
-    if (S.lang !== "en" && x.ot && x.ot !== x.t) more.append(el("div", "govo", S.ui.govOrig + "：" + x.ot));
+    const sumText = en ? (x.se || "") : x.sum;
+    more.append(el("p", sumText ? "govs" : "govs muted", sumText || S.ui.govNoSum));
+    if (en && x.te && x.ot && x.ot !== x.te) more.append(el("div", "govo", S.ui.govOrig + ": " + x.ot));
+    if (!en && x.ot && x.ot !== x.t) more.append(el("div", "govo", S.ui.govOrig + "：" + x.ot));
     const a = el("a", "govl", S.ui.source + " ↗"); a.href = x.u; a.target = "_blank"; a.rel = "noopener"; a.onclick = e => e.stopPropagation();
     more.append(a);
     row.append(kick, t, more);
