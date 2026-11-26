@@ -1742,6 +1742,14 @@ main.pgA .regpage2.pgonly > .rdash.rpg { display: none !important; }
 .calres .calrow a.calname { color: var(--text); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
 .calres .calrow a.calname:hover { color: var(--accent); text-decoration-color: currentColor; }
 .calres .calrow .cm { font-size: 12.5px; color: var(--muted); }
+
+.fpA .fpchips { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 6px 0 9px; margin: 0 0 12px; border-bottom: 1px solid var(--rule, #d9d9d9); }
+.fpA .fpchip { border: 0; background: none; font: inherit; font-size: 13px; color: var(--sub, #5c5c5c); padding: 2px 0; cursor: pointer; border-bottom: 2px solid transparent; }
+.fpA .fpchip b { font-weight: 400; margin-left: 4px; color: #9a9a9a; }
+.fpA .fpchip:hover { color: var(--ink, #111); }
+.fpA .fpchip.on { color: var(--ink, #111); font-weight: 700; border-bottom-color: var(--ink, #111); }
+.fpA .fpchip.on b { color: var(--ink, #111); }
+@media (max-width: 760px) { .fpA .fpchips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .fpA .fpchip { flex: none; } }
 :root { --ff: "Segoe UI", "Microsoft JhengHei", "微軟正黑體", "PingFang TC", "Noto Sans TC", system-ui, sans-serif; }
 body, button, input, select, textarea, .serif, h1, h2, h3, h4 { font-family: var(--ff) !important; }
 main .fpA .railnote { font-style: normal !important; }
@@ -2597,19 +2605,36 @@ async function viewOverview() {
   section(rest, S.ui.aNotable, allN, S.ui.nOthers);
   tNot.n.textContent = String(allN);
   if (!allN) rest.append(el("p", "muted", S.ui.noToday));
-  const cols = el("div", "fpcols");
-  for (const [legal, title] of [[false, S.ui.aMarket], [true, S.ui.aLegal]]) {
-    const col = el("section", "fpcol" + (legal ? " legal" : ""));
-    const parts = groups.map(([g, l]) => [g, l.filter(a => isLegal(a) === legal)]).filter(x => x[1].length);
-    const n = parts.reduce((k, x) => k + x[1].length, 0);
-    const h = el("h3", "fpcolh"); h.append(el("span", null, title), el("small", null, String(n)));
-    col.append(h);
-    if (!n) col.append(el("p", "muted small", S.ui.noToday));
-    const items = parts.flatMap(([, l]) => l);
-    for (const a of [...items.filter(x => !isFol(x)), ...items.filter(isFol)]) col.append(fpRow(a, isFol(a)));
-    cols.append(col);
-  }
-  rest.append(cols);
+  const placeOf = a => a.region || S.ui.global || "全球";
+  const allItems = groups.flatMap(([, l]) => l);
+  const cnt = new Map();
+  for (const a of allItems) cnt.set(placeOf(a), (cnt.get(placeOf(a)) || 0) + 1);
+  if (S.fpC && !cnt.has(S.fpC)) S.fpC = "";
+  const chipRow = el("div", "fpchips"), cols = el("div", "fpcols");
+  const drawCols = () => {
+    chipRow.innerHTML = ""; cols.innerHTML = "";
+    if (cnt.size > 1) {
+      for (const [c, n] of [["", allN], ...[...cnt].sort((x, y) => y[1] - x[1])]) {
+        const b = el("button", "fpchip" + ((S.fpC || "") === c ? " on" : ""));
+        b.append(el("span", null, c ? tv(c) : (S.ui.all || "全部")), el("b", null, String(n)));
+        b.onclick = () => { S.fpC = (!c || S.fpC === c) ? "" : c; drawCols(); };
+        chipRow.append(b);
+      }
+    }
+    for (const [legal, title] of [[false, S.ui.aMarket], [true, S.ui.aLegal]]) {
+      const col = el("section", "fpcol" + (legal ? " legal" : ""));
+      const parts = groups.map(([g, l]) => [g, l.filter(a => isLegal(a) === legal && (!S.fpC || placeOf(a) === S.fpC))]).filter(x => x[1].length);
+      const n = parts.reduce((k, x) => k + x[1].length, 0);
+      const h = el("h3", "fpcolh"); h.append(el("span", null, title), el("small", null, String(n)));
+      col.append(h);
+      if (!n) col.append(el("p", "muted small", S.fpC ? S.ui.fpNoneIn.replace("{c}", tv(S.fpC)) : S.ui.noToday));
+      const items = parts.flatMap(([, l]) => l);
+      for (const a of [...items.filter(x => !isFol(x)), ...items.filter(isFol)]) col.append(fpRow(a, isFol(a)));
+      cols.append(col);
+    }
+  };
+  drawCols();
+  rest.append(chipRow, cols);
   left.append(rest);
 
   const box = (title, goLabel, go) => {
