@@ -2607,14 +2607,17 @@ async function viewOverview() {
   if (!allN) rest.append(el("p", "muted", S.ui.noToday));
   const placeOf = a => a.region || S.ui.global || "全球";
   const allItems = groups.flatMap(([, l]) => l);
-  const cnt = new Map();
-  for (const a of allItems) cnt.set(placeOf(a), (cnt.get(placeOf(a)) || 0) + 1);
+  const cnt = new Map(), codeOf = new Map();
+  for (const [g, l] of groups) for (const a of l) { cnt.set(placeOf(a), (cnt.get(placeOf(a)) || 0) + 1); if (!codeOf.has(placeOf(a))) codeOf.set(placeOf(a), g.code); }
+  const CORE = S.ui.core || [], notServed = (S.vocab && S.vocab.notServed) || [];
+  const tierOf = c => { const code = codeOf.get(c); return CORE.includes(code) ? 0 : (code === "GLOBAL" || notServed.includes(c)) ? 2 : 1; };
+  const order = c => { const code = codeOf.get(c); return CORE.includes(code) ? CORE.indexOf(code) : 0; };
   if (S.fpC && !cnt.has(S.fpC)) S.fpC = "";
   const chipRow = el("div", "fpchips"), cols = el("div", "fpcols");
   const drawCols = () => {
     chipRow.innerHTML = ""; cols.innerHTML = "";
     if (cnt.size > 1) {
-      for (const [c, n] of [["", allN], ...[...cnt].sort((x, y) => y[1] - x[1])]) {
+      for (const [c, n] of [["", allN], ...[...cnt].sort((x, y) => tierOf(x[0]) - tierOf(y[0]) || order(x[0]) - order(y[0]) || y[1] - x[1])]) {
         const b = el("button", "fpchip" + ((S.fpC || "") === c ? " on" : ""));
         b.append(el("span", null, c ? tv(c) : (S.ui.all || "全部")), el("b", null, String(n)));
         b.onclick = () => { S.fpC = (!c || S.fpC === c) ? "" : c; drawCols(); };
@@ -2753,7 +2756,7 @@ async function viewOverview() {
       return r;
     };
     for (const g of [...allToday, ...allWeek].filter(key).sort((x, y) => x.d.localeCompare(y.d) || (y.tr || 0) - (x.tr || 0))) gameLine(g, mmdd(g.d));
-    const soon = (L.soon || []).filter(key);
+    const soon = [];
     if (soon.length) {
       launchBox.append(el("p", "railsub", S.ui.railSoon));
       for (const g of [...soon.filter(g => g.own), ...soon.filter(g => !g.own)]) gameLine(g, g.m ? S.ui.monthTag.replace("{m}", +g.m.slice(5)) : S.ui.tba);
